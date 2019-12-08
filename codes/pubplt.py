@@ -155,31 +155,31 @@ def leo_results(results, inps):
     line += '    Time     '
     
     # Headers for LEO 1
-    line += inps['name1'] + '_PosX    '
-    line += inps['name1'] + '_PosY    '
-    line += inps['name1'] + '_PosZ    '
-    line += inps['name1'] + '_VelX    '
-    line += inps['name1'] + '_VelY    '
-    line += inps['name1'] + '_VelZ    '
-    line += inps['name1'] + '_GDOP    '
-    line += inps['name1'] + '_PDOP    '
-    line += inps['name1'] + '_TDOP    '
+    line += inps['name1'] + '_PosX     '
+    line += inps['name1'] + '_PosY     '
+    line += inps['name1'] + '_PosZ     '
+    line += inps['name1'] + '_VelX     '
+    line += inps['name1'] + '_VelY     '
+    line += inps['name1'] + '_VelZ     '
+    line += inps['name1'] + '_GDOP     '
+    line += inps['name1'] + '_PDOP     '
+    line += inps['name1'] + '_TDOP     '
     
     # Headers for LEO 2
-    line += inps['name2'] + '_PosX    '
-    line += inps['name2'] + '_PosY    '
-    line += inps['name2'] + '_PosZ    '
-    line += inps['name2'] + '_VelX    '
-    line += inps['name2'] + '_VelY    '
-    line += inps['name2'] + '_VelZ    '
-    line += inps['name2'] + '_GDOP    '
-    line += inps['name2'] + '_PDOP    '
-    line += inps['name2'] + '_TDOP    '
+    line += inps['name2'] + '_PosX     '
+    line += inps['name2'] + '_PosY     '
+    line += inps['name2'] + '_PosZ     '
+    line += inps['name2'] + '_VelX     '
+    line += inps['name2'] + '_VelY     '
+    line += inps['name2'] + '_VelZ     '
+    line += inps['name2'] + '_GDOP     '
+    line += inps['name2'] + '_PDOP     '
+    line += inps['name2'] + '_TDOP     '
     
     # Headers for baseline information
-    line += 'RelativeX    '
-    line += 'RelativeY    '
-    line += 'RelativeZ    '
+    line += 'RelativeX     '
+    line += 'RelativeY     '
+    line += 'RelativeZ     '
     line += '\n'
     file_path.write(line)
     
@@ -194,7 +194,7 @@ def leo_results(results, inps):
                     svalue = svalue[:dot+4]
                 while len(svalue[dot:]) < 4:
                     svalue = svalue + '0'
-                while len(svalue[:dot]) < 9:
+                while len(svalue[:dot]) < 10:
                     svalue = ' ' + svalue
                     dot = svalue.index('.')
                 line += svalue

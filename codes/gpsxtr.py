@@ -64,6 +64,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     # We will download them into our directories, below, later on.
     cwd = inps['cwd'] # Get current main working directory
     iwd = cwd + '\\input\\' # Get directory for ephemeris / clock files
+    os.chdir(cwd) # Ensure the user is running in the main directory.
     
     # Then, we must retrieve all number of days of GPS and CLK data needed    
     days     = (tstop.date() - tstart.date()).days + 1 # Number of days
@@ -325,10 +326,8 @@ def gpsxtr(inps, tstart, tstop, tstep):
                     pos2_delta = np.polyval(coeff,t_usr_i_delta) # Delta-R
                     vel2 = vel2 + ((pos2_delta - pos2_np)*1000).tolist()
             
-            # Check if the time axis is an empty list:
-            if t_usr_i != []:
-                gpsdata[prn]['p' + coord] = pos2 # m
-                gpsdata[prn]['v' + coord] = vel2 # m/s
+            gpsdata[prn]['p' + coord] = pos2 # m
+            gpsdata[prn]['v' + coord] = vel2 # m/s
         
         ''' Main script for linear interpolation of GPS clock biases '''
                 

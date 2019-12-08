@@ -10,6 +10,8 @@ To use LEOGPS, the user first inputs configuration parameters in the 'config.txt
 - Precise (centimeter-level) baseline estimation (relative position vector).
 - Dilution of precision values.
 
+The user may first start by using the two example RINEX observations files simulated for two LEO satellites. The user may then check the configuration parameters in 'config.txt', and then proceed to run 'leogps.py'.
+
 LEOGPS is useful for formation flying satellite missions such as GRACE A and B, and can also be adapted for the rapid prototyping of navigation algorithms in Python, or for testing out integer ambiguity resolution techniques. A Pythonic translation of Professor Peter Teunissen's LAMBDA method has also been adapted, in the 'file ambfix.py'
 
 To install, run, and develop your own programs with LEOGPS, please see the detailed documentation below:
