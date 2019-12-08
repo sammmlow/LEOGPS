@@ -1,0 +1,58 @@
+~: *****************************************************************************
+~: On lines starting with I, there are two strings that are read by LEOGPS!
+~: The first string is the input identifier (key). Do not change this!
+~: The second string is the input (value) for you to define based on your needs.
+~: On lines starting with ~, these lines are comments and are unread by LEOGPS!
+~: *****************************************************************************
+~:
+~: Input the 4-letter ID of the first spacecraft (i.e. LEOA)
+I: name1 LEOA
+~:
+~: Input the 4-letter ID of the second spacecraft (i.e. LEOB)
+I: name2 LEOB
+~: 
+~: Input the starting epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-11-45-00)
+I: dtstart 2018-10-16-00-00-00
+~:
+~: Input the ending epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-23-45-00)
+I: dtstop 2018-10-16-23-59-59
+~: 
+~: Input the timestep in seconds (i.e. 30)
+I: timestep 1
+~: 
+~: Input single or dual frequency processing (i.e. 1 or 2)
+I: freq 2
+~: 
+~: Account for and offset Earth's rotation during signal time-of-flight? (True/False)
+I: earthrotation True
+~: 
+~: Account for relativistic effects? (True/False)
+I: relativity True
+~: 
+~: Do you want to save the output plots for GPS ephemeris and clocks (True/False)?
+I: savefigs True
+~:
+~: Do you want to save the output report for GPS ephemeris and clocks (True/False)?
+I: savereport True
+~: 
+~: Do you want to enable code-carrier smoothing via recursive Hatch filter (True/False)?
+I: hatchfilter True
+~: 
+~: What is the length (integer number of epochs of RINEX observations) of the hatch filter used?
+I: hatchlength 30
+~: 
+~: What is the tolerance (number of standard deviations) for the cycle slip detection algorithm?
+I: cycsliptol 3.0
+~:
+~: What is the length of the sliding window filter for cycle slip detection in phase values?
+I: cycsliplen 10
+~: 
+~: Set the antenna offset in X-direction (m)
+I: antoffsetX 0.0
+~: 
+~: Set the antenna offset in Y-direction (m)
+I: antoffsetY 0.0
+~: 
+~: Set the antenna offset in Z-direction (m)
+I: antoffsetZ 0.0
+~: 
