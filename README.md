@@ -1,4 +1,4 @@
-![LEOGPS - GPS-Aided Relative Satellite Navigation in Python](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/docs/LEOGPS_Logo.png)
+![LEOGPS - GPS-Aided Relative Satellite Navigation in Python](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/docs/logos/logo_main.png)
 
 LEOGPS is an open-source Python package for absolute and relative navigation.
 
@@ -15,4 +15,4 @@ The user may first start by using the two example RINEX observations files simul
 LEOGPS is useful for formation flying satellite missions such as GRACE A and B, and can also be adapted for the rapid prototyping of navigation algorithms in Python, or for testing out integer ambiguity resolution techniques. A Pythonic translation of Professor Peter Teunissen's LAMBDA method has also been adapted, in the 'file ambfix.py'
 
 To install, run, and develop your own programs with LEOGPS, please see the detailed documentation below:
-<Insert URL here>
+- UNDER CONSTRUCTION
