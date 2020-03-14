@@ -1,20 +1,42 @@
-![LEOGPS - GPS-Aided Relative Satellite Navigation in Python](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/docs/logos/logo_main.png)
+![LEOGPS - GPS-Aided Relative Satellite Navigation in Python](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png)
 
-LEOGPS is an open-source Python package for absolute and relative navigation.
+### What is LEOGPS?
+LEOGPS is an open-source Python package for absolute and relative satellite navigation.
 
-Absolute positioning is performed by trilaterating GPS pseudorange measurements, and Doppler (pseudorange rate) measurements. If Doppler values are missing in the RINEX observation file, LEOGPS will attempt to estimate them. The relative navigation between LEO satellites are performed using a double-differencing of carrier phase values, with a simple rounding of the float ambiguities.
+### How do I use LEOGPS?
 
-To use LEOGPS, the user first inputs configuration parameters in the 'config.txt' file. Then, the user pastes two RINEX (v2.xx) observation files, one for each LEO satellite. Next, the user simply has to run 'leogps.py' with an internet connection online. LEOGPS will process the raw GPS measurements to produce a report comprising:
+To use LEOGPS, the user first runs the application by running 'leogps.py', the main python file. The app interfaces with the inputs configuration file, allowing the user to save or load parameters in the 'config.txt' file. 
+
+Then, the user simply provides the program with two RINEX (v2.xx) observation files, one for each LEO satellite, by pasting it in the 'inputs' folder. By default, LEOGPS should be provided with two example RINEX files comprising GPS pseudorange and carrier phase measurements from two satellites in formation - GRACE A and B. Ground truths are also provided in the 'outputs' directory.
+
+Next, the user simply has to run LEOGPS via the GUI, once the user saves the desired configuration options. Keep an internet connection online, as LEOGPS will attempt to download precise ephemerides and clock bias data from the International GNSS Service (IGS) file portal (unless you already have those files). The app should look something like the image below.
+
+![LEOGPS - Graphical User Interface](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui.jpg)
+
+LEOGPS will process the raw GPS measurements to produce a report comprising:
 
 - The absolute positions and absolute velocities of both LEOs.
 - Precise (centimeter-level) baseline estimation (relative position vector).
 - Dilution of precision values.
 
-The user may first start by using the two example RINEX observations files simulated for two LEO satellites. The user may then check the configuration parameters in 'config.txt', and then proceed to run 'leogps.py'.
+LEOGPS will also (optionally, depending on your choice in the GUI) output plots or reports on the interpolated GPS satellite ephemeris and clock biases.
 
-LEOGPS is useful for formation flying satellite missions such as GRACE A and B, and can also be adapted for the rapid prototyping of navigation algorithms in Python, or for testing out integer ambiguity resolution techniques. A Pythonic translation of Professor Peter Teunissen's LAMBDA method has also been adapted, in the 'file ambfix.py'
+### What is the method of navigation used behind LEOGPS?
 
-Requires Python 3.6.5 and NumPy v1.14 and above.
+Absolute positioning and velocity estimation is performed by trilaterating GPS pseudorange measurements, and Doppler (pseudorange rate) measurements respectively. If Doppler values are missing in the RINEX observation file, LEOGPS will attempt to estimate them.
 
-To install, run, and develop your own programs with LEOGPS, please see the detailed documentation below:
-- UNDER CONSTRUCTION
+The relative navigation between LEO satellites are performed using a double-differencing of carrier phase values, and using the float ambiguities directly. An optional module exists ('ambfix.py') in the codes folder for Dr Peter Teunissen's LAMBDA method for estimating integer ambiguities given the float ambiguities and covariance matrices.
+
+### Why did you create LEOGPS?
+
+LEOGPS is a personal pet project of mine, useful as a modular software used to study relative satellite navigation techniques for distributed space systems with a GPS receiver, such as formation missions like GRACE A and B. LEOGPS' sole purpose is as an adaptable platform for the rapid prototyping of navigation algorithms in Python, or for testing out integer ambiguity resolution techniques. A Pythonic translation of Professor Peter Teunissen's LAMBDA method has also been adapted, in the 'file ambfix.py'
+
+### Requirements for LEOGPS:
+
+Requires Python version 3.6.5 (Anaconda with Spyder recommended).
+
+Core libraries necessary: NumPy (v1.14 and above) and matplotlib
+
+Standard Python libaries: os, copy, math, datetime, decimal, shutil, subprocess, warnings, urllib.request
+
+Libraries for GUI (optional if you do not want to use the GUI): PIL, tkinter
