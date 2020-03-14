@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -24,6 +24,7 @@
 ## OUTPUT:                                                                   ##
 ##                                                                           ##
 ## Two datetime objects: one start datetime, and one stop datetime.          ##
+## One timedelta object: time step, based on the user-defined or RINEX step. ##
 ##                                                                           ##
 ## REMARKS:                                                                  ##
 ##                                                                           ##

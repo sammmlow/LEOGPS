@@ -1,3 +1,0 @@
-input - contains two RINEX observables, comprising dual frequency observations in RINEX v2.10 format, of two LEO satellites A and B. These example files can be pasted in your "X:/<main_dir>/LEOGPS/input/" folder, and "X:/<main_dir>/LEOGPS/leogps.py" can be run with them. By default, upon the first install, the "config.txt" file should already include parameters set for running the example RINEX files.
-
-truth - contains the ground truth of the two example LEO satellite's ECEF positions, velocities, and their relative position (baseline) vectors. This ground truth can be used to validate the calculated results of the two example LEOs A and B.

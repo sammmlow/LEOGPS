@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -64,10 +64,10 @@ def rnpath(inps):
     crx2file = iwd + name2 + doy + '0.' + yy + 'D'
     
     # Then, we get file paths for the hatanaka directory.
-    rnx1hata = cwd + '\\hatanaka\\' + name1 + doy + '0.' + yy + 'O'
-    rnx2hata = cwd + '\\hatanaka\\' + name2 + doy + '0.' + yy + 'O'
-    crx1hata = cwd + '\\hatanaka\\' + name1 + doy + '0.' + yy + 'D'
-    crx2hata = cwd + '\\hatanaka\\' + name2 + doy + '0.' + yy + 'D'
+    rnx1hata = cwd + '\\utils\\hatanaka\\' + name1 + doy + '0.' + yy + 'O'
+    rnx2hata = cwd + '\\utils\\hatanaka\\' + name2 + doy + '0.' + yy + 'O'
+    crx1hata = cwd + '\\utils\\hatanaka\\' + name1 + doy + '0.' + yy + 'D'
+    crx2hata = cwd + '\\utils\\hatanaka\\' + name2 + doy + '0.' + yy + 'D'
     
     # Check if there is a need for hatanaka decompression for LEO 1.
     if os.path.exists(rnx1file) == True:
@@ -75,7 +75,7 @@ def rnpath(inps):
     elif os.path.exists(crx1file) == True:
         print('Hatanaka compressed file observed for ' + name1)
         shutil.move( crx1file, crx1hata )
-        os.chdir(cwd + '\\hatanaka\\')
+        os.chdir(cwd + '\\utils\\hatanaka\\')
         subprocess.call( 'crx2rnx.exe ' + name1 + doy + '0.' + yy + 'D' )
         shutil.move( crx1hata, crx1file )
         shutil.move( rnx1hata, rnx1file )
@@ -92,7 +92,7 @@ def rnpath(inps):
     elif os.path.exists(crx2file) == True:
         print('Hatanaka compressed file observed for ' + name2)
         shutil.move( crx2file, crx2hata )
-        os.chdir(cwd + '\\hatanaka\\')
+        os.chdir(cwd + '\\utils\\hatanaka\\')
         subprocess.call( 'crx2rnx.exe ' + name2 + doy + '0.' + yy + 'D' )
         shutil.move( crx2hata, crx2file )
         shutil.move( rnx2hata, rnx2file )

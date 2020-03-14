@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -21,8 +21,8 @@
 ##                                                                           ##
 ## epoch = datetime.datetime object                                          ##
 ## gps = {1:{'px':123, 'py':123, 'pz':123,...}, ... 32:(...)}                ##
-## rx1 = {PRN:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}                ##
-## rx2 = {PRN:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}                ##
+## rx1 = {SV:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}                 ##
+## rx2 = {SV:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}                 ##
 ## pos1 = [PosX,PosY,PosZ,Bias] of LEO satellite 1                           ##
 ## pos2 = [PosX,PosY,PosZ,Bias] of LEO satellite 2                           ##
 ##                                                                           ##
@@ -55,7 +55,11 @@ from codes import ambfix
 ''' Define the main ambiguity estimation function below '''
 
 def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps ):
-        
+    
+    ''' Before anything else, check if the position vectors are valid... '''
+    if np.sum(pos1) == 0.0 or np.sum(pos2) == 0.0:
+        return np.array([0.0, 0.0, 0.0])
+    
     ''' Get all input variables first. '''
     
     sigmaphase = 0.002 # Standard deviation of carrier phase
@@ -81,7 +85,13 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps ):
     # Get list of observable GPS satellites, with local function getgps.
     glist = getgps(gps, rx1, rx2)
     
-    # Get the double difference reference satellite PRN number.
+    # If there are not enough common satellites between rx1 and rx2...
+    if len(glist) < 4:
+        print('Error in baseline estimation at ' + str(epoch))
+        print('Not enough common satellites for double differencing! \n')
+        return np.array([0.0,0.0,0.0])
+    
+    # Get the double difference reference satellite SV number.
     grefr = getref(gps, rx1, rx2, pos1, pos2)
     
     # Get the index of the double difference reference satellite.
@@ -110,14 +120,14 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps ):
         ahat = np.append(ahat,estimate) # Append the array
         
     # Now, our final step is to estimate the covariance matrix of DD data.
-    covZD = sigmaphase*np.identity(2*len(glist))
-    covDD = np.matmul(np.matmul(diff,covZD),diff.transpose())
-    Qahat = covDD
+    # covZD = sigmaphase*np.identity(2*len(glist))
+    # covDD = np.matmul(np.matmul(diff,covZD),diff.transpose())
+    # Qahat = covDD
     
     # Obtain the ambiguity fixes, where zfix1 is the best fix.
-    afix, sqnorm = ambfix.LAMBDA(ahat, Qahat)
     zfix = ahat # Choose the float ambiguities
-    #zfix = afix[0] # Choose the best ambiguities.
+    # afix, sqnorm = ambfix.LAMBDA(ahat, Qahat)
+    # zfix = afix[0] # Choose the best ambiguities.
     
     ###########################################################################
     ###########################################################################
@@ -129,6 +139,12 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps ):
     
     # Solve the equation now!
     X = np.linalg.lstsq(A,B,rcond=None)
+    
+    # To prevent bugs, check if there is a 'NaN' value recorded.
+    if np.isnan(np.sum(X[0])):
+        print('WARNING! Baseline estimate NaN entry recorded in '+str(epoch))
+        print('Check the RINEX and input files for any errors! \n')
+        return np.array([0.0, 0.0, 0.0])
         
     # If it was processed in batch-mode, we could record multiple epochs.
     # We could then find the mean of the float ambiguities.
@@ -136,7 +152,7 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps ):
     
     return X[0] # Return the corrected relative positions.
 
-''' Define a function that outputs the observed GPS PRNs by both LEOs '''
+''' Define a function that outputs the observed GPS SVs by both LEOs '''
 
 def getgps( gps, rx1, rx2 ):
 
@@ -153,7 +169,7 @@ def getgps( gps, rx1, rx2 ):
             
             if flag1 != 'slip' and flag2 != 'slip':
             
-                # Add this PRN to the list of GPS satellites.
+                # Add this SV to the list of GPS satellites.
                 Glist.append(k)
     
     Glist.sort() # Sort it, just in case...
@@ -173,10 +189,10 @@ def getref( gps, rx1, rx2, pos1, pos2 ):
         
     for k in G_list:
 
-        gpspos = np.array([gps[k]['px'], gps[k]['py'], gps[k]['pz']])
+        gpspos = np.array([gps[k]['px'], gps[k]['py'], gps[k]['pz']]) * 1000
         G_elev[k] = azimel.azimel(leopos,gpspos)[1] # In radians
 
-    # Reference GPS satellite PRN ID is chosen based on highest elevation.
+    # Reference GPS satellite SV ID is chosen based on highest elevation.
 
     Grefr = max(G_elev,key=G_elev.get)
     
@@ -197,10 +213,10 @@ def getgeom( gps, glist, grefr, grefi, pos1, pos2 ):
             # Get the GPS satellite positions
             gpsk = np.array([gps[k]['px'],
                              gps[k]['py'],
-                             gps[k]['pz']])
+                             gps[k]['pz']]) * 1000
             gpsr = np.array([gps[grefr]['px'],
                              gps[grefr]['py'],
-                             gps[grefr]['pz']])
+                             gps[grefr]['pz']]) * 1000
             
             # First, obtain the undifferenced relative vector of nth GPS.
             ZD_geom1 = gpsk - leopos
@@ -239,7 +255,7 @@ def getobs( freqnum, gps, rx1, rx2 ):
     LEO2_Code = [] # Code pseudorange observations of LEO2
     LEO2_Carr = [] # Carrier phase observations of LEO2
     
-    # First, we find all PRNs common to both RINEX observations.
+    # First, we find all SVs common to both RINEX observations.
     glist = getgps(gps, rx1, rx2)
     
     # Consider the case of L1 only...

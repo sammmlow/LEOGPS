@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -20,7 +20,7 @@
 ## OUTPUT:                                                                   ##
 ##                                                                           ##
 ## A variable holding all user-defined inputs from 'config.txt', which can   ##
-# then be conveniently called in other python scripts as function 'inpxtr()' ##
+## then be conveniently called in other python scripts as function 'inpxtr()'##
 ##                                                                           ##
 ## AUTHOR MODIFIED: 27-11-2019, by Samuel Y.W. Low                           ##
 ##                                                                           ##

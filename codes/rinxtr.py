@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -23,7 +23,7 @@
 ## OUTPUT:                                                                   ##
 ##                                                                           ##
 ## RINEX observations as a dictionary of epochs, each epoch with a sub       ##
-## dictionary of GPS satellites based on PRN IDs, and each PRN ID with a     ##
+## dictionary of GPS satellites based on SVIDs, and each SVID with a         ##
 ## sub dictionary of the various observations (C1/P1,P2,L1,L2,D1,D2).        ##
 ## Output = {epoch1:{5:{'C1':123,'L1':123, ... 'L4':321,'flag':'none'}...}...##
 ##           epoch2:{3:{'C1':123,'L1':123, ... 'L4':321,'flag':'slip'}...}...##
@@ -38,7 +38,7 @@
 ## Ensure that RINEX observation files follow 4-letter ID naming convention  ##
 ## Followed by the DOY + 0, with the file extension .YYO                     ##
 ##                                                                           ##
-## AUTHOR MODIFIED: 30-11-2019, by Samuel Y.W. Low                           ##
+## AUTHOR MODIFIED: 14-03-2020, by Samuel Y.W. Low                           ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -62,7 +62,7 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
     rnxmeta = {} # {'NumObs': N, 'TypeObs': ['L1','L2','C1','P2']}
     
     # Create the main data dictionary that holds ALL the observation info
-    rnxdata = {} # {epoch1:{PRN1:[P1,P2,L1,L2],PRN2:[...] , epoch2:{...}}}
+    rnxdata = {} # {epoch1:{SV1:[P1,P2,L1,L2],SV2:[...] , epoch2:{...}}}
     
     # Initialise a trigger to record observations
     trigger = False
@@ -73,8 +73,11 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
     # Initialise a parameter used for triggering the recording of observations.
     obsready = False
     
-    # Initialise an integer for PRN ID numbers.
-    PRNum = 0
+    # Initialise an integer for SV ID numbers.
+    SVNum = 0
+    
+    # A trigger to mark that LEOGPS is reading the epoch header.
+    reading_header = False
     
     # First we open the file corresponding to input 'namepath'
     with open(namepath) as file:  
@@ -101,6 +104,18 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                 print('Observables found in RINEX file:')
                 print(obsi)
                 print('\n')
+                
+                # Save only L1-related observations for single frequency.
+                if freqnum == 1:
+                    obsz = [x for x in obsi[1:] if '1' in x]
+                    rnxmeta['TypeObs'] = obsz
+                    rnxmeta['NumObs'] = len(obsz)
+                    
+                # Save L1 and L2 related observations for dual frequency.
+                if freqnum == 2:
+                    obsz = [x for x in obsi[1:] if '1' in x or '2' in x]
+                    rnxmeta['TypeObs'] = obsz
+                    rnxmeta['NumObs'] = len(obsz)
                 
                 rnxmeta['NumObs'] = int(obsi[0]) # Number of observations
                 rnxmeta['TypeObs'] = obsi[1:] # List of observation types
@@ -173,10 +188,11 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
         
         for data in rnxlines[header_linenum:]:
             
+            # Replace the G prefix with a space.
             data = data.replace('G',' ') # GPS satellites
             dataspl = data.split()
             
-            # READING OF DATES AND TIMES IN THIS SEGMENT.            
+            # READING OF DATES AND TIMES IN THIS SEGMENT.      
             # We use the number of decimal points '.' in one line,
             # To distinguish whether it is an observation line, or time entry.
             
@@ -201,11 +217,14 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                 # still float-zero values due to corrupted RINEX data.
                 if epoch-rnxstep in rnxdata:
                     if obsready == False:
-                        if PRNum in rnxdata[epoch-rnxstep]:
-                            del rnxdata[epoch-rnxstep][PRNum]
+                        if SVNum in rnxdata[epoch-rnxstep]:
+                            del rnxdata[epoch-rnxstep][SVNum]
                 
                 # Now, we check if observations are still within time frame.
                 if epoch >= tstart and epoch <= tstop:
+                    
+                    # Initialise some flags and recording triggers.
+                    reading_header = True # Mark that we're reading the epoch
                     trigger = True # Start recording RINEX observations
                     rnxdata[epoch] = {} # Save this time stamp in 'rnxdata'
                     
@@ -220,13 +239,13 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                         print(str(epoch) + '\n')
                         
                     # Setup the list of observable GPS satellites
-                    PRNList = [int(x) for x in dataspl[8:]]
+                    SVList = [int(x) for x in dataspl[8:]]
                         
                     # Now populate this epoch with GPS observations
-                    for PRN in PRNList:
-                        rnxdata[epoch][PRN] = {}
+                    for SV in SVList:
+                        rnxdata[epoch][SV] = {}
                         for obsv in TypeObs:
-                            rnxdata[epoch][PRN][obsv] = 0.0
+                            rnxdata[epoch][SV][obsv] = 0.0
                         
                     # Prepare an empty placeholder for observations
                     data_obs = []
@@ -234,14 +253,33 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                 else:
                     trigger = False # Stop recording RINEX observations
                 
-                continue
-                            
+                continue # Do not remove this line!
+            
+            # Check if the epoch header has more than one line...?
+            if reading_header == True:
+                
+                # Check if this is a continuation of the previous line.
+                if '                                ' == data[:32]:
+                    
+                    # Setup the list of observable GPS satellites
+                    SVList2 = [int(x) for x in dataspl]
+                        
+                    # Now populate this epoch with GPS observations
+                    for SV in SVList2:
+                        SVList.append(SV)
+                        rnxdata[epoch][SV] = {}
+                        for obsv in TypeObs:
+                            rnxdata[epoch][SV][obsv] = 0.0
+                
+                    continue # Do not remove this line!
+                    
             # READING OF OBSERVATION VALUES IN THIS SEGMENT.
             # Now, check if this is a valid observation line
-            
+
             if trigger == True:
-                                    
-                PRNum = PRNList[satcount] # What PRN ID?
+                
+                reading_header = False # Switch off the epoch-header flag.
+                SVNum = SVList[satcount] # What SV ID?
                 obscount_now = 0 # Present number of observations
                 
                 # Parse through the data array and discard SNR / LLI info
@@ -256,7 +294,7 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                 
                 # RINEX observations will span multiple lines.
                 # ... this portion of the code ensures the data integrity,
-                # ... pertaining to each PRN ID's number of observations,
+                # ... pertaining to each SV ID's number of observations,
                 # ... if there are less than 'NumObsv' observations, then,
                 # ... this GPS satellite's data is corrupt and will be erased.
                 
@@ -268,9 +306,9 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                 else: # We have read more than we should.
                     data_obs = data_obs[(obscount-obscount_now):]
                     obscount = obscount_now
-                    PRNList.remove(PRNum)
-                    del rnxdata[epoch][PRNum] # Remove entry
-                    PRNum = PRNList[satcount] # Update the new PRN ID
+                    SVList.remove(SVNum)
+                    del rnxdata[epoch][SVNum] # Remove entry
+                    SVNum = SVList[satcount] # Update the new SV ID
                     
                     # Now, we must re-check again if obscount matches NumObsv.
                     if obscount < NumObsv: # Not finished reading observables.
@@ -285,11 +323,11 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                         
                         ObsT = TypeObs[m] # What observation?
                         ObsV = data_obs[m] # What value of observation?
-                        rnxdata[epoch][PRNum][ObsT] = ObsV
+                        rnxdata[epoch][SVNum][ObsT] = ObsV
                     
                     # If that was a bad satellite, filter it out!
-                    if PRNum not in goodsats:
-                        del rnxdata[epoch][PRNum]
+                    if SVNum not in goodsats:
+                        del rnxdata[epoch][SVNum]
                         
                     data_obs = [] # Reset the placeholder
                     obscount = 0 # Reset the observation counter
@@ -297,7 +335,7 @@ def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
                     
                     # If all satellites are accounted for,
                     # Variable 'trigger' can be switched off                    
-                    if satcount == len(PRNList):
+                    if satcount == len(SVList):
                         trigger = False
 
     # Now, our final product is the dictionary of RINEX data: 'rnxdata'

@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -25,7 +25,7 @@
 ##                                                                           ##
 ## RINEX observations WITH Doppler (pseudorange rate) estimates, saved as a  ##
 ## dictionary of epochs, each epoch with a sub dictionary of GPS satellites  ##
-## based on PRN IDs, each PRN ID with also a sub dictionary of observations. ##
+## based on SV IDs, each SV ID with also a sub dictionary of observations.   ##
 ##                                                                           ##
 ## Output = {epoch1:{5:{'L1':123,'D1':123, ... 'L4':321,'flag':'none'}...}...##
 ##           epoch2:{3:{'L1':123,'D1':123, ... 'L4':321,'flag':'slip'}...}...##
@@ -40,9 +40,11 @@
 
 import copy
 import numpy as np
+import warnings
 
 def dopest(rnxdata, goodsats, tstart, tstop, rnxstep, inps):
     
+    warnings.simplefilter('ignore', np.RankWarning) # Ignore polyfit warnings
     freqnum = inps['freq'] # Single frequency or dual frequency processing?
     rnxout = copy.deepcopy(rnxdata) # Copy the input RINEX dictionary
     dopp_condition = False # Condition for performing Doppler estimation.
@@ -96,17 +98,17 @@ def dopest(rnxdata, goodsats, tstart, tstop, rnxstep, inps):
                 
                 # Perform the Doppler estimation if L data is ready.
                 if dopp_condition == True:
-                                            
+                    
                     # First, let's get the array for time, and phase.
                     L = np.array(L) # Numpy-rize the carrier phase values
                     N = np.linspace(0, len(L)-1, len(L)) # Normalised time
                                         
                     # We perform polynomial fitting of the carrier phase.
-                    coeff = np.polyfit(N, L, 29) # Polynomial fit
+                    coeff = np.polyfit(N, L, 19) # Polynomial fit
                     
                     # Next, we get an array for an infinitesimal step of
                     # both time and phase (t + delta-t, and L + delta-L).
-                    delta = 0.001 # Delta timestep
+                    delta = 0.00004 # Delta timestep
                     N_delta = N + delta # N + delta-N
                     L_delta = np.polyval(coeff, N_delta) # L + delta-L
                     

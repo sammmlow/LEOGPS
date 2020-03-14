@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -54,11 +54,18 @@ import urllib.request
 # IMPORT LOCAL LIBRARIES
 from codes import pubplt
 
+
 ''' Now, this is the main routine that parses ephemeris and clock data '''
 
 def gpsxtr(inps, tstart, tstop, tstep):
     
-    # First, we would like to download GPS ephemeris and clock data    
+    warnings.simplefilter('ignore', np.RankWarning) # Ignore polyfit warnings
+    
+    ###########################################################################
+    ###########################################################################
+    
+    ''' First, we initialise GPS ephemeris and clock download data. '''
+    
     igsurl   = 'ftp://cddis.nasa.gov/gnss/products/' # IGS CDDIS URL
     
     # We will download them into our directories, below, later on.
@@ -69,345 +76,515 @@ def gpsxtr(inps, tstart, tstop, tstep):
     # Then, we must retrieve all number of days of GPS and CLK data needed    
     days     = (tstop.date() - tstart.date()).days + 1 # Number of days
     filelist = [] # Stores all the required GPS / CLK ephemeris files
+	
+	# This is the command line call to use gzip from codes folder:
+    gzip_call = '\\utils\\gzip\\gzip.exe -d '
     
-    # Now, check for desired ephemeris and clock files    
-    for d in range(0,days):
+    ###########################################################################
+    ###########################################################################
+    
+    ''' Now, we download GPS ephemeris and clock biases from IGS. '''
+    
+    # Now, check for desired clock files. If non-existent, download them.
+    for d in range(-1,days+1):
         
         wd, wwww = gpsweekday( tstart + datetime.timedelta( days = d ) )
         name = 'igs' + wwww + wd # File name, without file extension
-        ephurl = igsurl + wwww + '/' + name + '.sp3.Z' # IGS URL of ephemeris file
-        clkurl = igsurl + wwww + '/' + name + '.clk_30s.Z' # IGS URL of clock file
+        clkurl = igsurl + wwww + '/' + name + '.clk_30s.Z' # URL of clock file
         filelist.append(name) # Add this into the list of files for parsing
+        
+        # Check for CLK file, and download + unzip it if needed.
+        if d in range(0,days) and os.path.exists(iwd+name+'.clk_30s') != True:
+            
+            print('CLK file for ' + name + ' not found! Downloading now...')
+            urllib.request.urlretrieve(clkurl, name + '.clk_30s.Z')
+            print('Completed downloading the clock file! Now unzipping...')
+            subprocess.call(cwd + gzip_call + name + '.clk_30s.Z')
+            print('Files unzipped, moving them into the inputs folder.')
+            shutil.move(cwd + '\\' + name + '.clk_30s', iwd+name + '.clk_30s')
+            print('Unzipping completed! \n')     
+    
+        else:
+            if d in range(0,days):
+                print('CLK file for '+name+' found! Proceeding to process! \n')
+    
+    ###########################################################################
+    ###########################################################################
+    
+    ''' In this segment, we extract GPS clock information from IGS. '''
+    
+    # Now, we initialise the clock dictionary holding biases and drifts.
+    
+    gpsclks = {} # Initialise the dictionary that holds clock information.
+    first_flag = True # Flag to mark the first reading of clock time
+    
+    for file in filelist[1:-1]:
+        
+        ''' Start reading each downloaded GPS clock (30s) file from IGS  '''
+        
+        tc = datetime.timedelta(seconds=30) # Step size of clock file.
+        f_clk = open(iwd + file + '.clk_30s', 'r') # Open up the SP3 file
+        
+        # Read the clock file.
+        for line in f_clk:
+                
+            # Now, let's save those clock biases and drifts.
+            if 'AS G' in line:
+                
+                line = line.split()
+                
+                yyyy, mm, dd = int(line[2]), int(line[3]), int(line[4])
+                hh,   mn, ss = int(line[5]), int(line[6]), int(float(line[7]))
+                
+                timenow = datetime.datetime(yyyy, mm, dd, hh, mn, ss)
+                
+                # Is the current clock readings in the user-defined time axis?
+                if timenow <= tstop and timenow >= (tstart - tc):
+                    
+                    # Record the timing of the first epoch.
+                    if first_flag == True:
+                        first_time = timenow
+                        first_flag = False
+                    
+                    # Then, record the clock biases for each SV.
+                    SV      = int(line[1][1:])
+                    clkbias = float(line[9])
+                    
+                    # Check if this SV has been recorded before.
+                    if SV not in gpsclks:
+                        gpsclks[SV] = {}
+                    
+                    # Check if this epoch has been recorded before.
+                    if timenow not in gpsclks[SV]:
+                        gpsclks[SV][timenow] = clkbias
+                
+                # Record the final time too.                    
+                if timenow + tc > tstop and first_flag == False:
+                    final_time = timenow
+        
+        # Close the current CLK file, open the next one if any.
+        f_clk.close()
+    
+    ###########################################################################
+    ###########################################################################
+    
+    ''' In this segment, we interpolate missing clock biases. '''
+    
+    # Now let's reconstruct the time axis across clock biases.
+    # We create two time axes, one using datetime objects, and the other using
+    # seconds in integers. This may seem duplicated, but we need the integer
+    # array in order to do interpolation, whereas the datetime array is used
+    # for keeping track of which missing values are found in the time axis.
+    # It is not optimal code, but preference is given to the readability of it.
+    
+    goodsats = [] # We initialise an array to hold satellites with clock info.
+    clktime_d = first_time # Initialise the first time reading (datetime)
+    clkaxis_d = [] # Axis for time (datetime) across clock bias values.
+    clktime_s = 0 # Initialise the first time reading (seconds)
+    clkaxis_s = [] # Axis for time (seconds) across clock bias values.
+    
+    while clktime_d <= final_time:
+        clkaxis_d.append(clktime_d) # Time axis appending of datetime objects.
+        clkaxis_s.append(clktime_s) # Time axis appending of integer objects.
+        clktime_d = clktime_d + tc # Add time-delta of 30 seconds.
+        clktime_s = clktime_s + 30 # Add integer 30 seconds.
+    
+    # Let's first report which GPS satellite clock biases are completely gone.
+    for SV in range(1,33):
+        if SV not in gpsclks:
+            print('GPS SV ' + str(SV) + ' clock biases completely missing.')
+            print('SV ' + str(SV) + ' will not be used in the solver. \n')
+    
+    # We begin parsing through the GPS clocks dictionary to check for missing
+    # clock values, and to interpolate them if possible.
+    for SV in gpsclks:
+        if SV not in goodsats:
+            goodsats.append(SV)
+            
+        # Read the clock bias values for each SV as an array.
+        clkbiases = list(gpsclks[SV].values()) # Clock bias values
+        clkaxis_di = list(gpsclks[SV].keys()) # Recorded datetime objects
+        
+        # We need a time axis in floats, not datetimes, so we can do the
+        # interpolation. Since the full time axis 'clkaxis_d' should be sorted
+        # thanks to IGS, we can simplify our search of the sorted list by
+        # matching the indices, instead of using brute force or binary search.
+        clkaxis_si = [30.0 * clkaxis_d.index(t) for t in clkaxis_di]
+        
+        # Any SVs that were not recorded, will be not be entered in 'goodsats'.
+        # However, there could be missing clock values scattered across time,
+        # for a particular SV value. We should interpolate those values here.
+        
+        if len(clkaxis_si) != len(clkaxis_s):
+            
+            # Perform a least squares regression best fit line.
+            bestfit = np.polyfit(clkaxis_si, clkbiases, 1)
+            
+            # Then, fill in all missing clock values.
+            # Time axis 'clkaxis_d' contains all ideal epochs, without missing
+            # values. We will compare its elements to the elements of the
+            # epochs in the present 'timeaxisd', and if there are any missing
+            # epochs, then we perform extrapolation or interpolation.
+            
+            for t in range(0,len(clkaxis_d)):
+                
+                # Now, we check which epochs in the time axis is missing.
+                if clkaxis_d[t] not in clkaxis_di:
+                    
+                    # Extrapolate the clock bias.
+                    clkbias_extr = float(np.polyval(bestfit, clkaxis_s[t]))
+                    
+                    # Update this interpolated value in the 'gpsclks'
+                    gpsclks[SV][clkaxis_d[t]] = clkbias_extr
+    
+    # Sort the list of good satellites found.
+    goodsats.sort() # Sort in ascending order
+        
+    ###########################################################################
+    ###########################################################################
+    
+    ''' In this segment, we initialise the structure of our final output. '''
+   
+    # We initialise the structure of the final output dictionary.
+    # gpsdata = {epoch1: { SV1: { 'px': ..., 'vz': ..., 'clkb':... } ...} ...}
+    # Unlike gpsephm and gpsclks, the final gpsdata is indexed across time.
+    gpsdata = {} # Final output object.
+    ti = tstart # Initialise the time object.
+    
+    # Begin initialising the 'gpsdata' dictionary object;
+    # (the final output of this program).
+    while ti <= tstop:
+        gpsdata[ti] = {}
+        for p in goodsats:
+            gpsdata[ti][p] = {}
+            gpsdata[ti][p]['px']   = 0.0 # Position X of LEO at t = ti
+            gpsdata[ti][p]['py']   = 0.0 # Position Y of LEO at t = ti
+            gpsdata[ti][p]['pz']   = 0.0 # Position Z of LEO at t = ti
+            gpsdata[ti][p]['vx']   = 0.0 # Velocity X of LEO at t = ti
+            gpsdata[ti][p]['vy']   = 0.0 # Velocity Y of LEO at t = ti
+            gpsdata[ti][p]['vz']   = 0.0 # Velocity Z of LEO at t = ti
+            gpsdata[ti][p]['clkb'] = 0.0 # Clock bias of LEO at t = ti
+            gpsdata[ti][p]['clkd'] = 0.0 # Clock drift of LEO at t = ti
+        ti = ti + tstep # Update the time step.
+    
+    # From 'gpsdata' we can get the user-specified time axis in date-time.
+    tstep_ss  = tstep.seconds
+    t_usr_dt = sorted(list(gpsdata.keys()))
+    t_usr_ss = np.array(sorted([tstep_ss * t for t in range(0,len(t_usr_dt))]))
+    
+    ###########################################################################
+    ###########################################################################
+    
+    ''' In this segment, we extract GPS precise ephemerides from IGS. '''
+    
+    # Now, check for desired ephemeris files. If non-existent, download them.
+    for d in range(-1,days+1):
+        
+        wd, wwww = gpsweekday( tstart + datetime.timedelta( days = d ) )
+        name = 'igs' + wwww + wd # File name, without file extension
+        ephurl = igsurl + wwww + '/' + name + '.sp3.Z' # URL of ephemeris file
     
         # Check for SP3 ephemeris file, and download + unzip it if needed.
-        if os.path.exists( iwd + name + '.sp3' ) != True:
+        if os.path.exists(iwd+name+'.sp3') != True:
             
-            print('SP3 file for ' + name + ' not found! Attempt download now...')
+            print('SP3 file for '+ name +' not found! Attempt download now...')
             urllib.request.urlretrieve(ephurl, name + '.sp3.Z')
             print('Completed downloading the ephemeris file! Now unzipping...')
-            subprocess.call(cwd+'\\gzip\\gzip.exe -d ' + name +'.sp3.Z')
+            subprocess.call(cwd + gzip_call + name + '.sp3.Z')
             print('Files unzipped, moving them into the inputs folder.')
             shutil.move(cwd + '\\' + name + '.sp3', iwd + name + '.sp3')
             print('Unzipping completed! \n')
         
         else:
             
-            print('SP3 file for ' + name + ' found! Proceeding to process!')
-        
-        # Check for CLK file, and download + unzip it if needed.
-        if os.path.exists( iwd + name + '.clk_30s' ) != True:
-            
-            print('CLK file for ' + name + ' not found! Downloading now...')
-            urllib.request.urlretrieve(clkurl, name + '.clk_30s.Z')
-            print('Completed downloading the clock file! Now unzipping...')
-            subprocess.call(cwd+'\\gzip\\gzip.exe -d ' + name +'.clk_30s.Z')
-            print('Files unzipped, moving them into the inputs folder.')
-            shutil.move(cwd + '\\' + name + '.clk_30s', iwd+name + '.clk_30s')
-            print('Unzipping completed! \n')     
+            print('SP3 file for ' + name + ' found! Proceeding to process! \n')
+
+    # We download the GPS precise ephemerides one day before and after,
+    # to prevent the occurrence of Runge's phenomenon by adding buffer in the
+    # extrapolation process.
     
-        else:
-            
-            print('CLK file for ' + name + ' found! Proceeding to process!')
+    # This will be where ephemeris data will be parsed into.
+    # gpsphm = {SV: {epoch1: {'px':xxx, 'py':yyy ... 'vy':vyy, 'vz',vzz}}}
+    gpsephm = {} # Ephemeris dictionary.
+    for SV in goodsats:
+        gpsephm[SV] = {}
     
-    print('\n')
-    gpsdata = {} # Main output of the program
-    gpsdata['t_sp3'] = [] # Array of SP3 time values (datetime objects)
-    gpsdata['t_clk'] = [] # Array of CLK time values (datetime objects)
-    coords = ['x','y','z'] # List of coordinates, for use in interpolation
-    goodsats = list(range(1,33)) # List of satellites without clock problems
-    badsats = [] # List of satellites without clock problems
+    # All epochs after 'gps_tstart' will be recorded from IGS ephemeris file.
+    gps_tstart = tstart - datetime.timedelta(seconds = 7200) # Minus 02:00:00
     
-    for prn in goodsats: # Create an ephemeris dict for each GPS satellite
-        gpsdata[prn] = {} # Initialise the main GPS ephemeris dictionary
-        gpsdata[prn]['px'] = [] # Storage of X-coordinates position
-        gpsdata[prn]['py'] = [] # Storage of Y-coordinates position
-        gpsdata[prn]['pz'] = [] # Storage of Z-coordinates position
-        gpsdata[prn]['vx'] = [] # Storage of X-coordinates velocity
-        gpsdata[prn]['vy'] = [] # Storage of Y-coordinates velocity
-        gpsdata[prn]['vz'] = [] # Storage of Z-coordinates velocity
-        gpsdata[prn]['clkb'] = [] # Storage of clock biases
+    # All epochs will be recorded until 'gps_tstop', inclusive.
+    gps_tstop  = tstop + datetime.timedelta(seconds = 7200) # Add 02:00:00
     
+    # Time step in the IGS precise ephemeris file.
+    gps_tstep  = datetime.timedelta(seconds = 900)
+    
+    # Flag to mark the first reading of ephemeris time
+    first_flag = True
+    
+    # Now we parse through all the downloaded IGS files.
     for file in filelist:
-        
-        prnls = [] # List of PRN IDs read in each clock file
         
         ''' Start reading each downloaded GPS ephemeris file from IGS  '''
         
         f_gps = open(iwd + file + '.sp3', 'r') # Open up the SP3 file
         gps_record = False # Trigger for recording GPS data
-        ti = datetime.timedelta(seconds=900) # Time step for SP3 file
-        tc = datetime.timedelta(seconds=30) # Time step for CLK_30S file
         
         for line in f_gps:
             
-            line = line.split() # Split up the strings
+            # Split up the strings
+            line = line.split()
+            
+            # Skip blank lines
+            if len(line) <= 1:
+                continue
             
             # Check if the time reading is accurate...
             if line[0] == '*':
                 
+                # Read the time reading now, save it as a datetime object.
                 timenow = datetime.datetime(int(line[1]),
                                             int(line[2]),
                                             int(line[3]),
                                             int(line[4]),
                                             int(line[5]),
                                             int(float(line[6])))
-                
-                if timenow not in gpsdata['t_sp3']:
-                    if timenow <= tstop and timenow >= (tstart - ti):
-                        gps_record = True # Trigger the recording off.
-                        gpsdata['t_sp3'].append(timenow)
-                    else:
-                        gps_record = False # Trigger the recording off.
+                    
+                # ... only if the epoch falls within our desired range.
+                if timenow <= gps_tstop and timenow > gps_tstart - gps_tstep:
+                    gps_record = True # Trigger the recording on.
+                    
+                    # Record the first ever epoch.
+                    if first_flag == True:
+                        first_time = timenow
+                        first_flag = False
                         
-            
-            # Now, check for XYZ coordinates of each PRN ID
+                else:
+                    gps_record = False # Trigger the recording off.
+                        
+            # Now, check for XYZ coordinates of each SV ID
             if 'PG' in line[0] and gps_record == True:
                 
                 # Get the data we need below.
-                prn = int(line[0][2:4]) # Which GPS satellite is this?
+                SV  = int(line[0][2:4]) # Which GPS satellite is this?
                 x   = float(line[1]) # X-coordinate position
                 y   = float(line[2]) # Y-coordinate position
                 z   = float(line[3]) # Z-coordinate position
                 
-                # Assign the data into the gpsdata dictionary.
-                gpsdata[prn]['px'].append(x) # X-coordinate position
-                gpsdata[prn]['py'].append(y) # Y-coordinate position
-                gpsdata[prn]['pz'].append(z) # Z-coordinate position
-            
+                # Check if this SV has clean clock values.
+                if SV in goodsats:
+                
+                    # Check if this is the first epoch.
+                    if timenow not in gpsephm[SV]:
+                        gpsephm[SV][timenow] = {}
+                    
+                    # Assign the data into the gpsephm dictionary.
+                    gpsephm[SV][timenow] = {} # Initialise...
+                    gpsephm[SV][timenow]['px'] = x # Position X (ECEF)
+                    gpsephm[SV][timenow]['py'] = y # Position Y (ECEF)
+                    gpsephm[SV][timenow]['pz'] = z # Position Z (ECEF)
+                    
+                    # Initialise the velocity values too, for estimation.
+                    gpsephm[SV][timenow]['vx'] = 0.0 # Velocity X (ECEF)
+                    gpsephm[SV][timenow]['vy'] = 0.0 # Velocity Y (ECEF)
+                    gpsephm[SV][timenow]['vz'] = 0.0 # Velocity Z (ECEF)
+                
         f_gps.close()
+    
+    ###########################################################################
+    ###########################################################################
+    
+    ''' In this segment, we interpolate the GPS precise ephemeris. '''
+    
+    print('We now interpolate the GPS precise ephemeris. \n')
+    
+    # We need to add about two hours of buffer before and after the validity
+    # period for interpolation. See research paper "Polynomial interpolation
+    # of GPS satellite coordinates" by Milan Horemuz (Feb 2006).
+    # Thus, we use a sliding window interpolation, with fit interval of 4h,
+    # and a validity window in the middle of 15 minutes only, leaving the rest
+    # of the 4h as interpolation buffer to prevent Runge's phenomenon.
+    
+    # Our first task is to generate the IGS ephemeris time axis.
+    gpsephm_epoch_dt = [] # List of datetime objects.
+    gpsephm_epoch_ss = [] # List of objects in integer seconds.
+    gpsephm_dt = first_time # First epoch, as a datetime object.
+    gpsephm_ss = 0 # First epoch but in integer seconds.
+    
+    # Fill the list.
+    while gpsephm_dt <= gps_tstop:
+        gpsephm_epoch_dt.append(gpsephm_dt)
+        gpsephm_epoch_ss.append(gpsephm_ss)
+        gpsephm_dt = gpsephm_dt + gps_tstep
+        gpsephm_ss = gpsephm_ss + 900
+    
+    # We also initialise the starting time in GPS ephemeris interpolation.
+    # This block of code is meant to create a time axis in integer seconds.
+    t_offset_eph = (tstart-first_time).days*86400 + (tstart-first_time).seconds
+    
+    # We offset the interpolant time axis with the time axis offset.
+    t_usr_eph = sorted(t_usr_ss + t_offset_eph)
+    
+    # Also, it would be wise to check if the IGS precise ephemerides had any
+    # entries with missing GPS epochs. We simply check the lengths of arrays.
+    for p in gpsephm:
+        if len(gpsephm_epoch_dt) != len(list(gpsephm[p].keys())):
+            print('Warning! IGS ephemerides missing epochs for SV ' + str(p))
+            print('Error will occur during interpolation process!')
+    
+    # The interpolation now starts when iterable 't' > gpsephm_epoch_dt[0],
+    # the first element of the array, and it will end when 't' exceeds 'tstop',
+    # the user defined ending of the time axis.
+    
+    # We loop through each fit interval first, interpolate it, and then move
+    # our sliding window interpolator every 'window_len' of 2 hours.
+    
+    coords = ['x', 'y', 'z'] # Position coordinate keys in dictionary.
+    windex = 0 # Window index keeps track of sliding window interpolant.
+    
+    # Sanity check, GPS orbits must be at least 4 hours long for interpolation.
+    if len(gpsephm_epoch_dt) <= 17:
+        print('Warning! GPS satellite interpolation is not possible!')
+        print('Duration of time for orbit interpolation is too short!')
+        print('Please use at least 2 hours of duration in scenario!')
+        print('Returning an error... \n')
+        return {}, []
+    
+    while gpsephm_epoch_dt[windex+16] != gpsephm_epoch_dt[-1]:
         
-        ''' Start reading each downloaded GPS clock (30s) file from IGS  '''
+        # First let us get the fit and validity window (as datetime objects).
+        fit_dt = gpsephm_epoch_dt[windex : windex + 17]
+        val_dt = gpsephm_epoch_dt[windex + 7 : windex + 11]
         
-        f_clk = open(iwd + file + '.clk_30s', 'r') # Open up the SP3 file
-        
-        for line in f_clk:
+        # Then we get the equivalent windows in terms of integer seconds.
+        fit_ss = gpsephm_epoch_ss[windex : windex + 17]
+        val_ss = gpsephm_epoch_ss[windex + 7 : windex + 11]
             
-            # First, parse out GPS satellites that have clock problems
-            if 'PRN LIST' in line:
-                
-                line = line.replace('PRN LIST',' ') # Remove the header
-                line = line.replace('G',' ') # Remove the GPS header string
-                line = line.split() # Split up the strings
-                line = [int(prn) for prn in line]
-                
-                # Now, let's parse through the bad satellites.
-                prnls = prnls + line
-                        
-                continue
-                
-            # Now, let's save those clock biases and drifts.
-            if 'AS G' in line:
-                
-                line = line.split()
-                timenow = datetime.datetime(int(line[2]),
-                                            int(line[3]),
-                                            int(line[4]),
-                                            int(line[5]),
-                                            int(line[6]),
-                                            int(float(line[7])))
-                
-                # Is the current clock readings in the user-defined time axis?
-                if timenow <= tstop and timenow >= (tstart - tc):
-                    
-                    # If it is, then record the time now.
-                    if timenow not in gpsdata['t_clk']:
-                        gpsdata['t_clk'].append(timenow)
-                    
-                    # Then, record the clock biases for each PRN.
-                    prn = int(line[1][1:])
-                    gpsdata[prn]['clkb'].append(float(line[9]))
-        
-        f_clk.close()
-        
-        # Check the bad satellites with clock issues.
-        for p in range(1,33):
-            if p not in prnls and p not in badsats:
-                badsats.append(p)
-    
-    # Sanity check for bad satellites and other for missing entries.
-    for p in range(1,33):
-        if len(gpsdata['t_clk']) != len(gpsdata[p]['clkb']):
-            badsats.append(p)
-            print('GPS Satellite ' + str(p) + ' with missing clock values.')
-            print('Satellite will be removed from the scenario. \n')
-        if p in gpsdata:
-            if len(gpsdata[p]['px']) != len(gpsdata['t_sp3']):
-                print('GPS Satellite ' + str(p) + ' XYZ not parsed correctly.')
+        # Now we generate the interpolated time axis.
+        intp_dt = [t for t in t_usr_dt if t <= val_dt[-1] and t >= val_dt[0]]
+        intp_ss = [t for t in t_usr_eph if t <= val_ss[-1] and t >= val_ss[0]]
             
-    # Check the good satellites without clock issues.
-    for p in badsats:
-        if p in gpsdata:
-            del gpsdata[p] # Remove the PRN from the GPS data dictionary
-        if p in goodsats:
-            goodsats.remove(p) # Remove the PRN from the list of good sats
-    
-    badsats.sort() # Sort in ascending order
-    goodsats.sort() # Sort in ascending order
+        # Numpy-rize the arrays, and also create a + 1ms time axis.
+        # 'intp_ss_delta' will be used for velocity estimation (1st order)
+        intp_ss = np.array(intp_ss)
+        intp_ss_delta = intp_ss + 0.00001 # Add one ms
         
-    # Sanity check: timings must match the clock data index-wise
-    if len(gpsdata['t_clk']) != len(gpsdata[prn]['clkb']):
-        print('Something went wrong during processing!')
-        print('Length of time arrays do not match length of clock biases!')
-        print('Check the format of the clock files!')
-        return False
+        # In this sliding window filter, intepolate across SVs.
+        for SV in goodsats:
+            
+            # For each axes in the coordinate frame...
+            for c in coords:
+                
+                # Get corresponding fit and validity intervals for ephemerides.
+                gpsephm_fit = [gpsephm[SV][t]['p'+c] for t in fit_dt]
+                
+                # Perform 16th Order Polyfit Interpolation.
+                poly = np.polyfit( fit_ss, gpsephm_fit, 16 )
+                
+                # Now, we can perform the interpolation for positions.
+                gpsephm_intp = np.polyval(poly, intp_ss)
+                
+                # We also exploit the interpolation for velocity estimation.
+                gpsephm_intp_delta = np.polyval(poly, intp_ss_delta)
+                gpsephm_intv = (gpsephm_intp_delta - gpsephm_intp) * 100000
+                
+                # Add the interpolated positions and velocities into 'gpsdata'.
+                for k in range(0,len(gpsephm_intp)):
+                    
+                    gpsdata[intp_dt[k]][SV]['p'+c] = gpsephm_intp[k] # Pos
+                    gpsdata[intp_dt[k]][SV]['v'+c] = gpsephm_intv[k] # Vel
+        
+        # Check if we have reached the end of the while loop.
+        if gpsephm_epoch_dt[windex+16] == gpsephm_epoch_dt[-1]:
+            break # End the while loop if we are.
+        else:
+            windex += 1 # Update the sliding window filter by 2 hours
+            
+    ###########################################################################
+    ###########################################################################
     
-    ''' Begin preparing time variables for the interpolation process '''
+    ''' Finally, we interpolate clock biases to the user's time axis. '''
     
-    # Let us get the user-defined time axis for use in interpolation later.
-    t_usr = tstep.seconds # User-defined step size in *config.txt*
-    epoch = datetime.datetime(tstart.year,
-                              tstart.month,
-                              tstart.day)
+    print('Interpolation of GPS precise ephemerides done!')
+    print('Now interpolating GPS clock biases. \n')
     
-    # Get the start time of the user-defined time axis, in seconds
-    t_usr_i = (tstart - epoch).seconds
+    # We also initialise the starting time in GPS clock biases interpolation.
+    # This block of code is meant to create a time axis in integer seconds.
     
-    # Get the end time of the user-defined time axis, in seconds
-    t_usr_f = (tstop - epoch).days*86400 + (tstop - epoch).seconds
+    # From 'gpsdata' we can get the user-specified time axis in date-time.
+    tstep_ss  = tstep.seconds
+    t_usr_dt = sorted(list(gpsdata.keys()))
+    t_usr_ss = np.array(sorted([tstep_ss * t for t in range(0,len(t_usr_dt))]))
     
-    # Finally, initiate the user-defined time axis.
-    t_usr_ls = list(range(t_usr_i, t_usr_f, t_usr))
-    gpsdata['t_usr'] = t_usr_ls
+    # We then adjust the time axis of the user's to interpolate for 'clkb'.
+    first_time = sorted(list(gpsclks[goodsats[0]].keys()))[0]
+    t_offset_clk = (tstart-first_time).days*86400 + (tstart-first_time).seconds
+    t_usr_clk = t_usr_ss + t_offset_clk
     
-    # Let us get the time axis used in the original IGS ephemeris array
-    t_eph = 900 # Step size in IGS ephemeris array, in seconds
-    N_eph = len(gpsdata['t_sp3']) # No. of elements in ephemeris time array
-    t_eph_i = (gpsdata['t_sp3'][0] - epoch).seconds # Start time
-    t_eph_ls = list(range(t_eph_i, t_eph_i+(N_eph*t_eph), t_eph)) # t-axis
+    # Now, start going through each SV for clock bias interpolation.    
+    for SV in goodsats:
+        
+        # Read the clock bias values for each SV as an array.
+        clkaxis_di = list(gpsclks[SV].keys()) # Recorded datetime objects.
+        clkaxis_si = [30 * t for t in range(0,len(clkaxis_di))]
+        clkbiases = list(gpsclks[SV].values()) # Clock bias values.
+        clkbiases = [x for _,x in sorted(zip(clkaxis_di, clkbiases))]
+        clk_bound = 0 # Lower bound index for clock bias.
+        lower_bound = clkaxis_si[ clk_bound ] # Nominal lower bound time (sec).
+        
+        for k in range(0,len(t_usr_clk)):
+            tss = t_usr_clk[k] # Epoch in seconds, on user-defined time axis.
+            tdt = t_usr_dt[k] # Epoch in datetime, on user-defined time axis.
+            
+            while clkaxis_si[ clk_bound ] + 30 <= tss:
+                clk_bound += 1 # Check the next time-bound in gpsclks.
+                lower_bound = clkaxis_si[ clk_bound ] # Update the bound.
+            
+            # Now we perform the interpolation. First, we need the clock drift.
+            if clk_bound + 1 < len(clkbiases):
+                
+                # Get the clock drift as the gradient between two clock biases.
+                clkdrift = (clkbiases[clk_bound+1] - clkbiases[clk_bound]) / 30
+            
+            # Get the desired first order Delta-T.
+            delta_tt = tss - lower_bound
+            
+            # Interpolate using (y + delta_y) = x + (drift * delta_x)
+            clkbias_interp = clkbiases[ clk_bound ] + clkdrift*( delta_tt )
+            
+            # Append interpolated clock biases into 'gpsdata' output.
+            gpsdata[tdt][SV]['clkb'] = clkbias_interp
+            gpsdata[tdt][SV]['clkd'] = clkdrift
     
-    # Let us get the time axis used in the original IGS clock array
-    t_clk = 30 # Step size in IGS clock time step array, in seconds
-    N_clk = len(gpsdata['t_clk']) # No. of elements in clk_30s time array
-    t_clk_i = (gpsdata['t_clk'][0] - epoch).seconds # Start time of clock
-    t_clk_ls = list(range(t_clk_i, t_clk_i+(N_clk*t_clk), t_clk)) # t-axis
+    ###########################################################################
+    ###########################################################################
     
-    # Before we begin interpolation, check if the user wants to save plots.
+    ''' In a final step, we plot the GPS ephemeris and clock biases. '''
+    
+    # First, check if the user wishes to plot GPS ephemeris and clock biases.
     savefigs = inps['savefigs'] # User-defined option to save plots
     saverept = inps['savereport'] # User-defined option to save report
     
-    # We also disable the warnings for poor polynomial fitting.
-    warnings.simplefilter('ignore', np.RankWarning) # Ignore polyfit warnings
-    
-    print('Extracting ephemeris and clock information for GPS satellites \n')
-    
-    # For each PRN ID, we will begin to interpolate ephemeris and clocks
-    for prn in goodsats: 
-        
-        ''' Main script for polynomial interpolation of GPS ephemeris '''
-        
-        for coord in coords:
-            
-            # Interpolate every 3 position points in X for a much tighter fit
-            pos = gpsdata[prn]['p' + coord] # Array of coordinates
-            pos2 = [] # Array of new coordinates
-            vel2 = [] # Array of coordinate velocities
-            
-            # Perform polynomial fitting now through every 11 position points
-            for p in range(0,len(pos)):
-                
-                if p <= len(pos) - 10:
-                    coeff = np.polyfit(t_eph_ls[p:p+11],pos[p:p+11],19)
-                else:
-                    if len(t_eph_ls[p:]) > 2:
-                        coeff = np.polyfit(t_eph_ls[p:],pos[p:],19)
-                
-                # Then, interpolate all values with t_usr_ls
-                pt1 = t_eph_ls[p] # First timing in segmented t_eph
-                pt2 = pt1 + t_eph # Second timing in segmented
-                t_usr_i = [t for t in t_usr_ls if t < pt2 and t >= pt1]
-                
-                # Check if the time axis is an empty list:
-                if t_usr_i != []:
-                    pos2_np = np.polyval(coeff,t_usr_i)
-                    pos2 = pos2 + pos2_np.tolist()
-                
-                    # Now we wish to get velocity values too.
-                    t_usr_i_delta = np.array(t_usr_i) + 0.001 # Add 100ms
-                    pos2_delta = np.polyval(coeff,t_usr_i_delta) # Delta-R
-                    vel2 = vel2 + ((pos2_delta - pos2_np)*1000).tolist()
-            
-            gpsdata[prn]['p' + coord] = pos2 # m
-            gpsdata[prn]['v' + coord] = vel2 # m/s
-        
-        ''' Main script for linear interpolation of GPS clock biases '''
-                
-        clkb2 = [] # New array of clock biases for this PRN satellite
-        clkd2 = [] # New array of clock drifts for this PRN satellite
-        
-        # Parse through each time step in the clk_30s IGS file.
-        for t in range(0,len(gpsdata['t_clk'])):
-            
-            pt1 = t_clk_ls[t] # Start of time segment
-            pt2 = pt1 + t_clk # End of time segment
-            
-            # Linear interpolation of biases using drift as gradient.
-            if t != len(gpsdata['t_clk']) - 1:
-
-                drift = gpsdata[prn]['clkb'][t+1] - gpsdata[prn]['clkb'][t]
-                drift = drift / t_clk # Rise over run -> gradient.
-            
-            # Extract the segment of user-defined steps within this 30s frame.
-            t_usr_i = [t for t in t_usr_ls if t < pt2 and t >= pt1]
-            
-            # Perform the interpolation in this 30s segment.
-            if len(t_usr_i) > 0:
-                for k in t_usr_i:
-                    clkb2.append(gpsdata[prn]['clkb'][t]+(drift*(k-pt1)) )
-                    clkd2.append(drift)
-        
-        gpsdata[prn]['clkb'] = clkb2
-        gpsdata[prn]['clkd'] = clkd2
-        
-        ''' Main script for plotting and saving figures of GPS satellites '''
-        
-        if savefigs == 'True':
-            pubplt.gps_graphs(prn, t_usr_ls, gpsdata, inps)
-    
-    # From this on, all ephemeris and clock biases have been interpolated.
-    gpsdata['t'] = [] # Update the primary time array of gpsdata dictionary
-    for t in range(0,len(t_usr_ls)):
-        gpsdata['t'].append( tstart + t*tstep )
-    
-    # Remove all the intermediate time arrays
-    del gpsdata['t_usr']
-    del gpsdata['t_sp3']
-    del gpsdata['t_clk']
-    
-    # Save the report generated by parsing out GPS data, if user desires.
+    # If so, then continue to save the final output report on GPS ephemeris.
     if saverept == 'True':
-        print('Saving graph plots and reports on GPS satellites \n')
-        pubplt.gps_report(gpsdata, goodsats, inps)   
+        print('Saving output report on interpolated GPS ephemerides. \n')
+        pubplt.gps_report(gpsdata, goodsats, inps)
     
-    # We now re-organise the gpsdata dictionary for ease of computation later.
-    # gpsdata = {epoch1:{1:{'px':...,'py':...,'vz':...,'clkb':...,'clkd':...},
-    #                    2:{...}, 3:{...}, ... 32:{...}}
-    #            epochN:{1:{'px':...,'py':...,'vz':...,'clkb':...,'clkd':...},
-    #                    2:{...}, 3:{...}, ... 32:{...}}}
+    # ... as well as ephemeris and clock plots.
+    if savefigs == 'True':
+        print('Saving plots on GPS position, velocity and clock biases. \n')
+        for SV in goodsats:
+            pubplt.gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps)
     
-    gpsdata_new = {} # Initialise a new structure for gpsdata
-    epochs = gpsdata['t']
-    for t in range(0,len(epochs)):
-        epoch = epochs[t]
-        gpsdata_new[ epoch ] = {}
-        for p in goodsats:
-            gpsdata_new[epoch][p] = {}
-            gpsdata_new[epoch][p]['px'] = gpsdata[p]['px'][t]*1000 # (m)
-            gpsdata_new[epoch][p]['py'] = gpsdata[p]['py'][t]*1000 # (m)
-            gpsdata_new[epoch][p]['pz'] = gpsdata[p]['pz'][t]*1000 # (m)
-            gpsdata_new[epoch][p]['vx'] = gpsdata[p]['vx'][t]*1000 # (m/s)
-            gpsdata_new[epoch][p]['vy'] = gpsdata[p]['vy'][t]*1000 # (m/s)
-            gpsdata_new[epoch][p]['vz'] = gpsdata[p]['vz'][t]*1000 # (m/s)
-            gpsdata_new[epoch][p]['clkb'] = gpsdata[p]['clkb'][t] # (s)
-            gpsdata_new[epoch][p]['clkd'] = gpsdata[p]['clkd'][t] # (s/s)
+    ###########################################################################
+    ###########################################################################
     
-    
-    print('Extraction of ephemeris and clock information completed! \n')
-    return gpsdata_new, goodsats
+    return gpsdata, goodsats
 
 '''' We define a function that returns the day-of-week and the GPS week. '''
 
 def gpsweekday(t):
     
+    # Logic below calculates the desired GPS day and week number.
     wkday = (t.weekday() + 1) % 7 # Weekday from Python to GPST
     GPST_epoch = datetime.date(1980,1,6) # Date of GPST epoch
     user_epoch = t.date() # Get the date of the input time
@@ -415,4 +592,8 @@ def gpsweekday(t):
     user_epoch_Monday = user_epoch - datetime.timedelta(user_epoch.weekday())
     wwww = int(((user_epoch_Monday-GPST_epoch_Monday).days/7)-1) # GPS week
     
+    # Algorithmic correction to the above logic.
+    if wkday == 0:
+        wwww += 1
+        
     return str(wkday), str(wwww)

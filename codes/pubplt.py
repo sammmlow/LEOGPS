@@ -7,14 +7,14 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.1 (Alpha)                          ##
+##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
 ## Publishing and plotting of interpolated GPS ephemeris and clock data.     ##
 ##                                                                           ##
 ## REMARKS:                                                                  ##
-## Run as a sub-routine in gpsxtr.py, and the main leogps.py.                ##
+## This program is run as a sub-routine in gpsxtr.py.                        ##
 ## Saving of GPS PVT graphs and reports can be disabled in config.txt,       ##
 ## when *savefigs* and *savereport* is set as True/False                     ##
 ##                                                                           ##
@@ -45,16 +45,16 @@ def gps_report(gpsdata, goodsats, inps):
     file_path.write(line)
     
     # It's all string formatting from here... nothing scientific.
-    for t in range(0,len(gpsdata['t'])):
+    for t in gpsdata:
         
         line = '\n'
         line += '*  '
-        line += str(gpsdata['t'][t].year) + ' '
-        line += str(gpsdata['t'][t].month) + ' '
-        line += str(gpsdata['t'][t].day) + ' '
-        line += str(gpsdata['t'][t].hour) + ' '
-        line += str(gpsdata['t'][t].minute) + ' '
-        line += str(gpsdata['t'][t].second) + '\n'
+        line += str(t.year) + ' '
+        line += str(t.month) + ' '
+        line += str(t.day) + ' '
+        line += str(t.hour) + ' '
+        line += str(t.minute) + ' '
+        line += str(t.second) + '\n'
         file_path.write(line)
 
         for p in goodsats:
@@ -68,7 +68,7 @@ def gps_report(gpsdata, goodsats, inps):
             line = 'G' + pstr + ' '
             
             for coord in ['x','y','z']:
-                pos = str(gpsdata[p]['p' + coord][t])
+                pos = str(gpsdata[t][p]['p' + coord])
                 dot = pos.index('.')
                 if len(pos[dot:]) > 4:
                     pos = pos[:dot+4]
@@ -81,7 +81,7 @@ def gps_report(gpsdata, goodsats, inps):
                 line += pos
                             
             for coord in ['x','y','z']:
-                vel = str(gpsdata[p]['v' + coord][t])
+                vel = str(gpsdata[t][p]['v' + coord])
                 dot = vel.index('.')
                 if len(vel[dot:]) > 4:
                     vel = vel[:dot+4]
@@ -93,7 +93,7 @@ def gps_report(gpsdata, goodsats, inps):
                 vel = vel + ' '
                 line += vel
             
-            b = '%.9E' % Decimal(str(gpsdata[p]['clkb'][t]))
+            b = '%.9E' % Decimal(str(gpsdata[t][p]['clkb']))
             dot = b.index('.')
             while len(b[:dot]) < 2:
                 b = ' ' + b
@@ -106,7 +106,7 @@ def gps_report(gpsdata, goodsats, inps):
     file_path.close()
     return None
 
-def gps_graphs(prn, t_usr_ls, gpsdata, inps):
+def gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps):
     
     cwd = inps['cwd'] # Get current main working directory
     
@@ -115,29 +115,38 @@ def gps_graphs(prn, t_usr_ls, gpsdata, inps):
     
     # Initialise the 1x3 subplot for PVT data.
     fig, (ax1, ax2, ax3) = plt.subplots(3,1,figsize=(12,8))
+        
+    # Get the positions, velocities, and clock biases.
+    px = [gpsdata[t][SV]['px'] for t in t_usr_dt]
+    py = [gpsdata[t][SV]['py'] for t in t_usr_dt]
+    pz = [gpsdata[t][SV]['pz'] for t in t_usr_dt]
+    vx = [gpsdata[t][SV]['vx'] for t in t_usr_dt]
+    vy = [gpsdata[t][SV]['vy'] for t in t_usr_dt]
+    vz = [gpsdata[t][SV]['vz'] for t in t_usr_dt]
+    clkb = [gpsdata[t][SV]['clkb'] for t in t_usr_dt]
     
     # Position plots
-    ax1.set_title('PRN ' + str(prn) + ' Position (km)')
-    ax1.plot(t_usr_ls, gpsdata[prn]['px'], c = 'r', label='X')
-    ax1.plot(t_usr_ls, gpsdata[prn]['py'], c = 'g', label='Y')
-    ax1.plot(t_usr_ls, gpsdata[prn]['pz'], c = 'b', label='Z')
+    ax1.set_title('SV ' + str(SV) + ' Position (km)')
+    ax1.plot(t_usr_ss, px, c = 'r', label='X')
+    ax1.plot(t_usr_ss, py, c = 'g', label='Y')
+    ax1.plot(t_usr_ss, pz, c = 'b', label='Z')
     ax1.legend(loc='lower right')
     
     # Velocity plots
-    ax2.set_title('PRN ' + str(prn) + ' Velocity (km/s)')
-    ax2.plot(t_usr_ls, gpsdata[prn]['vx'], c = 'r', label='X')
-    ax2.plot(t_usr_ls, gpsdata[prn]['vy'], c = 'g', label='Y')
-    ax2.plot(t_usr_ls, gpsdata[prn]['vz'], c = 'b', label='Z')
+    ax2.set_title('SV ' + str(SV) + ' Velocity (km/s)')
+    ax2.plot(t_usr_ss, vx, c = 'r', label='X')
+    ax2.plot(t_usr_ss, vy, c = 'g', label='Y')
+    ax2.plot(t_usr_ss, vz, c = 'b', label='Z')
     ax2.legend(loc='lower right')
     
     # Clock bias plots
-    ax3.set_title('PRN ' + str(prn) + ' Clock bias (s)')
-    ax3.plot(t_usr_ls, gpsdata[prn]['clkb'], c = 'k', label='Bias')
+    ax3.set_title('SV ' + str(SV) + ' Clock bias (s)')
+    ax3.plot(t_usr_ss, clkb, c = 'k', label='Bias')
     ax3.legend(loc="right")
     
     # Tight-spaced plot
     plt.tight_layout()
-    plt.savefig(cwd + '\\output\\gps_plots\\GPS_PRN' + str(prn) + '_PVT.png')
+    plt.savefig(cwd + '\\output\\gps_plots\\GPS_SV' + str(SV) + '_PVT.png')
     
     # Close this figure
     plt.close(fig)
@@ -202,4 +211,8 @@ def leo_results(results, inps):
         file_path.write(line)
     
     file_path.close()
+    
+    print('Completed processing in LEOGPS! Output file stored:')
+    print(cwd+'\\output\\LEOGPS_Results.txt \n')
+    
     return None
