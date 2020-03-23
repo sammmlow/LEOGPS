@@ -40,3 +40,8 @@ Core libraries necessary: NumPy (v1.14 and above) and matplotlib
 Standard Python libaries: os, copy, math, datetime, decimal, shutil, subprocess, warnings, urllib.request
 
 Libraries for GUI (optional if you do not want to use the GUI): PIL, tkinter
+
+### Contact:
+
+If you have any queries feel free to reach out to me at:
+sammmlow@gmail.com
