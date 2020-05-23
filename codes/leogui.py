@@ -78,7 +78,7 @@ class run_gui:
         
         # Define the path to the LEOGPS logo file.
         leogps_logo = dirname(dirname(abspath(__file__)))
-        leogps_logo = leogps_logo + '\gui\logos\logo.jpg'
+        leogps_logo = leogps_logo + '\gui\logo.jpg'
         
         # Configure the background image and load the logo.
         image = Image.open( leogps_logo )
