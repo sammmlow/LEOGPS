@@ -19,11 +19,11 @@ LEOGPS will process the raw GPS measurements to produce a report comprising:
 - Precise (centimeter-level) baseline estimation (relative position vector).
 - Dilution of precision values.
 
-LEOGPS will also (optionally, depending on your choice in the GUI) output plots or reports on the interpolated GPS satellite ephemeris and clock biases.
+LEOGPS will also (optionally, depending on your choice in the GUI) output plots or reports on the interpolated GPS satellite ephemeris and clock biases. Currently ephemeris errors are still present and we are working to resolve them.
 
 ### What is the method of navigation used behind LEOGPS?
 
-Absolute positioning and velocity estimation is performed by trilaterating GPS pseudorange measurements, and Doppler (pseudorange rate) measurements respectively. Single-frequency measurements employ the GRAPHIC linear combination (credits to T. P. Yunck, 1993), while dual frequency measurements employ the ionosphere-free linear combination. If Doppler values are missing in the RINEX observation file, LEOGPS will also attempt to estimate them (in v0.2 onwards).
+Absolute positioning and velocity estimation is performed by trilaterating GPS pseudorange measurements, and Doppler (pseudorange rate) measurements respectively. Single-frequency measurements employ the GRAPHIC linear combination (T. P. Yunck, 1993), while dual frequency measurements employ the ionosphere-free linear combination (Misra & Enge, 2006). If Doppler values are missing in the RINEX observation file, LEOGPS will also attempt to estimate them using a gradient estimation via first order Taylor expansion approximation of the carrier phase values (in v0.2 onwards). However, the velocity estimation results so far are not promising.
 
 The relative navigation between LEO satellites are performed using a double-differencing of carrier phase values, and using the float ambiguities directly. An optional module exists ('ambfix.py') in the codes folder for Dr Peter Teunissen's LAMBDA method for estimating integer ambiguities given the float ambiguities and covariance matrices.
 
