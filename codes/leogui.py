@@ -36,7 +36,7 @@ class run_gui:
         
         # Create the main frame and window.
         master.title('LEOGPS v0.2 Alpha')
-        master.geometry('800x640')
+        master.geometry('1000x800')
         
         # Initialise the basic text labels (found in the configuration file):
         self.txt1  = 'Input the 4-letter ID of the 1st spacecraft (i.e. LEOA).'
