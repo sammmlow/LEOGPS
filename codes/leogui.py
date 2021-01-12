@@ -35,7 +35,7 @@ class run_gui:
     def __init__(self, master):
         
         # Create the main frame and window.
-        master.title('LEOGPS v0.2 Alpha')
+        master.title('LEOGPS v0.3 Alpha')
         master.geometry('1024x896')
         
         # Initialise the basic text labels (found in the configuration file):
