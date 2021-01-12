@@ -1,7 +1,7 @@
 ![LEOGPS - GPS-Aided Relative Satellite Navigation in Python](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png)
 
 ### What is LEOGPS?
-LEOGPS is an open-source Python package for absolute and relative satellite navigation, with specific intent for formation flying satellites. It currently supports only observations from the GPS constellation, up to L1/L2 frequency, with input files as RINEX v2.XX. It uses ephemeris and clock files from the University of Bern, CODE.
+LEOGPS is an open-source Python package for absolute and relative satellite navigation, with specific intent for relative navigation between formation flying satellites. It currently supports only observations from the GPS constellation, up to L1/L2 frequency, with input files as RINEX v2.XX. It uses ephemeris and clock files from the University of Bern, CODE.
 
 ### How do I use LEOGPS?
 
