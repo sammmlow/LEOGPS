@@ -10,7 +10,7 @@
 ##                                    v 0.2 (Alpha)                          ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    Last modified 14-03-2020.                                              ##
+##    Last modified 12-Jan-2021.                                             ##
 ##    Website: https://github.com/sammmlow/LEOGPS                            ##
 ##                                                                           ##
 ###############################################################################
@@ -28,6 +28,8 @@ root = tkinter.Tk()
 root_gui = leogui.run_gui( root )
 root.mainloop()
 
-# To run LEOGPS without GUI, uncomment below:
+# To run LEOGPS without GUI, comment out lines 27-29.
+# Set your config.txt file manually.
+# Uncomment below and run this script.
 # from codes import leorun
 # leorun.run()

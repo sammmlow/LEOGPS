@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.2 (Alpha)                          ##
+##                                    v 0.3 (Alpha)                          ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -36,7 +36,7 @@ class run_gui:
         
         # Create the main frame and window.
         master.title('LEOGPS v0.2 Alpha')
-        master.geometry('1000x800')
+        master.geometry('1024x896')
         
         # Initialise the basic text labels (found in the configuration file):
         self.txt1  = 'Input the 4-letter ID of the 1st spacecraft (i.e. LEOA).'

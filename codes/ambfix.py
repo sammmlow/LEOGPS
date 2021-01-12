@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.2 (Alpha)                          ##
+##                                    v 0.3 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -46,7 +46,7 @@
 ##   - Equivalently in Python: for i in range(0,5) => {0,1,2,3,4}            ##
 ##   - Indices are thus updated accordingly.                                 ##
 ##                                                                           ##
-## ORIGINAL AUTHOUR: Sandra Verhagen and Bofeng Li                           ##
+## ORIGINAL AUTHOR: Sandra Verhagen and Bofeng Li                            ##
 ## AUTHOR MODIFIED: 26-07-2019, by Samuel Y.W. Low, with permissions.        ##
 ##                                                                           ##
 ###############################################################################

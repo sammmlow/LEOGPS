@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.2 (Alpha)                          ##
+##                                    v 0.3 (Alpha)                          ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -16,8 +16,8 @@
 ##                                                                           ##
 ## INPUTS:                                                                   ##
 ##                                                                           ##
-## Final Product SP3 file of GPS ephemeris, and CLK_30s file of GPS.         ##
-## (Auto-download from IGS CDDIS if online, and if file is not present).     ##
+## Final Product EPH file of GPS ephemeris, and CLK file of GPS.             ##
+## (Auto-download from COD if online, and if file is not present).           ##
 ##                                                                           ##
 ## OUTPUT:                                                                   ##
 ##                                                                           ##
@@ -37,7 +37,7 @@
 ##                                                                           ##
 ## REMARKS: Use only SP3 orbit format for GPS only (no multi-GNSS support)   ##
 ##                                                                           ##
-## AUTHOR MODIFIED: 26-11-2019, by Samuel Y.W. Low                           ##
+## AUTHOR MODIFIED: 12-01-2021, by Samuel Y.W. Low                           ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -66,7 +66,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     
     ''' First, we initialise GPS ephemeris and clock download data. '''
     
-    igsurl   = 'ftp://cddis.nasa.gov/gnss/products/' # IGS CDDIS URL
+    codurl   = 'ftp://ftp.aiub.unibe.ch/CODE/' # UBern COD URL
     
     # We will download them into our directories, below, later on.
     cwd = inps['cwd'] # Get current main working directory
@@ -80,6 +80,12 @@ def gpsxtr(inps, tstart, tstop, tstep):
 	# This is the command line call to use gzip from codes folder:
     gzip_call = '\\utils\\gzip\\gzip.exe -d '
     
+    # Extract the current year.
+    year = str(tstart.year)
+    
+    # Note, a bug will occur if processing is done across a new year... but
+    # the chance of that happening is low, so I didn't fix it for now.
+    
     ###########################################################################
     ###########################################################################
     
@@ -89,21 +95,22 @@ def gpsxtr(inps, tstart, tstop, tstep):
     for d in range(-1,days+1):
         
         wd, wwww = gpsweekday( tstart + datetime.timedelta( days = d ) )
-        name = 'igs' + wwww + wd # File name, without file extension
-        clkurl = igsurl + wwww + '/' + name + '.clk_30s.Z' # URL of clock file
+        name = 'COD' + wwww + wd # File name, without file extension
+        clkurl = codurl + year + '/' + name + '.CLK.Z' # URL of clock file
         filelist.append(name) # Add this into the list of files for parsing
         
         # Check for CLK file, and download + unzip it if needed.
-        if d in range(0,days) and os.path.exists(iwd+name+'.clk_30s') != True:
+        if d in range(0,days) and os.path.exists(iwd+name+'.CLK') != True:
             
-            print('CLK file for ' + name + ' not found! Downloading now...')
-            urllib.request.urlretrieve(clkurl, name + '.clk_30s.Z')
+            print('CLK file for ' + name + ' not found! Downloading now at...')
+            print(clkurl)
+            urllib.request.urlretrieve(clkurl, name + '.CLK.Z')
             print('Completed downloading the clock file! Now unzipping...')
-            subprocess.call(cwd + gzip_call + name + '.clk_30s.Z')
+            subprocess.call(cwd + gzip_call + name + '.CLK.Z')
             print('Files unzipped, moving them into the inputs folder.')
-            shutil.move(cwd + '\\' + name + '.clk_30s', iwd+name + '.clk_30s')
-            print('Unzipping completed! \n')     
-    
+            shutil.move(cwd + '\\' + name + '.CLK', iwd+name + '.CLK')
+            print('Unzipping completed! \n')
+            
         else:
             if d in range(0,days):
                 print('CLK file for '+name+' found! Proceeding to process! \n')
@@ -111,7 +118,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     ###########################################################################
     ###########################################################################
     
-    ''' In this segment, we extract GPS clock information from IGS. '''
+    ''' In this segment, we extract GPS clock information from COD. '''
     
     # Now, we initialise the clock dictionary holding biases and drifts.
     
@@ -123,7 +130,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
         ''' Start reading each downloaded GPS clock (30s) file from IGS  '''
         
         tc = datetime.timedelta(seconds=30) # Step size of clock file.
-        f_clk = open(iwd + file + '.clk_30s', 'r') # Open up the SP3 file
+        f_clk = open(iwd + file + '.CLK', 'r') # Open up the SP3 file
         
         # Read the clock file.
         for line in f_clk:
@@ -275,29 +282,29 @@ def gpsxtr(inps, tstart, tstop, tstep):
     ###########################################################################
     ###########################################################################
     
-    ''' In this segment, we extract GPS precise ephemerides from IGS. '''
+    ''' In this segment, we extract GPS precise ephemerides from COD. '''
     
     # Now, check for desired ephemeris files. If non-existent, download them.
     for d in range(-1,days+1):
         
         wd, wwww = gpsweekday( tstart + datetime.timedelta( days = d ) )
-        name = 'igs' + wwww + wd # File name, without file extension
-        ephurl = igsurl + wwww + '/' + name + '.sp3.Z' # URL of ephemeris file
+        name = 'COD' + wwww + wd # File name, without file extension
+        ephurl = codurl + year + '/' + name + '.EPH.Z' # URL of ephemeris file
     
         # Check for SP3 ephemeris file, and download + unzip it if needed.
-        if os.path.exists(iwd+name+'.sp3') != True:
+        if os.path.exists(iwd+name+'.EPH') != True:
             
-            print('SP3 file for '+ name +' not found! Attempt download now...')
-            urllib.request.urlretrieve(ephurl, name + '.sp3.Z')
+            print('EPH file for '+ name +' not found! Attempt download now...')
+            urllib.request.urlretrieve(ephurl, name + '.EPH.Z')
             print('Completed downloading the ephemeris file! Now unzipping...')
-            subprocess.call(cwd + gzip_call + name + '.sp3.Z')
+            subprocess.call(cwd + gzip_call + name + '.EPH.Z')
             print('Files unzipped, moving them into the inputs folder.')
-            shutil.move(cwd + '\\' + name + '.sp3', iwd + name + '.sp3')
+            shutil.move(cwd + '\\' + name + '.EPH', iwd + name + '.EPH')
             print('Unzipping completed! \n')
         
         else:
             
-            print('SP3 file for ' + name + ' found! Proceeding to process! \n')
+            print('EPH file for ' + name + ' found! Proceeding to process! \n')
 
     # We download the GPS precise ephemerides one day before and after,
     # to prevent the occurrence of Runge's phenomenon by adding buffer in the
@@ -326,7 +333,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
         
         ''' Start reading each downloaded GPS ephemeris file from IGS  '''
         
-        f_gps = open(iwd + file + '.sp3', 'r') # Open up the SP3 file
+        f_gps = open(iwd + file + '.EPH', 'r') # Open up the SP3 file
         gps_record = False # Trigger for recording GPS data
         
         for line in f_gps:

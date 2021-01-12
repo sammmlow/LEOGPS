@@ -5,11 +5,13 @@ LEOGPS is an open-source Python package for absolute and relative satellite navi
 
 ### How do I use LEOGPS?
 
-To use LEOGPS, the user first runs the application by running 'leogps.py', the main python file. The app interfaces with the inputs configuration file, allowing the user to save or load parameters in the 'config.txt' file. 
+First, clone this repository. Then, that's it! The user first runs the application by running 'leogps.py', the main python file. The app interfaces with the inputs configuration file, allowing the user to save or load parameters in the 'config.txt' file, through the GUI.
 
 Then, the user simply provides the program with two RINEX (v2.xx) observation files, one for each LEO satellite, by pasting it in the 'inputs' folder. By default, LEOGPS should be provided with two example RINEX files comprising GPS pseudorange and carrier phase measurements from two satellites in formation - GRACE A and B. Ground truths are also provided in the 'outputs' directory.
 
-Next, the user simply has to run LEOGPS via the GUI, once the user saves the desired configuration options. Keep an internet connection online, as LEOGPS will attempt to download precise ephemerides and clock bias data from the International GNSS Service (IGS) file portal (unless you already have those files). The app should look something like the image below.
+Next, the user simply has to run LEOGPS via the GUI, once the user saves the desired configuration options. Keep an internet connection online, as LEOGPS will attempt to download precise ephemerides and clock bias data from the University of Bern's COD FTP (unless you already have those files). Note that in the previous versions, LEOGPS used International GNSS Service (IGS) products. We have now switched to Bern's COD in v0.3.
+
+The app should look something like the image below.
 
 ![LEOGPS - Graphical User Interface](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui.jpg)
 
@@ -39,7 +41,11 @@ Core libraries necessary: NumPy (v1.14 and above) and matplotlib
 
 Standard Python libaries: os, copy, math, datetime, decimal, shutil, subprocess, warnings, urllib.request
 
-Libraries for GUI (optional if you do not want to use the GUI): PIL, tkinter
+Libraries for GUI: PIL, tkinter
+
+The above are all standard Python libraries that should come with a typical Anaconda installation.
+
+This README was last updated on: 12-Jan-2021.
 
 ### Contact:
 
