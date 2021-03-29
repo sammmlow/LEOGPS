@@ -1,12 +1,8 @@
 .. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
 :Project: LEOGPS
-:Website: https://github.com/sammmlow/LEOGPS
-:Document: https://leogps.readthedocs.io/en/stable/
+:Github: https://github.com/sammmlow/LEOGPS
+:Documents: https://leogps.readthedocs.io/en/stable/
 :Author: Samuel Y. W. Low
 :Version: 1.0 (Stable)
 
@@ -19,7 +15,7 @@
 .. |orcid| image:: https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg
    :target: https://orcid.org/0000-0002-1911-701X/
 
-
+|docs| |license| |orcid|
 
 LEOGPS
 ------
