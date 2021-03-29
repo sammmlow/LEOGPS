@@ -2,12 +2,12 @@
 
 :Project: LEOGPS
 :Github: https://github.com/sammmlow/LEOGPS
-:Documents: https://leogps.readthedocs.io/en/stable/
+:Documents: https://leogps.readthedocs.io/en/latest/
 :Author: Samuel Y. W. Low
 :Version: 1.0 (Stable)
 
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
-   :target: https://leogps.readthedocs.io/en/stable/
+   :target: https://leogps.readthedocs.io/en/latest/
 
 .. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
    :target: https://github.com/sammmlow/LEOGPS/blob/master/LICENSE
