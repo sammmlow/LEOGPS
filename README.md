@@ -13,7 +13,7 @@ Then, the user simply provides the program with two RINEX (v2.xx) observation fi
 
 Next, the user can run LEOGPS. The UI of the app should pop out and look something like below:
 
-![LEOGPS - Graphical User Interface](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui.jpg)
+![LEOGPS - Graphical User Interface](https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui_v1.jpg)
 
 Keep an internet connection online, as LEOGPS will attempt to download precise ephemerides and clock bias data from the University of Bern's COD FTP (unless you already have those files). Note that in the previous versions, LEOGPS used International GNSS Service (IGS) products. We have now switched to Bern's COD in v0.3 onwards.
 
