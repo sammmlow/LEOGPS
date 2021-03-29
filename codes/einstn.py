@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -51,8 +51,9 @@ import numpy as np
 # IMPORT LOCAL LIBRARIES
 from codes import consts
 
-gm = consts.GM # GRAVITY CONSTANT*EARTH MASS
-c = consts.C # VELOCITY OF LIGHT
+gm  = consts.GM  # GRAVITY CONSTANT * EARTH MASS
+c   = consts.C   # VELOCITY OF LIGHT (M/S)
+err = consts.ERR # # EARTH INERTIAL ROTATION RATE (RAD/S)
 
 ''' CLOCK ADVANCE EFFECT '''
 
@@ -60,7 +61,7 @@ def clockadv(gpspos,gpsvel):
     
     # This effect is more dominant than the Shapiro Delay effect.
     
-    return -2*np.dot(gpspos,gpsvel)/c # Units in meters
+    return -2*np.dot(gpspos,gpsvel)/c # Units in meters, thus c is not squared
 
 ''' SHAPIRO DELAY EFFECT '''
 
@@ -74,6 +75,7 @@ def shapiro(leopos,gpspos):
     gps = np.linalg.norm(gpspos)
     rel = np.linalg.norm(gpspos-leopos)
     coeff = 2*gm/(c**2)
-    ratio = ( gps + leo + rel / gps + leo - rel )
+    ratio = ( gps + leo + rel ) / ( gps + leo - rel )
+    shapiro_path_correction  = coeff * np.log( ratio )
     
-    return coeff*math.log(ratio) # Units in meters
+    return shapiro_path_correction # Units in meters

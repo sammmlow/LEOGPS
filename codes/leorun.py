@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
 ##    Last modified 13-03-2020.                                              ##
@@ -110,23 +110,23 @@ def run():
     for t in time:
         
         # What are the GPS observables and RINEX observables at t?
-        
         gps = gpsdata[t]
         rx1 = rinex1[t]
         rx2 = rinex2[t]
         
         # Extract PVT and DOP values for LEO satellite 1, at time = t.
-        pos1, vel1, dop1 = posvel.posvel(t, goodsats, gps, rx1, inps, n1)
+        pos1, vel1, dop1, cb1 = posvel.posvel(t, goodsats, gps, rx1, inps, n1)
         
         # Extract PVT and DOP values for LEO satellite 2, at time = t.
-        pos2, vel2, dop2 = posvel.posvel(t, goodsats, gps, rx2, inps, n2)
+        pos2, vel2, dop2, cb2 = posvel.posvel(t, goodsats, gps, rx2, inps, n2)
         
         # Perform double-differencing to get baseline length.
         baseline = ambest.ambest(t, gps, rx1, rx2, pos1, pos2, inps)
         
         # Log the results into a dictionary.
-        results[t] = [pos1, vel1, dop1, pos2, vel2, dop2, baseline]
-    
+        # Result size: 1x3   1x3   1x3  1x1   1x3   1x3   1x3  1x1       1x3
+        results[t] = [pos1, vel1, dop1, cb1, pos2, vel2, dop2, cb2, baseline]
+        
     # FINALLY, WE PUBLISH THE RESULTS IN THE OUTPUTS FOLDER.
     pubplt.leo_results( results, inps )
     

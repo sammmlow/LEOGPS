@@ -30,7 +30,7 @@ I: name2 GRCB
 I: dtstart 2010-07-27-00-00-00
 ~:
 ~: Input the ending epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-03-45-00)
-I: dtstop 2010-07-27-12-00-00
+I: dtstop 2010-07-27-22-00-00
 ~: 
 ~: Input the timestep in seconds (i.e. 30)
 I: timestep 10
@@ -51,7 +51,7 @@ I: savefigs True
 I: savereport True
 ~: 
 ~: Do you want to enable code-carrier smoothing via recursive Hatch filter (True/False)?
-I: hatchfilter False
+I: hatchfilter True
 ~: 
 ~: What is the length (integer number of epochs of RINEX observations) of the hatch filter used?
 I: hatchlength 10

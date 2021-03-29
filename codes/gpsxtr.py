@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -50,6 +50,18 @@ import warnings
 import subprocess
 import numpy as np
 import urllib.request
+
+
+
+
+
+# DELETE AFTER
+import matplotlib.pyplot as plt
+
+
+
+
+
 
 # IMPORT LOCAL LIBRARIES
 from codes import pubplt
@@ -246,7 +258,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     
     # Sort the list of good satellites found.
     goodsats.sort() # Sort in ascending order
-        
+    
     ###########################################################################
     ###########################################################################
     
@@ -408,8 +420,8 @@ def gpsxtr(inps, tstart, tstop, tstep):
     # period for interpolation. See research paper "Polynomial interpolation
     # of GPS satellite coordinates" by Milan Horemuz (Feb 2006).
     # Thus, we use a sliding window interpolation, with fit interval of 4h,
-    # and a validity window in the middle of 15 minutes only, leaving the rest
-    # of the 4h as interpolation buffer to prevent Runge's phenomenon.
+    # and a validity window in the middle of 15 minutes only, leaving the 
+    # rest of the 4h as interpolation buffer to prevent Runge's phenomenon.
     
     # Our first task is to generate the IGS ephemeris time axis.
     gpsephm_epoch_dt = [] # List of datetime objects.
@@ -422,7 +434,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
         gpsephm_epoch_dt.append(gpsephm_dt)
         gpsephm_epoch_ss.append(gpsephm_ss)
         gpsephm_dt = gpsephm_dt + gps_tstep
-        gpsephm_ss = gpsephm_ss + 900
+        gpsephm_ss = gpsephm_ss + gps_tstep.seconds
     
     # We also initialise the starting time in GPS ephemeris interpolation.
     # This block of code is meant to create a time axis in integer seconds.
@@ -505,7 +517,27 @@ def gpsxtr(inps, tstart, tstop, tstep):
             break # End the while loop if we are.
         else:
             windex += 1 # Update the sliding window filter by 2 hours
-            
+    
+    # # For debugging
+    # xt = []
+    # xx= []
+    # yp = []
+    # ypi = []
+    # count = t_offset_eph
+    # for t in gpsdata.keys():
+    #     xt.append(count)
+    #     ypi.append(gpsdata[t][30]['px'])
+    #     count += tstep.seconds
+    # count = 0
+    # for t1 in gpsephm_epoch_dt:
+    #     xx.append(count)
+    #     yp.append(gpsephm[30][t1]['px'])
+    #     count += gps_tstep.seconds
+    # plt.figure(1)
+    # plt.plot(xt,ypi)
+    # plt.scatter(xx,yp)
+    # plt.show()
+    
     ###########################################################################
     ###########################################################################
     

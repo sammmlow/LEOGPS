@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -108,7 +108,7 @@ def dopest(rnxdata, goodsats, tstart, tstop, rnxstep, inps):
                     
                     # Next, we get an array for an infinitesimal step of
                     # both time and phase (t + delta-t, and L + delta-L).
-                    delta = 0.00004 # Delta timestep
+                    delta = 0.01 # Delta timestep
                     N_delta = N + delta # N + delta-N
                     L_delta = np.polyval(coeff, N_delta) # L + delta-L
                     

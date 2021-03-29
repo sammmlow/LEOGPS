@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -134,7 +134,7 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps ):
     
     ''' We now proceed to solve the least squares problem. '''
     
-    A = getgeom( gps, glist, grefr, grefi, pos1, pos2 ) # Geometry matrix
+    A = getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ) # Geometry matrix
     B = wavelength * (carrDD - zfix) # Carrier phase minus integer ambiguities
     
     # Solve the equation now!
@@ -200,10 +200,11 @@ def getref( gps, rx1, rx2, pos1, pos2 ):
 
 ''' Define a function that finds the DD geometry matrix '''
     
-def getgeom( gps, glist, grefr, grefi, pos1, pos2 ):
+def getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ):
     
     DD_geom_mat = np.array([]) # Matrix for DD geometry vector.
     leopos = (0.5 * (pos1 + pos2))[:3] # Formation center
+    erp = inps['earthrotation'] # Offset Earth rotation?
     
     for k in glist:
         
@@ -217,6 +218,46 @@ def getgeom( gps, glist, grefr, grefi, pos1, pos2 ):
             gpsr = np.array([gps[grefr]['px'],
                              gps[grefr]['py'],
                              gps[grefr]['pz']]) * 1000
+            
+            # Get the GPS satellite velocities
+            gpskv = np.array([gps[k]['vx'],
+                              gps[k]['vy'],
+                              gps[k]['vz']]) * 1000
+            gpsrv = np.array([gps[grefr]['vx'],
+                              gps[grefr]['vy'],
+                              gps[grefr]['vz']]) * 1000
+            
+            # Now, we need to compensate for the GPS satellite positions due
+            # to Earth's rotation and the movement of the GPS satellites
+            # during the signal time-of-flight.
+            if erp == 'True':
+                
+                # Get the signal time of flights for the k-th GPS SV
+                sigTOF_k = np.linalg.norm( gpsk - leopos ) / consts.C
+                
+                # Get the signal time of flights for the k-th GPS SV
+                sigTOF_r = np.linalg.norm( gpsr - leopos ) / consts.C
+                
+                # Rotation rate * TOF
+                Rk = consts.ERR * sigTOF_k
+                Rr = consts.ERR * sigTOF_r
+                
+                # Get the Earth rotation direction cosine matrices,
+                # using small angle approximations for simplicity.
+                dcm_k = np.array([[  1.0,   Rk, 0.0 ],
+                                  [ -1*Rk, 1.0, 0.0 ],
+                                  [  0.0,  0.0, 1.0 ]])
+                dcm_r = np.array([[  1.0,   Rr, 0.0 ],
+                                  [ -1*Rr, 1.0, 0.0 ],
+                                  [  0.0,  0.0, 1.0 ]])
+                
+                # Rotate the coordinate frame for GPS satellite positions
+                gpsk = np.matmul(dcm_k, gpsk)
+                gpsr = np.matmul(dcm_r, gpsr)
+                
+                # Compensate for GPS satellite motion during signal TOF
+                gpsk = gpsk - (gpskv * sigTOF_k)
+                gpsr = gpsr - (gpsrv * sigTOF_r)
             
             # First, obtain the undifferenced relative vector of nth GPS.
             ZD_geom1 = gpsk - leopos

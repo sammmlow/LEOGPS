@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -18,7 +18,7 @@
 ## Saving of GPS PVT graphs and reports can be disabled in config.txt,       ##
 ## when *savefigs* and *savereport* is set as True/False                     ##
 ##                                                                           ##
-## AUTHOR MODIFIED: 30-11-2019, by Samuel Y.W. Low                           ##
+## AUTHOR MODIFIED: 10-03-2021, by Samuel Y.W. Low                           ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -34,14 +34,14 @@ def gps_report(gpsdata, goodsats, inps):
     
     file_path = open(cwd+'\\output\\gps_report\\GPS_Report.txt', 'w')
     
-    line = 'G   '
-    line += '  Pos_X (km)  '
-    line += '  Pos_Y (km)  '
-    line += '  Pos_Z (km)  '
-    line += ' Vel_X (km/s) '
-    line += ' Vel_Y (km/s) '
-    line += ' Vel_Z (km/s) '
-    line += '  Clk_Bias \n'
+    line = 'G         '
+    line += 'Pos_X (km)       '
+    line += 'Pos_Y (km)       '
+    line += 'Pos_Z (km)     '
+    line += 'Vel_X (km/s)     '
+    line += 'Vel_Y (km/s)     '
+    line += 'Vel_Z (km/s)     '
+    line += '    Clk_Bias \n'
     file_path.write(line)
     
     # It's all string formatting from here... nothing scientific.
@@ -70,9 +70,9 @@ def gps_report(gpsdata, goodsats, inps):
             for coord in ['x','y','z']:
                 pos = str(gpsdata[t][p]['p' + coord])
                 dot = pos.index('.')
-                if len(pos[dot:]) > 4:
-                    pos = pos[:dot+4]
-                while len(pos[dot:]) < 4:
+                if len(pos[dot:]) > 7:
+                    pos = pos[:dot+7]
+                while len(pos[dot:]) < 7:
                     pos = pos + '0'
                 while len(pos[:dot]) < 9:
                     pos = ' ' + pos
@@ -83,9 +83,9 @@ def gps_report(gpsdata, goodsats, inps):
             for coord in ['x','y','z']:
                 vel = str(gpsdata[t][p]['v' + coord])
                 dot = vel.index('.')
-                if len(vel[dot:]) > 4:
-                    vel = vel[:dot+4]
-                while len(vel[dot:]) < 4:
+                if len(vel[dot:]) > 7:
+                    vel = vel[:dot+7]
+                while len(vel[dot:]) < 7:
                     vel = vel + '0'
                 while len(vel[:dot]) < 9:
                     vel = ' ' + vel
@@ -161,7 +161,7 @@ def leo_results(results, inps):
     file_path = open(cwd+'\\output\\LEOGPS_Results.txt', 'w')
     
     line  = 'Date      '
-    line += '    Time     '
+    line += '     Time     '
     
     # Headers for LEO 1
     line += inps['name1'] + '_PosX     '
@@ -172,7 +172,8 @@ def leo_results(results, inps):
     line += inps['name1'] + '_VelZ     '
     line += inps['name1'] + '_GDOP     '
     line += inps['name1'] + '_PDOP     '
-    line += inps['name1'] + '_TDOP     '
+    line += inps['name1'] + '_TDOP         '
+    line += inps['name1'] + '_ClkB     '
     
     # Headers for LEO 2
     line += inps['name2'] + '_PosX     '
@@ -183,7 +184,8 @@ def leo_results(results, inps):
     line += inps['name2'] + '_VelZ     '
     line += inps['name2'] + '_GDOP     '
     line += inps['name2'] + '_PDOP     '
-    line += inps['name2'] + '_TDOP     '
+    line += inps['name2'] + '_TDOP         '
+    line += inps['name2'] + '_ClkB     '
     
     # Headers for baseline information
     line += 'RelativeX     '
@@ -194,19 +196,54 @@ def leo_results(results, inps):
     
     # It's all string formatting from here... nothing scientific.
     for t in results:
-        line  = str(t)
+        
+        line  = str(t) # Date-time string (dictionary key)
+        
+        # Within each vector...
         for vector in results[t]:
-            for value in vector[:3]:
-                svalue = str(value)
-                dot = svalue.index('.')
-                if len(svalue[dot:]) > 4:
-                    svalue = svalue[:dot+4]
-                while len(svalue[dot:]) < 4:
-                    svalue = svalue + '0'
-                while len(svalue[:dot]) < 10:
-                    svalue = ' ' + svalue
+            
+            # Check if the vector is a 1x3 POS/VEL/DOP
+            if len(vector) >= 3:
+                for value in vector[:3]:
+                    svalue = str(value)
                     dot = svalue.index('.')
-                line += svalue
+                    if len(svalue[dot:]) > 4:
+                        svalue = svalue[:dot+4]
+                    while len(svalue[dot:]) < 4:
+                        svalue = svalue + '0'
+                    while len(svalue[:dot]) < 10:
+                        svalue = ' ' + svalue
+                        dot = svalue.index('.')
+                    line += svalue
+                    
+            # Or the clock bias entry (1x1)
+            else:
+                for value in vector[:1]:
+                    svalue = str(value/299792458.0)
+                    dot = svalue.index('.')
+                    
+                    # Check if clock bias is in standard notation
+                    if 'e' in svalue:
+                        edot = svalue.index('e')
+                        svalue1 = svalue[:dot]
+                        svalue2 = svalue[dot:edot]
+                        if len(svalue2) > 7:
+                            svalue2 = svalue2[:7]
+                        svalue3 = svalue[edot:]
+                        svalue = svalue1 + svalue2 + svalue3
+                    
+                    # Else, if it is in decimal...
+                    else:
+                        if len(svalue[dot:]) > 11:
+                            svalue = svalue[:dot+11]
+                        while len(svalue[dot:]) < 11:
+                            svalue = svalue + '0'
+                    
+                    while len(svalue[:dot]) < 7:
+                        svalue = ' ' + svalue
+                        dot = svalue.index('.')
+                    line += svalue
+                
         line += ' \n'
         file_path.write(line)
     

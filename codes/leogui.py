@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 0.3 (Alpha)                          ##
+##                                    v 1.0 (Stable)                         ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -35,7 +35,7 @@ class run_gui:
     def __init__(self, master):
         
         # Create the main frame and window.
-        master.title('LEOGPS v0.3 Alpha')
+        master.title('LEOGPS v1.0')
         master.geometry('1024x896')
         
         # Initialise the basic text labels (found in the configuration file):
@@ -646,6 +646,12 @@ class run_gui:
     
     def run(self):
         
-        leorun.run()
+        try:
+            self.cfg_W()
+            leorun.run()
+        except Exception as excpt:
+            print('Error in running!')
+            print(excpt)
+            pass
         
         return None
