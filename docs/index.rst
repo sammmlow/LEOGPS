@@ -210,9 +210,7 @@ In its essence, the single differencing paradigm changed the structure of the na
 
 For bugs, raise the issues in the `GitHub repository <https://github.com/sammmlow/LEOGPS/issues>`_.
 
-For collaborations, reach out to me: sammmlow@gmail.com
-
-:Author: Samuel Y. W. Low
+For collaborations, reach out to me: sammmlow@gmail.com (Samuel Y. W. Low)
 
 |linkedin| |orcid|
 

@@ -95,7 +95,7 @@
 <li><a class="reference internal" href="#overview-of-processing-flow">4. Overview of Processing Flow</a></li>
 <li><a class="reference internal" href="#carrier-single-differencing">5. Carrier Single Differencing</a></li>
 <li><a class="reference internal" href="#carrier-double-differencing">6. Carrier Double Differencing</a></li>
-<li><a class="reference internal" href="#support">7. Support</a></li>
+<li><a class="reference internal" href="#contact-and-support">7. Contact and Support</a></li>
 </ul>
 </div>
             
@@ -168,6 +168,7 @@
 </div>
 <div class="section" id="leogps">
 <h1>LEOGPS<a class="headerlink" href="#leogps" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://leogps.readthedocs.io/en/latest/"><img alt="docs" src="https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square" /></a> <a class="reference external" href="https://github.com/sammmlow/LEOGPS/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" /></a></p>
 <p>LEOGPS is an open-source Python package that takes in GPS observations of formation flying satellites in pairs, to perform single point positioning (SPP) and precise relative positioning via carrier phase double-differential GPS (CDGPS). It currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format. LEOGPS gives credit to the University of Bern, for the CODE precise GPS ephemeris and clock files.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -306,10 +307,11 @@ numpy (v1.14), matplotlib, urllib.request, PIL, tkinter, os, copy, math, datetim
 <p>We can actually go one step further and perform triple-differencing, that is, performing a differencing measurement between two double-differences. This eliminates the ambiguity entirely, but it amplifies the random errors by another factor of root-2, and it further reduces the degrees of freedom by one, from N-1 to N-2, N being the number of GPS satellites. At that point, some may argue that estimating the ambiguity with the C/A range on a double-differencing measurement would give a better accuracy then.</p>
 </div>
 </div>
-<div class="section" id="support">
-<h1>7. Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="contact-and-support">
+<h1>7. Contact and Support<a class="headerlink" href="#contact-and-support" title="Permalink to this headline">¶</a></h1>
 <p>For bugs, raise the issues in the <a class="reference external" href="https://github.com/sammmlow/LEOGPS/issues">GitHub repository</a>.</p>
-<p>For collaborations, reach out to me: <a class="reference external" href="mailto:sammmlow&#37;&#52;&#48;gmail&#46;com">sammmlow<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>For collaborations, reach out to me: <a class="reference external" href="mailto:sammmlow&#37;&#52;&#48;gmail&#46;com">sammmlow<span>&#64;</span>gmail<span>&#46;</span>com</a> (Samuel Y. W. Low)</p>
+<p><a class="reference external" href="https://www.linkedin.com/in/sammmlow"><img alt="linkedin" src="https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg" /></a> <a class="reference external" href="https://orcid.org/0000-0002-1911-701X/"><img alt="orcid" src="https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg" /></a></p>
 <p>The project is licensed under the MIT license.</p>
 </div>
 
