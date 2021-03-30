@@ -8,6 +8,9 @@
    
 .. |orcid| image:: https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg
    :target: https://orcid.org/0000-0002-1911-701X/
+   
+.. |linkedin| image:: https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg
+   :target: https://www.linkedin.com/in/sammmlow
 
 :Project: LEOGPS
 :Github: https://github.com/sammmlow/LEOGPS
