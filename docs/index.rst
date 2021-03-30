@@ -99,7 +99,7 @@ A summary of the processing flow in LEOGPS is given by the flow chart below.
 
 
 5. Carrier Single Differencing
-------------------------------------
+------------------------------
 
 This segment of the LEOGPS documentation gets into the technicals of baseline estimation between formation flying satellites (or even between static stations in general), and it assumes that the user has sufficient knowledge on single-point positioning concepts. The algorithm described in this section is based on carrier phase differencing, and is largely implemented in the code file **ambest.py** (ambiguity estimation). For a tutorial on the more basic aspects of GNSS, the user is invited to peruse `ESA's NaviPedia <https://gssc.esa.int/navipedia/index.php/Main_Page>`_.
 
@@ -172,7 +172,7 @@ Observably, the single differenced solution still faces an accuracy > 1m. Embedd
 .. note:: Every step of differencing amplifies the random error sources by root-2, assuming the noises are well-modelled as a Gaussian.
 
 6. Carrier Double Differencing
-------------------------------------
+------------------------------
 
 We can actually go one step further beyond single differencing, and that is to difference across two reference GPS satellites. This step is called double differencing, and it is the backbone of the algorithm used in LEOGPS. This removes the relative receiver clock bias estimation errors, and this section will detail the algorithm and the results below.
 
