@@ -26,7 +26,7 @@ LEOGPS
 
 |docs| |license|
 
-By: Samuel Y. W. Low
+*By: Samuel Y. W. Low*
 
 |linkedin| |orcid|
 
