@@ -171,6 +171,8 @@ Observably, the single differenced solution still faces an accuracy > 1m. Embedd
 
 .. note:: Every step of differencing amplifies the random error sources by root-2, assuming the noises are well-modelled as a Gaussian.
 
+
+
 6. Carrier Double Differencing
 ------------------------------
 
