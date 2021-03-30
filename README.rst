@@ -1,11 +1,5 @@
 .. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png
 
-:Project: LEOGPS
-:Github: https://github.com/sammmlow/LEOGPS
-:Documents: https://leogps.readthedocs.io/en/latest/
-:Author: Samuel Y. W. Low
-:Version: 1.0 (Stable)
-
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
    :target: https://leogps.readthedocs.io/en/latest/
 
@@ -15,7 +9,16 @@
 .. |orcid| image:: https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg
    :target: https://orcid.org/0000-0002-1911-701X/
 
-|docs| |license| |orcid|
+:Project: LEOGPS
+:Github: https://github.com/sammmlow/LEOGPS
+:Documents: https://leogps.readthedocs.io/en/latest/
+:Version: 1.0 (Stable)
+
+|docs| |license|
+
+:Author: Samuel Y. W. Low
+
+|orcid|
 
 LEOGPS
 ------
@@ -24,7 +27,7 @@ LEOGPS is an open-source Python package that takes in GPS observations of format
 
 LEOGPS gives credit to the University of Bern, for their kind sharing of CODE precise GPS ephemeris and clock files.
 
-*Note that for formation flying applications, the purely kinematic CDGPS approach in LEOGPS is usually accurate up to 1m for baselines less than 200km.*
+*Note that for formation flying applications, the purely kinematic CDGPS approach in LEOGPS is usually accurate up to 1m for baselines less than 200km.* 
 
 Installation and First Steps
 ----------------------------
@@ -39,16 +42,14 @@ Second, you can paste the two RINEX observation files of your LEO satellite pair
 - Precise baseline vectors between the two LEOs.
 - Dilution of precision values.
 
-LEOGPS will also (optionally, depending on your choice in the GUI) output plots or reports on the interpolated GPS satellite ephemeris and clock biases. Currently ephemeris errors are still present and we are working to resolve them.
+LEOGPS will also (optionally, depending on your choice in the GUI) output plots or reports on the interpolated GPS satellite ephemeris and clock biases.
 
-For full documentation, please refer to the `LEOGPS Read-The-Docs <https://leogps.readthedocs.io/en/stable/>`_.
+For full documentation, please refer to the `LEOGPS Read-The-Docs <https://leogps.readthedocs.io/en/latest/>`_.
 
 
 
 Other Package Dependencies:
 ---------------------------
-
-Tested on Python version 3.6.5 (Anaconda with Spyder).
 
 Core libraries necessary: NumPy (v1.14 and above) and matplotlib
 
@@ -56,10 +57,7 @@ Standard Python libaries: os, copy, math, datetime, decimal, shutil, subprocess,
 
 Libraries for GUI: PIL, tkinter
 
-The above are all standard Python libraries that should come with a typical Anaconda installation.
-
-This README was last updated on: 29-March-2021.
-
+*Tested on Python version 3.6.5 (Anaconda with Spyder).*
 
 
 Contact:
@@ -68,3 +66,5 @@ Contact:
 If you have any queries feel free to reach out to me at:
 
 sammmlow@gmail.com
+
+*Last Modified on 30-03-2021*
