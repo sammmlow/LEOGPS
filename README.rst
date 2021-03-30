@@ -57,7 +57,7 @@ Standard Python libaries: os, copy, math, datetime, decimal, shutil, subprocess,
 
 Libraries for GUI: PIL, tkinter
 
-*Tested on Python version 3.6.5 (Anaconda with Spyder).*
+*Tested on Python version 3.6.5 (Anaconda with default packages).*
 
 
 Contact:
