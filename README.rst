@@ -21,7 +21,7 @@
 
 :Author: Samuel Y. W. Low
 
-|orcid|
+|linkedin| |orcid|
 
 LEOGPS
 ------
