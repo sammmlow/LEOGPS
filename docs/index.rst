@@ -2,6 +2,18 @@
    sphinx-quickstart on Sat Mar 27 13:55:12 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
+   
+.. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
+   :target: https://leogps.readthedocs.io/en/latest/
+
+.. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+   :target: https://github.com/sammmlow/LEOGPS/blob/master/LICENSE
+   
+.. |orcid| image:: https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg
+   :target: https://orcid.org/0000-0002-1911-701X/
+   
+.. |linkedin| image:: https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg
+   :target: https://www.linkedin.com/in/sammmlow
 
 .. image:: /_images/logo.png
 
@@ -11,6 +23,8 @@
 
 LEOGPS
 ------
+
+|docs| |license|
 
 LEOGPS is an open-source Python package that takes in GPS observations of formation flying satellites in pairs, to perform single point positioning (SPP) and precise relative positioning via carrier phase double-differential GPS (CDGPS). It currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format. LEOGPS gives credit to the University of Bern, for the CODE precise GPS ephemeris and clock files.
 
@@ -191,11 +205,15 @@ In its essence, the single differencing paradigm changed the structure of the na
 
 
 
-7. Support
-----------
+7. Contact and Support
+----------------------
 
 For bugs, raise the issues in the `GitHub repository <https://github.com/sammmlow/LEOGPS/issues>`_.
 
 For collaborations, reach out to me: sammmlow@gmail.com
+
+:Author: Samuel Y. W. Low
+
+|linkedin| |orcid|
 
 The project is licensed under the MIT license.
