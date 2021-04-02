@@ -99,7 +99,7 @@ A summary of the processing flow in LEOGPS is given by the flow chart below.
 .. figure:: /_images/leogps_flowchart.png
     :align: center
     
-
+If the user wishes to use some of LEOGPS' existing algorithms, such as the single-point positioning (SPP) in **posvel.py** on multiple LEOs, or to solve for multiple baselines, the file to edit the code where you can call these functions is in **leorun.py**. This is the main processing tree that runs internally behind the GUI.
 
 
 5. Carrier Single Differencing
