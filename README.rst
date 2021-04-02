@@ -1,4 +1,5 @@
 .. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png
+    :width: 600 px
 
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
    :target: https://leogps.readthedocs.io/en/latest/
