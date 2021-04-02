@@ -1,5 +1,5 @@
 .. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png
-    :width: 600 px
+    :width: 300 px
 
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
    :target: https://leogps.readthedocs.io/en/latest/
@@ -52,8 +52,8 @@ For full documentation, please refer to the `LEOGPS Read-The-Docs <https://leogp
 
 
 
-Other Package Dependencies:
----------------------------
+Other Package Dependencies
+--------------------------
 
 Core libraries necessary: NumPy (v1.14 and above) and matplotlib
 
@@ -64,11 +64,13 @@ Libraries for GUI: PIL, tkinter
 *Tested on Python version 3.6.5 (Anaconda with default packages).*
 
 
-Contact:
---------
+Contact
+-------
 
 If you have any queries feel free to reach out to me at:
 
 sammmlow@gmail.com
+
+|linkedin| |orcid|
 
 *Last Modified on 30-03-2021*
