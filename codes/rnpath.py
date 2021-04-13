@@ -41,9 +41,9 @@
 ###############################################################################
 '''
 
-import os
-import shutil
-import subprocess
+from pathlib import Path
+
+import hatanaka
 
 ''' Get the names of required files, following AIUB CODE's nomenclature '''
 
@@ -52,58 +52,44 @@ def rnpath(inps):
     # Let us start by parsing out all relevant user configuration inputs.
     yy       = inps['dtstart_yy'] # The starting two-digit year number
     doy      = inps['dtstart_doy'] # The starting day of year in GPST
-    cwd      = inps['cwd'] # Current working directory
-    iwd      = cwd + '\\input\\'
+    cwd      = Path(inps['cwd']) # Current working directory
+    iwd      = cwd / 'input'
     name1    = inps['name1'] # 4-letter ID of the first spacecraft
     name2    = inps['name2'] # 4-letter ID of the second spacecraft
-    
+
     # Now, we get all necessary file paths, in the input folder.
-    rnx1file = iwd + name1 + doy + '0.' + yy + 'O'
-    rnx2file = iwd + name2 + doy + '0.' + yy + 'O'
-    crx1file = iwd + name1 + doy + '0.' + yy + 'D'
-    crx2file = iwd + name2 + doy + '0.' + yy + 'D'
-    
-    # Then, we get file paths for the hatanaka directory.
-    rnx1hata = cwd + '\\utils\\hatanaka\\' + name1 + doy + '0.' + yy + 'O'
-    rnx2hata = cwd + '\\utils\\hatanaka\\' + name2 + doy + '0.' + yy + 'O'
-    crx1hata = cwd + '\\utils\\hatanaka\\' + name1 + doy + '0.' + yy + 'D'
-    crx2hata = cwd + '\\utils\\hatanaka\\' + name2 + doy + '0.' + yy + 'D'
-    
+    rnx1file = iwd / (name1 + doy + '0.' + yy + 'O')
+    rnx2file = iwd / (name2 + doy + '0.' + yy + 'O')
+    crx1file = iwd / (name1 + doy + '0.' + yy + 'D')
+    crx2file = iwd / (name2 + doy + '0.' + yy + 'D')
+
     # Check if there is a need for hatanaka decompression for LEO 1.
-    if os.path.exists(rnx1file) == True:
+    if rnx1file.exists():
         print('Decompressed RINEX obs file observed for ' + name1 + '\n')
-    elif os.path.exists(crx1file) == True:
+    elif crx1file.exists():
         print('Hatanaka compressed file observed for ' + name1)
-        shutil.move( crx1file, crx1hata )
-        os.chdir(cwd + '\\utils\\hatanaka\\')
-        subprocess.call( 'crx2rnx.exe ' + name1 + doy + '0.' + yy + 'D' )
-        shutil.move( crx1hata, crx1file )
-        shutil.move( rnx1hata, rnx1file )
-        if os.path.exists(rnx1file) == True:
+        hatanaka.decompress_on_disk(crx1file)
+        if rnx1file.exists():
             print('Hatanaka decompression successful for LEO1! \n')
         else:
             print('Decompression failed. Did you rename any folders? \n')
     else:
         print('Neither compressed nor decompressed RINEX files were found! \n')
-        
+
     # Check if there is a need for hatanaka decompression for LEO 2.
-    if os.path.exists(rnx2file) == True:
+    if rnx2file.exists():
         print('Decompressed RINEX obs file observed for ' + name2 + '\n')
-    elif os.path.exists(crx2file) == True:
+    elif crx2file.exists():
         print('Hatanaka compressed file observed for ' + name2)
-        shutil.move( crx2file, crx2hata )
-        os.chdir(cwd + '\\utils\\hatanaka\\')
-        subprocess.call( 'crx2rnx.exe ' + name2 + doy + '0.' + yy + 'D' )
-        shutil.move( crx2hata, crx2file )
-        shutil.move( rnx2hata, rnx2file )
-        if os.path.exists(rnx2file) == True:
+        hatanaka.decompress_on_disk(crx2file)
+        if rnx2file.exists():
             print('Hatanaka decompression successful for LEO2! \n')
         else:
             print('Decompression failed. Did you rename any folders? \n')
     else:
         print('Neither compressed nor decompressed RINEX files were found! \n')    
-    
-    if os.path.exists(rnx1file) == True and os.path.exists(rnx2file) == True:
+
+    if rnx1file.exists() and rnx2file.exists():
         return rnx1file, rnx2file
     else:
         print('Error, somehow RINEX observation files still not found!')

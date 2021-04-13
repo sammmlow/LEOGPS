@@ -44,22 +44,13 @@
 '''
 
 import os
-import shutil
 import datetime
 import warnings
-import subprocess
 import numpy as np
 import urllib.request
 
-
-
-
-
-# DELETE AFTER
-import matplotlib.pyplot as plt
-
-
-
+from pathlib import Path
+from unlzw3 import unlzw
 
 
 
@@ -88,9 +79,6 @@ def gpsxtr(inps, tstart, tstop, tstep):
     # Then, we must retrieve all number of days of GPS and CLK data needed    
     days     = (tstop.date() - tstart.date()).days + 1 # Number of days
     filelist = [] # Stores all the required GPS / CLK ephemeris files
-	
-	# This is the command line call to use gzip from codes folder:
-    gzip_call = '\\utils\\gzip\\gzip.exe -d '
     
     # Extract the current year.
     year = str(tstart.year)
@@ -116,12 +104,10 @@ def gpsxtr(inps, tstart, tstop, tstep):
             
             print('CLK file for ' + name + ' not found! Downloading now at...')
             print(clkurl)
-            urllib.request.urlretrieve(clkurl, name + '.CLK.Z')
-            print('Completed downloading the clock file! Now unzipping...')
-            subprocess.call(cwd + gzip_call + name + '.CLK.Z')
-            print('Files unzipped, moving them into the inputs folder.')
-            shutil.move(cwd + '\\' + name + '.CLK', iwd+name + '.CLK')
-            print('Unzipping completed! \n')
+            with urllib.request.urlopen(clkurl) as f:
+                data = unlzw(f.read())
+            (Path(iwd) / (name + '.CLK')).write_bytes(data)
+            print('Completed downloading and unzipping the clock file!')
             
         else:
             if d in range(0,days):
@@ -307,11 +293,11 @@ def gpsxtr(inps, tstart, tstop, tstep):
         if os.path.exists(iwd+name+'.EPH') != True:
             
             print('EPH file for '+ name +' not found! Attempt download now...')
+            with urllib.request.urlopen(ephurl) as f:
+                data = unlzw(f.read())
+            (Path(iwd) / (name + '.EPH')).write_bytes(data)
             urllib.request.urlretrieve(ephurl, name + '.EPH.Z')
-            print('Completed downloading the ephemeris file! Now unzipping...')
-            subprocess.call(cwd + gzip_call + name + '.EPH.Z')
-            print('Files unzipped, moving them into the inputs folder.')
-            shutil.move(cwd + '\\' + name + '.EPH', iwd + name + '.EPH')
+            print('Completed downloading and unzipping of the ephemeris file!')
             print('Unzipping completed! \n')
         
         else:

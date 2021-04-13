@@ -36,7 +36,13 @@ LEOGPS gives credit to the University of Bern, for their kind sharing of CODE pr
 Installation and First Steps
 ----------------------------
 
-First, clone this repository. That's the only step in installing it. The user can then run the application by running **'leogps.py'**, in the main directory, and you should see the LEOGPS GUI launch:
+First, clone this repository and run
+
+.. code-block:: bash
+
+    pip install hatanaka
+
+The user can then run the application by running **'leogps.py'**, in the main directory, and you should see the LEOGPS GUI launch:
 
 .. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui_v1.jpg
 
