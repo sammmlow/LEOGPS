@@ -16,7 +16,7 @@
 :Project: LEOGPS
 :Github: https://github.com/sammmlow/LEOGPS
 :Documents: https://leogps.readthedocs.io/en/latest/
-:Version: 1.0 (Stable)
+:Version: 1.1 (Latest)
 
 |docs| |license|
 
@@ -36,17 +36,25 @@ LEOGPS gives credit to the University of Bern, for their kind sharing of CODE pr
 Installation and First Steps
 ----------------------------
 
-First, clone this repository and run
+First, clone this repository by running in your terminal (or Git Bash):
+
+.. code-block:: bash
+    
+	git clone https://github.com/sammmlow/LEOGPS.git
+
+Second, you should do a pip install in your terminal of `Martin Valgur's Pythonic translation of Yuri Hatanaka's compression library for RINEX files <https://pypi.org/project/hatanaka/>`_
 
 .. code-block:: bash
 
     pip install hatanaka
 
+The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" (and GZIP, thanks to the unlzw3 library) which are Windows-only executables, making the (de)compression possible across all platforms.
+
 The user can then run the application by running **'leogps.py'**, in the main directory, and you should see the LEOGPS GUI launch:
 
 .. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui_v1.jpg
 
-Second, you can paste the two RINEX observation files of your LEO satellite pairs in the inputs folder, key in your configuration parameters, and hit the **'Run LEOGPS'** button. That's it! LEOGPS will automatically source for the precise daily ephemeris and clock solutions, and process the raw GPS measurements to produce a report comprising:
+Next, you can paste the two RINEX observation files of your LEO satellite pairs in the inputs folder, key in your configuration parameters, and hit the **'Run LEOGPS'** button. That's it! LEOGPS will automatically source for the precise daily ephemeris and clock solutions, and process the raw GPS measurements to produce a report comprising:
 
 - The single point positions and velocities of both LEOs.
 - Precise baseline vectors between the two LEOs.
@@ -61,7 +69,7 @@ For full documentation, please refer to the `LEOGPS Read-The-Docs <https://leogp
 Other Package Dependencies
 --------------------------
 
-Core libraries necessary: NumPy (v1.14 and above) and matplotlib
+Core libraries necessary: NumPy (v1.14 and above), matplotlib, hatanaka
 
 Standard Python libaries: os, copy, math, datetime, decimal, shutil, subprocess, warnings, urllib.request
 
@@ -69,6 +77,17 @@ Libraries for GUI: PIL, tkinter
 
 *Tested on Python version 3.6.5 (Anaconda with default packages).*
 
+
+
+Credits to Contributors!
+------------------------
+
+:Samuel Y. W. Low: Author of LEOGPS
+:Juan Luis Cano Rodríguez: For his wisdom in open-source
+:Martin Valgur: Author of the Python Hatanaka library
+:Li Wen-Hao: For sharing GRACE KBR data from PODAAC JPL
+
+... and the awesome people and world of open source!
 
 Contact
 -------
@@ -79,4 +98,4 @@ sammmlow@gmail.com
 
 |linkedin| |orcid|
 
-*Last Modified on 30-03-2021*
+*Last Modified on 15-04-2021*

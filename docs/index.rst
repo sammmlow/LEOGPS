@@ -1,7 +1,3 @@
-.. LEOGPS documentation master file, created by
-   sphinx-quickstart on Sat Mar 27 13:55:12 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
    
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
    :target: https://leogps.readthedocs.io/en/latest/
@@ -21,8 +17,8 @@
    :maxdepth: 2
    :caption: Contents:
 
-LEOGPS
-------
+LEOGPS v1.1
+-----------
 
 |docs| |license|
 
@@ -37,14 +33,24 @@ LEOGPS is an open-source Python package that takes in GPS observations of format
 1. Installation
 ---------------
 
-First, find the LEOGPS GitHub repository in this `GitHub link <https://github.com/sammmlow/LEOGPS>`_, and download it. Alternatively, if you have Git installed, you can open Command Prompt or your Git Bash, enter the directory of your choice, and type::
+First, find the LEOGPS GitHub repository in this `GitHub link <https://github.com/sammmlow/LEOGPS>`_, and download it. Alternatively, if you have Git installed, you can open Command Prompt or your Git Bash, enter the directory of your choice, and type:
 
-    git clone https://github.com/sammmlow/LEOGPS.git
+.. code-block:: bash
+    
+	git clone https://github.com/sammmlow/LEOGPS.git
 
-That's it! No further setup is needed.
+Second, you should do a pip install in your terminal of Martin Valgur's Pythonic translation of `Hatanaka (de)compression in Python <https://pypi.org/project/hatanaka/>`_:
+
+.. code-block:: bash
+
+    pip install hatanaka
+
+The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" and "GZIP" Windows-only executables, making the (de)compression possible across all operating systems.
+
+That's it! No further setup is needed, unless you need any of the other package dependencies.
 
 .. note:: Package dependencies include: 
-    numpy (v1.14), matplotlib, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings
+    numpy (v1.14), matplotlib, hatanaka, unlzw3, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings
 
 
 
@@ -53,7 +59,7 @@ That's it! No further setup is needed.
 
 First, launch LEOGPS by running **'leogps.py'** in a Python IDE or your terminal, and you will see a user-interface (UI) with input parameters as shown below.
 
-.. image:: /_images/gui.jpg
+.. image:: /_images/gui.png
 
 We may now proceed to run the default LEOGPS scenario that comes with the build, for the GRACE formation flying satellite mission.
 
@@ -211,7 +217,19 @@ In its essence, the single differencing paradigm changed the structure of the na
 
 
 
-7. Contact and Support
+7. Credits to Contributors!
+---------------------------
+
+:Samuel Y. W. Low: Author of LEOGPS
+:Juan Luis Cano Rodríguez: For his wisdom in open-source
+:Martin Valgur: Author of the Python Hatanaka library
+:Li Wen-Hao: For sharing GRACE KBR data from PODAAC JPL
+
+... and of course, to the Read The Docs team, and all awesome people behind open-source!
+
+
+
+8. Contact and Support
 ----------------------
 
 For bugs, raise the issues in the `GitHub repository <https://github.com/sammmlow/LEOGPS/issues>`_.
@@ -221,3 +239,5 @@ For collaborations, reach out to me: sammmlow@gmail.com (Samuel Y. W. Low)
 |linkedin| |orcid|
 
 The project is licensed under the MIT license.
+
+

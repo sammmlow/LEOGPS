@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.0 (Stable)                         ##
+##                                    v 1.1 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -34,6 +34,10 @@
 ## ASCII format version of a RINEX observation file is frequently used in    ##
 ## conjuction with the UNIX compress, zip, gzip or other general compression ##
 ## utilities to create a very small file for Internet transfer.              ##
+##                                                                           ##
+## In Version 1.1, Martin Valgur contributed the Pythonic translation of the ##
+## Hatanaka compression and GZIP libraries. This will replace the previous   ##
+## Windows-only executable files for Hatanaka (de)compression and unzipping. ##
 ##                                                                           ##
 ## AUTHOR MODIFIED: 06-12-2019, by Samuel Y.W. Low (Credits: Yuki Hatanaka)  ##
 ##                                                                           ##

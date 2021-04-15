@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>LEOGPS &mdash; LEOGPS 1.0 documentation</title>
+  <title>LEOGPS v1.1 &mdash; LEOGPS 1.0 documentation</title>
   
 
   
@@ -88,14 +88,15 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">LEOGPS</a></li>
+<li><a class="reference internal" href="#">LEOGPS v1.1</a></li>
 <li><a class="reference internal" href="#installation">1. Installation</a></li>
 <li><a class="reference internal" href="#first-steps">2. First Steps</a></li>
 <li><a class="reference internal" href="#running-your-scenarios">3. Running Your Scenarios</a></li>
 <li><a class="reference internal" href="#overview-of-processing-flow">4. Overview of Processing Flow</a></li>
 <li><a class="reference internal" href="#carrier-single-differencing">5. Carrier Single Differencing</a></li>
 <li><a class="reference internal" href="#carrier-double-differencing">6. Carrier Double Differencing</a></li>
-<li><a class="reference internal" href="#contact-and-support">7. Contact and Support</a></li>
+<li><a class="reference internal" href="#credits-to-contributors">7. Credits to Contributors!</a></li>
+<li><a class="reference internal" href="#contact-and-support">8. Contact and Support</a></li>
 </ul>
 </div>
             
@@ -144,7 +145,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>LEOGPS</li>
+      <li>LEOGPS v1.1</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,8 +167,8 @@
   <img alt="_images/logo.png" src="_images/logo.png" />
 <div class="toctree-wrapper compound">
 </div>
-<div class="section" id="leogps">
-<h1>LEOGPS<a class="headerlink" href="#leogps" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="leogps-v1-1">
+<h1>LEOGPS v1.1<a class="headerlink" href="#leogps-v1-1" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://leogps.readthedocs.io/en/latest/"><img alt="docs" src="https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square" /></a> <a class="reference external" href="https://github.com/sammmlow/LEOGPS/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" /></a></p>
 <p><em>By: Samuel Y. W. Low</em></p>
 <p><a class="reference external" href="https://www.linkedin.com/in/sammmlow"><img alt="linkedin" src="https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg" /></a> <a class="reference external" href="https://orcid.org/0000-0002-1911-701X/"><img alt="orcid" src="https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg" /></a></p>
@@ -180,20 +181,25 @@
 <div class="section" id="installation">
 <h1>1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>First, find the LEOGPS GitHub repository in this <a class="reference external" href="https://github.com/sammmlow/LEOGPS">GitHub link</a>, and download it. Alternatively, if you have Git installed, you can open Command Prompt or your Git Bash, enter the directory of your choice, and type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sammmlow</span><span class="o">/</span><span class="n">LEOGPS</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/sammmlow/LEOGPS.git
 </pre></div>
 </div>
-<p>That’s it! No further setup is needed.</p>
+<p>Second, you should do a pip install in your terminal of Martin Valgur’s Pythonic translation of <a class="reference external" href="https://pypi.org/project/hatanaka/">Hatanaka (de)compression in Python</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install hatanaka
+</pre></div>
+</div>
+<p>The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older “RNX2CRX” and “GZIP” Windows-only executables, making the (de)compression possible across all operating systems.</p>
+<p>That’s it! No further setup is needed, unless you need any of the other package dependencies.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Package dependencies include:
-numpy (v1.14), matplotlib, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings</p>
+numpy (v1.14), matplotlib, hatanaka, unlzw3, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings</p>
 </div>
 </div>
 <div class="section" id="first-steps">
 <h1>2. First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
 <p>First, launch LEOGPS by running <strong>‘leogps.py’</strong> in a Python IDE or your terminal, and you will see a user-interface (UI) with input parameters as shown below.</p>
-<img alt="_images/gui.jpg" src="_images/gui.jpg" />
+<img alt="_images/gui.png" src="_images/gui.png" />
 <p>We may now proceed to run the default LEOGPS scenario that comes with the build, for the GRACE formation flying satellite mission.</p>
 <p>On the UI, you can load the default configuration inputs (based on the GRACE formation on 27-07-2010), as an example. The default LEOGPS comes with two Hatanaka-compressed (file extension ending with <strong>‘D’</strong>) RINEX observation files for GRACE A and B. To run the default example scenario, just click on “Run LEOGPS”, without changing any of the inputs. On saving or running LEOGPS, all inputs are saved in the <strong>../LEOGPS/config/config.txt/</strong> file. Once the processing starts, several things will happen.</p>
 <p>First, notice that the RINEX observation files in the <strong>../LEOGPS/input/</strong> will automatically be Hatanaka-decompressed (file extension changes from ‘D’ to ‘O’). LEOGPS accepts Hatanaka compressed and uncompressed RINEX files.</p>
@@ -310,8 +316,26 @@ numpy (v1.14), matplotlib, urllib.request, PIL, tkinter, os, copy, math, datetim
 <p>We can actually go one step further and perform triple-differencing, that is, performing a differencing measurement between two double-differences. This eliminates the ambiguity entirely, but it amplifies the random errors by another factor of root-2, and it further reduces the degrees of freedom by one, from N-1 to N-2, N being the number of GPS satellites. At that point, some may argue that estimating the ambiguity with the C/A range on a double-differencing measurement would give a better accuracy then.</p>
 </div>
 </div>
+<div class="section" id="credits-to-contributors">
+<h1>7. Credits to Contributors!<a class="headerlink" href="#credits-to-contributors" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Samuel Y. W. Low</dt>
+<dd class="field-odd"><p>Author of LEOGPS</p>
+</dd>
+<dt class="field-even">Juan Luis Cano Rodríguez</dt>
+<dd class="field-even"><p>For his wisdom in open-source</p>
+</dd>
+<dt class="field-odd">Martin Valgur</dt>
+<dd class="field-odd"><p>Author of the Python Hatanaka library</p>
+</dd>
+<dt class="field-even">Li Wen-Hao</dt>
+<dd class="field-even"><p>For sharing GRACE KBR data from PODAAC JPL</p>
+</dd>
+</dl>
+<p>… and of course, to the Read The Docs team, and all awesome people behind open-source!</p>
+</div>
 <div class="section" id="contact-and-support">
-<h1>7. Contact and Support<a class="headerlink" href="#contact-and-support" title="Permalink to this headline">¶</a></h1>
+<h1>8. Contact and Support<a class="headerlink" href="#contact-and-support" title="Permalink to this headline">¶</a></h1>
 <p>For bugs, raise the issues in the <a class="reference external" href="https://github.com/sammmlow/LEOGPS/issues">GitHub repository</a>.</p>
 <p>For collaborations, reach out to me: <a class="reference external" href="mailto:sammmlow&#37;&#52;&#48;gmail&#46;com">sammmlow<span>&#64;</span>gmail<span>&#46;</span>com</a> (Samuel Y. W. Low)</p>
 <p><a class="reference external" href="https://www.linkedin.com/in/sammmlow"><img alt="linkedin" src="https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg" /></a> <a class="reference external" href="https://orcid.org/0000-0002-1911-701X/"><img alt="orcid" src="https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg" /></a></p>

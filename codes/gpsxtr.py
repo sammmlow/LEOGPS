@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.0 (Stable)                         ##
+##                                    v 1.1 (Stable)                         ##
 ##                                                                           ##
 ## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
@@ -37,7 +37,8 @@
 ##                                                                           ##
 ## REMARKS: Use only SP3 orbit format for GPS only (no multi-GNSS support)   ##
 ##                                                                           ##
-## AUTHOR MODIFIED: 12-01-2021, by Samuel Y.W. Low                           ##
+## AUTHOR RELEASE: 13-01-2021, by Samuel Y.W. Low                            ##
+## LAST MODIFIED:  15-04-2021, by Martin Valgur (Hatanaka in Python)         ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -52,11 +53,8 @@ import urllib.request
 from pathlib import Path
 from unlzw3 import unlzw
 
-
-
 # IMPORT LOCAL LIBRARIES
 from codes import pubplt
-
 
 ''' Now, this is the main routine that parses ephemeris and clock data '''
 
@@ -107,7 +105,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
             with urllib.request.urlopen(clkurl) as f:
                 data = unlzw(f.read())
             (Path(iwd) / (name + '.CLK')).write_bytes(data)
-            print('Completed downloading and unzipping the clock file!')
+            print('Completed downloading and unzipping the clock file! \n')
             
         else:
             if d in range(0,days):
@@ -296,7 +294,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
             with urllib.request.urlopen(ephurl) as f:
                 data = unlzw(f.read())
             (Path(iwd) / (name + '.EPH')).write_bytes(data)
-            urllib.request.urlretrieve(ephurl, name + '.EPH.Z')
+            
             print('Completed downloading and unzipping of the ephemeris file!')
             print('Unzipping completed! \n')
         
@@ -529,7 +527,8 @@ def gpsxtr(inps, tstart, tstop, tstep):
     
     ''' Finally, we interpolate clock biases to the user's time axis. '''
     
-    print('Interpolation of GPS precise ephemerides done!')
+    print('Interpolation of GPS precise ephemerides done! \n')
+    
     print('Now interpolating GPS clock biases. \n')
     
     # We also initialise the starting time in GPS clock biases interpolation.
@@ -579,6 +578,8 @@ def gpsxtr(inps, tstart, tstop, tstep):
             # Append interpolated clock biases into 'gpsdata' output.
             gpsdata[tdt][SV]['clkb'] = clkbias_interp
             gpsdata[tdt][SV]['clkd'] = clkdrift
+    
+    print('Interpolation of GPS clock biases done! \n')
     
     ###########################################################################
     ###########################################################################

@@ -25,3 +25,9 @@ You can paste any other LEO RINEX observation files to run LEOGPS.
 By default install, <.../config/config.txt> will already include
 all parameters (LEO file names, and correct dates / times),
 for running LEOGPS with the example LEO files.
+
+Ensure also that you have installed the Hatanaka Python library with:
+
+pip install Hatanaka
+
+So that you can perform the Hatanaka (de)compression.
