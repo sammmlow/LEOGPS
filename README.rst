@@ -79,16 +79,6 @@ Libraries for GUI: PIL, tkinter
 
 
 
-Credits to Contributors!
-------------------------
-
-:Samuel Y. W. Low: Author of LEOGPS
-:Juan Luis Cano Rodríguez: For his wisdom in open-source
-:Martin Valgur: Author of the Python Hatanaka library
-:Li Wen-Hao: For sharing GRACE KBR data from PODAAC JPL
-
-... and the awesome people and world of open source!
-
 Contact
 -------
 

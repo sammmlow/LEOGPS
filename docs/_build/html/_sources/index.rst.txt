@@ -217,19 +217,7 @@ In its essence, the single differencing paradigm changed the structure of the na
 
 
 
-7. Credits to Contributors!
----------------------------
-
-:Samuel Y. W. Low: Author of LEOGPS
-:Juan Luis Cano Rodríguez: For his wisdom in open-source
-:Martin Valgur: Author of the Python Hatanaka library
-:Li Wen-Hao: For sharing GRACE KBR data from PODAAC JPL
-
-... and of course, to the Read The Docs team, and all awesome people behind open-source!
-
-
-
-8. Contact and Support
+7. Contact and Support
 ----------------------
 
 For bugs, raise the issues in the `GitHub repository <https://github.com/sammmlow/LEOGPS/issues>`_.
