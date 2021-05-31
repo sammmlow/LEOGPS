@@ -1,4 +1,16 @@
-   
+..
+   ###########################################################################
+   ###########################################################################
+   ##                                                                       ##
+   ##     _    ___  ___   ___ ___ ___                                       ##
+   ##    | |  | __ /   \ / __| _ | __|                                      ##
+   ##    | |__| __  ( ) | (_ |  _|__ \                                      ##
+   ##    |____|___ \___/ \___|_| \___/                                      ##
+   ##                                    v 1.2 (Stable)                     ##
+   ##                                                                       ##
+   ###########################################################################
+   ###########################################################################
+
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
    :target: https://leogps.readthedocs.io/en/latest/
 
@@ -11,7 +23,7 @@
 .. |linkedin| image:: https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg
    :target: https://www.linkedin.com/in/sammmlow
 
-.. image:: /_images/logo.png
+.. image:: /_static/leogps_logo.png
 
 .. toctree::
    :maxdepth: 2
@@ -36,21 +48,21 @@ LEOGPS is an open-source Python package that takes in GPS observations of format
 First, find the LEOGPS GitHub repository in this `GitHub link <https://github.com/sammmlow/LEOGPS>`_, and download it. Alternatively, if you have Git installed, you can open Command Prompt or your Git Bash, enter the directory of your choice, and type:
 
 .. code-block:: bash
-    
-	git clone https://github.com/sammmlow/LEOGPS.git
+   
+   git clone https://github.com/sammmlow/LEOGPS.git
 
 Second, you should do a pip install in your terminal of Martin Valgur's Pythonic translation of `Hatanaka (de)compression in Python <https://pypi.org/project/hatanaka/>`_:
 
 .. code-block:: bash
 
-    pip install hatanaka
+   pip install hatanaka
 
 The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" and "GZIP" Windows-only executables, making the (de)compression possible across all operating systems.
 
 That's it! No further setup is needed, unless you need any of the other package dependencies.
 
 .. note:: Package dependencies include: 
-    numpy (v1.14), matplotlib, hatanaka, unlzw3, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings
+   numpy (v1.14), matplotlib, hatanaka, unlzw3, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings
 
 
 
@@ -59,7 +71,7 @@ That's it! No further setup is needed, unless you need any of the other package 
 
 First, launch LEOGPS by running **'leogps.py'** in a Python IDE or your terminal, and you will see a user-interface (UI) with input parameters as shown below.
 
-.. image:: /_images/gui.png
+.. image:: /_figures/gui.png
 
 We may now proceed to run the default LEOGPS scenario that comes with the build, for the GRACE formation flying satellite mission.
 
@@ -84,8 +96,8 @@ First, for your own custom scenarios, set the correct 4-letter ID and date-times
 
 Second, to use your own custom RINEX observation files, you should provide this in the **/../input/** folder, with two RINEX (v2.xx) observation files, one for each LEO satellite, by pasting it in the **../LEOGPS/input/** folder. The file naming convention for the RINEX observation files is an 8-character string comprising the 4-letter ID of the spacecraft (you can create one arbitrarily), the 3-digit GPS day-of-the-year, followed by a single zero digit. The file extension is the last two digits of the year, followed by the letter 'O'. If the RINEX observation is Hatanaka-compressed, then the last letter of the file extension is a 'D'. For example, the GRACE satellites' decompressed observation file names are::
 
-	GRCA2080.10O
-	GRCB2080.10O
+   GRCA2080.10O
+   GRCB2080.10O
 
 The 4-letter ID of the two spacecrafts in the LEOGPS GUI must match the first 4-letters of the RINEX files provided!
 
@@ -102,9 +114,9 @@ For precise ephemeris and clock files, as long as the user has an active interne
 
 A summary of the processing flow in LEOGPS is given by the flow chart below.
 
-.. figure:: /_images/leogps_flowchart.png
-    :align: center
-    
+.. figure:: /_figures/leogps_flowchart.png
+   :align: center
+   
 If the user wishes to use some of LEOGPS' existing algorithms, such as the single-point positioning (SPP) in **posvel.py** on multiple LEOs, or to solve for multiple baselines, the file to edit the code where you can call these functions is in **leorun.py**. This is the main processing tree that runs internally behind the GUI.
 
 
@@ -119,63 +131,63 @@ The carrier phase range can be modelled as the observed phase, plus an integer n
 
 The integer number of wavelengths however, is unknown and must be estimated. This is known as the “integer ambiguity resolution” problem in GNSS literature, and it can be estimated as a float, with subsequent integer fixing techniques (i.e., wide-lane, narrow-lane, or if the error covariances are known, then integer fixing by Peter Teunissen’s LAMBDA).
 
-.. figure:: /_images/leogps_0diff_fig1.png
-    :align: center
-	
-    Figure 5.1: Carrier phase ranging illustration highlighting the ambiguity N.
+.. figure:: /_figures/leogps_0diff_fig1.png
+   :align: center
+   
+   Figure 5.1: Carrier phase ranging illustration highlighting the ambiguity N.
 
 In any case, the receiver end only measures the instantaneous carrier phase modulo 360 degrees. It is unknown to the receiver how many integer cycles of the carrier signal has passed through the signal path taken from the emission from the GPS satellite to the receiver. Nevertheless, the RINEX file carrier phase observable would normally give an integer estimate nonetheless (usually using a pseudo-range model).
 
 In order to very accurately characterize the range, the number of integer cycles, hereby known as N, must be made known. The integer ambiguity of the carrier phase is red-boxed below.
 
-.. figure:: /_images/leogps_0diff_eqn1.png
-    :align: center
-	
-    Equation 5.1: Carrier phase ranging model
+.. figure:: /_figures/leogps_0diff_eqn1.png
+   :align: center
+   
+   Equation 5.1: Carrier phase ranging model
 
 On top of the integer ambiguity N, there are various other error sources that are modelled in the GPS signal range equation (Equation 5.1), of which are the following in descending order of importance and accuracy loss: the GPS satellite clock bias estimation errors, the LEO satellite clock bias, ionospheric path delays, and other relativistic effects such as clock advance effects and Shapiro path delays.
 
 The key to mitigating errors is the realization that error components shown in Equation 5.1, are highly correlated among GPS receivers in proximity. Subtracting measurements (differencing) between receivers will therefore “cancel” out systematic errors between the LEO satellites.
 
-.. figure:: /_images/leogps_1diff_fig1.png
-    :align: center
-	
-    Figure 5.2: Carrier phase single differencing between two LEOs
+.. figure:: /_figures/leogps_1diff_fig1.png
+   :align: center
+   
+   Figure 5.2: Carrier phase single differencing between two LEOs
 
 In the case of the single differencing scenarios, the absolute carrier phase measurements taken by two LEOs are subtracted from each other. Using the carrier phase ranging model from Equation 5.1, the error sources that are common to both are red-boxed below.
 
-.. figure:: /_images/leogps_1diff_eqn1.png
-    :align: center
-    
-    Equation 5.2: Common errors for a single differencing scenario
+.. figure:: /_figures/leogps_1diff_eqn1.png
+   :align: center
+   
+   Equation 5.2: Common errors for a single differencing scenario
 
 Since the baseline of the LEO satellites are expected not to deviate beyond 200km, it is considered “short”, and thus likely that the ionospheric errors are correlated. Also, this means that the total number of and pseudo-range IDs of GPS satellites in view will not be any different between the two LEOs. Thus, in the single differencing case, between two LEOs and some k-th GPS satellite, differencing the carrier phase measurements between LEO A and B will remove systematic biases in ionospheric path delays, the k-th GPS satellite clock offsets, and common relativistic effects.
 
-.. figure:: /_images/leogps_1diff_eqn2.png
-    :align: center
-    
-    Equation 5.3: Carrier phase single differencing equation
+.. figure:: /_figures/leogps_1diff_eqn2.png
+   :align: center
+   
+   Equation 5.3: Carrier phase single differencing equation
 
 As a result, the single difference equation comprises only of the relative true ranges, the relative receiver clock bias estimation errors, and the relative carrier phase cycle integer ambiguities. For the epsilon error term, assuming both errors are Gaussian, this results also in a square-root-2 amplification in white Gaussian noise.
 
 If the receiver clock bias errors are small, then the baseline can actually already be derived from the single difference equation with little consequence to the accuracy of the baseline AB.
 
-.. figure:: /_images/leogps_1diff_fig2.png
-    :align: center
-    
-    Figure 5.3: Extraction of baseline vector AB from the single differencing equation.
+.. figure:: /_figures/leogps_1diff_fig2.png
+   :align: center
+   
+   Figure 5.3: Extraction of baseline vector AB from the single differencing equation.
 
 In extracting the baseline vector AB in Figure 5.3, the experimenter makes a few assumptions. First, assume that the GPS satellite is far away enough such that the signal paths taken from the emitter to the receivers A and B are almost parallel. Second, assume also that the receiver will be able to estimate the direction vector from itself to the GPS satellite, which is given by g-hat in the Figure 5.3, without introducing new errors. This is possible only if coarse positioning estimates of itself is first achieved using the C/A or P code, and that the GPS navigation observables are correctly parsed. In most cases, since the distance of the GPS satellite to the LEO is on the order of about ~20,000km, any coarse positioning errors on the meter-level scale would not significantly affect the accuracy of the estimation of the g-hat vector. Next, a very rough estimate of the integer ambiguity can be estimated as a float using the pseudo-range values ρ from code measurements, and the known carrier wavelength λ.
 
-.. figure:: /_images/leogps_1diff_eqn3.png
-    :align: center
+.. figure:: /_figures/leogps_1diff_eqn3.png
+   :align: center
 
 One can now solve for the AB vector as seen in Figure 5.3, notwithstanding the fact that the receiver clock bias estimation errors were not cancelled out and will thus show up in some form in the accuracy of the positions. The single differenced baseline solution from LEOGPS for a 100km baseline separation is shown below:
 
-.. figure:: /_images/leogps_1diff_plot.png
-    :align: center
-    
-    Figure 5.4: Relative position error norm of a single differenced 100km LEO baseline.
+.. figure:: /_figures/leogps_1diff_plot.png
+   :align: center
+   
+   Figure 5.4: Relative position error norm of a single differenced 100km LEO baseline.
 
 Observably, the single differenced solution still faces an accuracy > 1m. Embedded in the error plots are likely the unaccounted relative receiver clock bias estimation errors, minor error sources such as antenna phase centre variations, et cetera, which were not differenced away, as well as other white noise error sources.
 
@@ -188,28 +200,28 @@ Observably, the single differenced solution still faces an accuracy > 1m. Embedd
 
 We can actually go one step further beyond single differencing, and that is to difference across two reference GPS satellites. This step is called double differencing, and it is the backbone of the algorithm used in LEOGPS. This removes the relative receiver clock bias estimation errors, and this section will detail the algorithm and the results below.
 
-.. figure:: /_images/leogps_2diff_fig1.png
-    :align: center
-    
-    Figure 6.1: Carrier phase double differencing equation setup.
+.. figure:: /_figures/leogps_2diff_fig1.png
+   :align: center
+   
+   Figure 6.1: Carrier phase double differencing equation setup.
 
 The key idea behind double differencing, is to create a differential between two single difference equations. For example, between two LEO units A and B, if some GPS satellite P was taken as the reference emitter satellite in the single difference equation, then a second single difference equation would be taken with respect to a different GPS satellite Q as the reference emitter. In both single difference equations, it makes no difference to the relative receiver clock bias estimation which reference GPS satellite is used, as these are the errors specific only to the receiver-side in the relative sense.
 
 Thus, taking two single difference measurements, one can observe that the relative receiver clock bias estimation error has now become a common error source in the double differenced equation, which can be cancelled out (both relative receiver clock bias terms in the red box in Figure 6.1 are actually the same and thus they cancel).
 
-.. figure:: /_images/leogps_2diff_fig2.png
-    :align: center
-    
-    Figure 6.2: Extraction of the true baseline vector via double differencing.
+.. figure:: /_figures/leogps_2diff_fig2.png
+   :align: center
+   
+   Figure 6.2: Extraction of the true baseline vector via double differencing.
 
 In a similar fashion to the single differencing algorithm, the double differencing algorithm requires the estimation of the unit direction vector from the LEO A to reference GPS satellite P, and from the LEO B to the reference GPS satellite Q. Once again, with the double-differenced relative range, and on the assumption that the signal path pairs from P to AB are parallel, and the path pairs from Q to AB are also parallel, one can de-construct the baseline vector AB since each single difference observation forms the base of a right-angled triangle.
 
 Since two reference satellites are now used in the creation of a double differenced equation, for N number of common GPS satellites in view, one can expect N-1 number of double differenced equations. Solving the entire system of equations leads to the baseline vector solution, with the error norm plotted below (error taken against a ground truth for two LEO units at a 100km baseline separation). It is observed that the final elimination of receiver clock biases creates an almost ten fold increase in the navigation accuracy.
 
-.. figure:: /_images/leogps_2diff_plot.png
-    :align: center
-    
-    Figure 6.3: Relative position error norm of a double differenced 100km LEO baseline.
+.. figure:: /_figures/leogps_2diff_plot.png
+   :align: center
+   
+   Figure 6.3: Relative position error norm of a double differenced 100km LEO baseline.
 
 In its essence, the single differencing paradigm changed the structure of the navigation problem, eliminating most nuisance errors, while the double differencing paradigm went further and essentially eliminated the receiver clock bias at the expense of one equation in the entire system of equations, while also redefining the ambiguity term into a double-differential ambiguity.
 
