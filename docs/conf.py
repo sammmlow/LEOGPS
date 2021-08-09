@@ -9,12 +9,12 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
 
 import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../source'))
+
 import sphinx_rtd_theme
 
 html_theme = "sphinx_rtd_theme"
@@ -25,14 +25,17 @@ copyright = '2021, Samuel Y. W. Low'
 author = 'Samuel Y. W. Low'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = '1.2'
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx_rtd_theme"]
+extensions = ["sphinx_rtd_theme",
+              "sphinx.ext.autodoc",
+              "sphinx.ext.coverage",
+              "sphinx.ext.napoleon"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -53,7 +56,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['_static','_figures']
 
 html_theme_options = {
     'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
@@ -63,7 +66,7 @@ html_theme_options = {
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'vcs_pageview_mode': '',
-    'style_nav_header_background': '#202020',
+    'style_nav_header_background': '#222A35',
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,
@@ -72,6 +75,11 @@ html_theme_options = {
     'titles_only': False
 }
 
+# Get the direct path
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-html_logo = dir_path + '/_images/logo_invert.png'
+# Add the HTML logo that displays on the top-left panel.
+html_logo = dir_path + '/_static/leogps_favicon2.png'
+
+# Add the HTML logo.
+html_favicon = '_static/leogps_favicon.png'

@@ -4,17 +4,22 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>LEOGPS v1.1 &mdash; LEOGPS 1.0 documentation</title>
+  <title>LEOGPS &mdash; LEOGPS 1.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
+  
+    <link rel="shortcut icon" href="_static/leogps_favicon.png"/>
   
 
   
@@ -29,16 +34,17 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="docs_install.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -48,7 +54,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #202020" >
+        <div class="wy-side-nav-search"  style="background: #222A35" >
           
 
           
@@ -57,7 +63,7 @@
 
           
             
-            <img src="_static/logo_invert.png" class="logo" alt="Logo"/>
+            <img src="_static/leogps_favicon2.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -86,18 +92,23 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">LEOGPS v1.1</a></li>
-<li><a class="reference internal" href="#installation">1. Installation</a></li>
-<li><a class="reference internal" href="#first-steps">2. First Steps</a></li>
-<li><a class="reference internal" href="#running-your-scenarios">3. Running Your Scenarios</a></li>
-<li><a class="reference internal" href="#overview-of-processing-flow">4. Overview of Processing Flow</a></li>
-<li><a class="reference internal" href="#carrier-single-differencing">5. Carrier Single Differencing</a></li>
-<li><a class="reference internal" href="#carrier-double-differencing">6. Carrier Double Differencing</a></li>
-<li><a class="reference internal" href="#contact-and-support">7. Contact and Support</a></li>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firststep.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firstrun.html">First Scenario Run</a></li>
 </ul>
-</div>
+<p class="caption"><span class="caption-text">Differential Navigation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps1.html">Carrier Single Differencing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+
             
           
         </div>
@@ -144,7 +155,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>LEOGPS v1.1</li>
+      <li>LEOGPS</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,171 +174,70 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <img alt="_images/logo.png" src="_images/logo.png" />
+  <img alt="_images/leogps_logo.png" src="_images/leogps_logo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Github</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://github.com/sammmlow/LEOGPS">https://github.com/sammmlow/LEOGPS</a></p>
+</dd>
+<dt class="field-even">Documents</dt>
+<dd class="field-even"><p><a class="reference external" href="https://leogps.readthedocs.io/en/latest/">https://leogps.readthedocs.io/en/latest/</a></p>
+</dd>
+<dt class="field-odd">Version</dt>
+<dd class="field-odd"><p>1.2 (Latest)</p>
+</dd>
+<dt class="field-even">Author</dt>
+<dd class="field-even"><p>Samuel Y. W. Low</p>
+</dd>
+</dl>
+<p><a class="reference external" href="https://leogps.readthedocs.io/en/latest/"><img alt="docs" src="https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square" /></a> <a class="reference external" href="https://github.com/sammmlow/LEOGPS/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" /></a> <a class="reference external" href="https://www.linkedin.com/in/sammmlow"><img alt="linkedin" src="https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg" /></a> <a class="reference external" href="https://orcid.org/0000-0002-1911-701X/"><img alt="orcid" src="https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg" /></a></p>
+<section id="leogps">
+<h1>LEOGPS<a class="headerlink" href="#leogps" title="Permalink to this headline">¶</a></h1>
+<p>LEOGPS is an open-source Python software which performs relative satellite navigation between <strong>two formation flying satellites</strong>, with the objective of high accuracy relative positioning. Specifically, LEOGPS solves for the double-differenced baseline (using float ambiguity resolution) between satellites flying in formation in Low Earth Orbit (LEO). As such, the relative positioning accuracy diminishes with increasing formation baseline lengths.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For formations with baselines kept below 200km, the relative positioning accuracy using the double-differenced kinematic technique can be kept under 1 meter for an automotive or space grade GPS receiver.</p>
+</div>
+<p>LEOGPS currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format. LEOGPS also uses the precise ephemeris (.EPH) and clock bias and drift files (.CLK) provided by the University of Bern, Center for Orbit Determination in Europe (​CODE). As such, the coordinate frame used in the relative positioning is the International Terrestrial Reference Frame (ITRS) which is an Earth-Centered Earth-Fixed (ECEF) frame. Since the ephemeris files and RINEX v2 observations default to GPS Time, it is very important to also note that the time scale used in LEOGPS output files is GPS Time (as opposed to UTC).</p>
+<p>This project also gives sincere appreciation and credit to the University of Bern, for their provision of the CODE FTP.</p>
+<p>Documentation tree for LEOGPS is listed below.</p>
 <div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firststep.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firstrun.html">First Scenario Run</a></li>
+</ul>
 </div>
-<div class="section" id="leogps-v1-1">
-<h1>LEOGPS v1.1<a class="headerlink" href="#leogps-v1-1" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://leogps.readthedocs.io/en/latest/"><img alt="docs" src="https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square" /></a> <a class="reference external" href="https://github.com/sammmlow/LEOGPS/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" /></a></p>
-<p><em>By: Samuel Y. W. Low</em></p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Differential Navigation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps1.html">Carrier Single Differencing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Advanced References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+</div>
+<p>For bugs, raise the issues in the <a class="reference external" href="https://github.com/sammmlow/LEOGPS/issues">GitHub repository</a>. For collaborations, reach out to me (<a class="reference external" href="mailto:sammmlow&#37;&#52;&#48;gmail&#46;com">sammmlow<span>&#64;</span>gmail<span>&#46;</span>com</a>). The project is licensed under the MIT license.</p>
+<p><em>Written By: Samuel Y. W. Low</em></p>
 <p><a class="reference external" href="https://www.linkedin.com/in/sammmlow"><img alt="linkedin" src="https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg" /></a> <a class="reference external" href="https://orcid.org/0000-0002-1911-701X/"><img alt="orcid" src="https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg" /></a></p>
-<p>LEOGPS is an open-source Python package that takes in GPS observations of formation flying satellites in pairs, to perform single point positioning (SPP) and precise relative positioning via carrier phase double-differential GPS (CDGPS). It currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format. LEOGPS gives credit to the University of Bern, for the CODE precise GPS ephemeris and clock files.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Note that for formation flying applications, the purely kinematic CDGPS approach in LEOGPS is usually accurate up to 1m for baselines less than 200km.</p>
-</div>
-</div>
-<div class="section" id="installation">
-<h1>1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>First, find the LEOGPS GitHub repository in this <a class="reference external" href="https://github.com/sammmlow/LEOGPS">GitHub link</a>, and download it. Alternatively, if you have Git installed, you can open Command Prompt or your Git Bash, enter the directory of your choice, and type:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/sammmlow/LEOGPS.git
-</pre></div>
-</div>
-<p>Second, you should do a pip install in your terminal of Martin Valgur’s Pythonic translation of <a class="reference external" href="https://pypi.org/project/hatanaka/">Hatanaka (de)compression in Python</a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install hatanaka
-</pre></div>
-</div>
-<p>The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older “RNX2CRX” and “GZIP” Windows-only executables, making the (de)compression possible across all operating systems.</p>
-<p>That’s it! No further setup is needed, unless you need any of the other package dependencies.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Package dependencies include:
-numpy (v1.14), matplotlib, hatanaka, unlzw3, urllib.request, PIL, tkinter, os, copy, math, datetime, decimal, shutil, subprocess, warnings</p>
-</div>
-</div>
-<div class="section" id="first-steps">
-<h1>2. First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
-<p>First, launch LEOGPS by running <strong>‘leogps.py’</strong> in a Python IDE or your terminal, and you will see a user-interface (UI) with input parameters as shown below.</p>
-<img alt="_images/gui.png" src="_images/gui.png" />
-<p>We may now proceed to run the default LEOGPS scenario that comes with the build, for the GRACE formation flying satellite mission.</p>
-<p>On the UI, you can load the default configuration inputs (based on the GRACE formation on 27-07-2010), as an example. The default LEOGPS comes with two Hatanaka-compressed (file extension ending with <strong>‘D’</strong>) RINEX observation files for GRACE A and B. To run the default example scenario, just click on “Run LEOGPS”, without changing any of the inputs. On saving or running LEOGPS, all inputs are saved in the <strong>../LEOGPS/config/config.txt/</strong> file. Once the processing starts, several things will happen.</p>
-<p>First, notice that the RINEX observation files in the <strong>../LEOGPS/input/</strong> will automatically be Hatanaka-decompressed (file extension changes from ‘D’ to ‘O’). LEOGPS accepts Hatanaka compressed and uncompressed RINEX files.</p>
-<p>Second, notice also that LEOGPS will automatically download daily precise (final) ephemeris and clock files from the <a class="reference external" href="ftp://ftp.aiub.unibe.ch/CODE/">University of Bern’s CODE FTP</a>, and unzip them automatically. Ephemeris files downloaded will span one day before and one day after the scenario date(s) so that the GPS satellite orbit interpolation can be done beyond the edges of the scenario time-line to prevent edge effects (i.e. ringing, poor polynomial fits etc).</p>
-<p>Third, the interpolated data of GPS ephemeris and clocks are saved and plotted in the <strong>../LEOGPS/output/</strong> folders (this option can be disabled in the configuration to speed up processing time).</p>
-<p>Fourth and finally, the desired main output of LEOGPS - the SPP and CDGPS solutions, are saved in ‘LEOGPS_Results.txt’.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In the default LEOGPS build, the ground truths for the GRACE formation are also provided in the ‘outputs’ directory. These truths are the precise orbit determination solutions, with relative positions validated by the GRACE formation’s actual K-Band ranging radar data.*</p>
-</div>
-</div>
-<div class="section" id="running-your-scenarios">
-<h1>3. Running Your Scenarios<a class="headerlink" href="#running-your-scenarios" title="Permalink to this headline">¶</a></h1>
-<p>First, for your own custom scenarios, set the correct 4-letter ID and date-times of your spacecraft scenario. When saving or running LEOGPS, these inputs for your scenario and spacecraft will be saved in the <strong>../LEOGPS/config/config.txt/</strong> file which the GUI interfaces with. Note that configuration input strings follow a strict format.</p>
-<p>Second, to use your own custom RINEX observation files, you should provide this in the <strong>/../input/</strong> folder, with two RINEX (v2.xx) observation files, one for each LEO satellite, by pasting it in the <strong>../LEOGPS/input/</strong> folder. The file naming convention for the RINEX observation files is an 8-character string comprising the 4-letter ID of the spacecraft (you can create one arbitrarily), the 3-digit GPS day-of-the-year, followed by a single zero digit. The file extension is the last two digits of the year, followed by the letter ‘O’. If the RINEX observation is Hatanaka-compressed, then the last letter of the file extension is a ‘D’. For example, the GRACE satellites’ decompressed observation file names are:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GRCA2080</span><span class="o">.</span><span class="mi">10</span><span class="n">O</span>
-<span class="n">GRCB2080</span><span class="o">.</span><span class="mi">10</span><span class="n">O</span>
-</pre></div>
-</div>
-<p>The 4-letter ID of the two spacecrafts in the LEOGPS GUI must match the first 4-letters of the RINEX files provided!</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For help in understanding the RINEX format better, LEOGPS comes packaged with the RINEX v2.10 documentation in the <strong>utils</strong> directory.</p>
-</div>
-<p>For precise ephemeris and clock files, as long as the user has an active internet connection, you do not need to provide your own ephemeris and clock files, as LEOGPS will automatically source it. However, in the event where the FTP is down, but the user has their own precise ephemeris and clock files, you can transfer these files into the <strong>/../input/</strong> folder and rename these files to follow the CODE naming convention so that LEOGPS detects these files and can use them offline without access to the FTP. The naming convention for precise clock and ephemeris files are also 8-character strings, starting with a ‘COD’, followed by the 4-digit GPS week number, followed by the 1-digit GPS day-of-week number. The file extension for precise ephemeris files is a ‘.EPH’ string, and for clock files it is a ‘.CLK’ string.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For assistance with dates in GPS/GNSS formats, refer to the <a class="reference external" href="https://geodesy.noaa.gov/CORS/Gpscal.shtml">geodetic calendar here</a>.</p>
-</div>
-</div>
-<div class="section" id="overview-of-processing-flow">
-<h1>4. Overview of Processing Flow<a class="headerlink" href="#overview-of-processing-flow" title="Permalink to this headline">¶</a></h1>
-<p>A summary of the processing flow in LEOGPS is given by the flow chart below.</p>
-<div class="figure align-center">
-<img alt="_images/leogps_flowchart.png" src="_images/leogps_flowchart.png" />
-</div>
-<p>If the user wishes to use some of LEOGPS’ existing algorithms, such as the single-point positioning (SPP) in <strong>posvel.py</strong> on multiple LEOs, or to solve for multiple baselines, the file to edit the code where you can call these functions is in <strong>leorun.py</strong>. This is the main processing tree that runs internally behind the GUI.</p>
-</div>
-<div class="section" id="carrier-single-differencing">
-<h1>5. Carrier Single Differencing<a class="headerlink" href="#carrier-single-differencing" title="Permalink to this headline">¶</a></h1>
-<p>This segment of the LEOGPS documentation gets into the technicals of baseline estimation between formation flying satellites (or even between static stations in general), and it assumes that the user has sufficient knowledge on single-point positioning concepts. The algorithm described in this section is based on carrier phase differencing, and is largely implemented in the code file <strong>ambest.py</strong> (ambiguity estimation). For a tutorial on the more basic aspects of GNSS, the user is invited to peruse <a class="reference external" href="https://gssc.esa.int/navipedia/index.php/Main_Page">ESA’s NaviPedia</a>.</p>
-<p>Carrier phase differential GPS, or CDGPS in summary, is the technique of estimating the relative position of a receiver with respect to another, over a short baseline. The carrier signal’s phase is typically exploited for precise point positioning due to its ranging precision, rather than using the unambiguous code. In the case of GPS signals, the ranging accuracy of the C/A code signal is typically on the order of ±3m for a typical GNSS receiver (on the modernized GPS block without selective availability); whereas the ranging accuracy of the carrier phase of the signal is on the order of millimeters due to the accuracy achievable in most receiver phase-locked loops today.</p>
-<p>The carrier phase range can be modelled as the observed phase, plus an integer number of wavelengths, and plus a series of systematic and random ranging errors. The goal of carrier phase differential GPS techniques is to remove these systematic ranging errors through differential measurements which cancel common and correlated sources of ranging errors observed by both receivers over a “short” baseline.</p>
-<p>The integer number of wavelengths however, is unknown and must be estimated. This is known as the “integer ambiguity resolution” problem in GNSS literature, and it can be estimated as a float, with subsequent integer fixing techniques (i.e., wide-lane, narrow-lane, or if the error covariances are known, then integer fixing by Peter Teunissen’s LAMBDA).</p>
-<div class="figure align-center" id="id1">
-<img alt="_images/leogps_0diff_fig1.png" src="_images/leogps_0diff_fig1.png" />
-<p class="caption"><span class="caption-text">Figure 5.1: Carrier phase ranging illustration highlighting the ambiguity N.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-<p>In any case, the receiver end only measures the instantaneous carrier phase modulo 360 degrees. It is unknown to the receiver how many integer cycles of the carrier signal has passed through the signal path taken from the emission from the GPS satellite to the receiver. Nevertheless, the RINEX file carrier phase observable would normally give an integer estimate nonetheless (usually using a pseudo-range model).</p>
-<p>In order to very accurately characterize the range, the number of integer cycles, hereby known as N, must be made known. The integer ambiguity of the carrier phase is red-boxed below.</p>
-<div class="figure align-center" id="id2">
-<img alt="_images/leogps_0diff_eqn1.png" src="_images/leogps_0diff_eqn1.png" />
-<p class="caption"><span class="caption-text">Equation 5.1: Carrier phase ranging model</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-<p>On top of the integer ambiguity N, there are various other error sources that are modelled in the GPS signal range equation (Equation 5.1), of which are the following in descending order of importance and accuracy loss: the GPS satellite clock bias estimation errors, the LEO satellite clock bias, ionospheric path delays, and other relativistic effects such as clock advance effects and Shapiro path delays.</p>
-<p>The key to mitigating errors is the realization that error components shown in Equation 5.1, are highly correlated among GPS receivers in proximity. Subtracting measurements (differencing) between receivers will therefore “cancel” out systematic errors between the LEO satellites.</p>
-<div class="figure align-center" id="id3">
-<img alt="_images/leogps_1diff_fig1.png" src="_images/leogps_1diff_fig1.png" />
-<p class="caption"><span class="caption-text">Figure 5.2: Carrier phase single differencing between two LEOs</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-<p>In the case of the single differencing scenarios, the absolute carrier phase measurements taken by two LEOs are subtracted from each other. Using the carrier phase ranging model from Equation 5.1, the error sources that are common to both are red-boxed below.</p>
-<div class="figure align-center" id="id4">
-<img alt="_images/leogps_1diff_eqn1.png" src="_images/leogps_1diff_eqn1.png" />
-<p class="caption"><span class="caption-text">Equation 5.2: Common errors for a single differencing scenario</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-<p>Since the baseline of the LEO satellites are expected not to deviate beyond 200km, it is considered “short”, and thus likely that the ionospheric errors are correlated. Also, this means that the total number of and pseudo-range IDs of GPS satellites in view will not be any different between the two LEOs. Thus, in the single differencing case, between two LEOs and some k-th GPS satellite, differencing the carrier phase measurements between LEO A and B will remove systematic biases in ionospheric path delays, the k-th GPS satellite clock offsets, and common relativistic effects.</p>
-<div class="figure align-center" id="id5">
-<img alt="_images/leogps_1diff_eqn2.png" src="_images/leogps_1diff_eqn2.png" />
-<p class="caption"><span class="caption-text">Equation 5.3: Carrier phase single differencing equation</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-<p>As a result, the single difference equation comprises only of the relative true ranges, the relative receiver clock bias estimation errors, and the relative carrier phase cycle integer ambiguities. For the epsilon error term, assuming both errors are Gaussian, this results also in a square-root-2 amplification in white Gaussian noise.</p>
-<p>If the receiver clock bias errors are small, then the baseline can actually already be derived from the single difference equation with little consequence to the accuracy of the baseline AB.</p>
-<div class="figure align-center" id="id6">
-<img alt="_images/leogps_1diff_fig2.png" src="_images/leogps_1diff_fig2.png" />
-<p class="caption"><span class="caption-text">Figure 5.3: Extraction of baseline vector AB from the single differencing equation.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-<p>In extracting the baseline vector AB in Figure 5.3, the experimenter makes a few assumptions. First, assume that the GPS satellite is far away enough such that the signal paths taken from the emitter to the receivers A and B are almost parallel. Second, assume also that the receiver will be able to estimate the direction vector from itself to the GPS satellite, which is given by g-hat in the Figure 5.3, without introducing new errors. This is possible only if coarse positioning estimates of itself is first achieved using the C/A or P code, and that the GPS navigation observables are correctly parsed. In most cases, since the distance of the GPS satellite to the LEO is on the order of about ~20,000km, any coarse positioning errors on the meter-level scale would not significantly affect the accuracy of the estimation of the g-hat vector. Next, a very rough estimate of the integer ambiguity can be estimated as a float using the pseudo-range values ρ from code measurements, and the known carrier wavelength λ.</p>
-<div class="figure align-center">
-<img alt="_images/leogps_1diff_eqn3.png" src="_images/leogps_1diff_eqn3.png" />
-</div>
-<p>One can now solve for the AB vector as seen in Figure 5.3, notwithstanding the fact that the receiver clock bias estimation errors were not cancelled out and will thus show up in some form in the accuracy of the positions. The single differenced baseline solution from LEOGPS for a 100km baseline separation is shown below:</p>
-<div class="figure align-center" id="id7">
-<img alt="_images/leogps_1diff_plot.png" src="_images/leogps_1diff_plot.png" />
-<p class="caption"><span class="caption-text">Figure 5.4: Relative position error norm of a single differenced 100km LEO baseline.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-<p>Observably, the single differenced solution still faces an accuracy &gt; 1m. Embedded in the error plots are likely the unaccounted relative receiver clock bias estimation errors, minor error sources such as antenna phase centre variations, et cetera, which were not differenced away, as well as other white noise error sources.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Every step of differencing amplifies the random error sources by root-2, assuming the noises are well-modelled as a Gaussian.</p>
-</div>
-</div>
-<div class="section" id="carrier-double-differencing">
-<h1>6. Carrier Double Differencing<a class="headerlink" href="#carrier-double-differencing" title="Permalink to this headline">¶</a></h1>
-<p>We can actually go one step further beyond single differencing, and that is to difference across two reference GPS satellites. This step is called double differencing, and it is the backbone of the algorithm used in LEOGPS. This removes the relative receiver clock bias estimation errors, and this section will detail the algorithm and the results below.</p>
-<div class="figure align-center" id="id8">
-<img alt="_images/leogps_2diff_fig1.png" src="_images/leogps_2diff_fig1.png" />
-<p class="caption"><span class="caption-text">Figure 6.1: Carrier phase double differencing equation setup.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-<p>The key idea behind double differencing, is to create a differential between two single difference equations. For example, between two LEO units A and B, if some GPS satellite P was taken as the reference emitter satellite in the single difference equation, then a second single difference equation would be taken with respect to a different GPS satellite Q as the reference emitter. In both single difference equations, it makes no difference to the relative receiver clock bias estimation which reference GPS satellite is used, as these are the errors specific only to the receiver-side in the relative sense.</p>
-<p>Thus, taking two single difference measurements, one can observe that the relative receiver clock bias estimation error has now become a common error source in the double differenced equation, which can be cancelled out (both relative receiver clock bias terms in the red box in Figure 6.1 are actually the same and thus they cancel).</p>
-<div class="figure align-center" id="id9">
-<img alt="_images/leogps_2diff_fig2.png" src="_images/leogps_2diff_fig2.png" />
-<p class="caption"><span class="caption-text">Figure 6.2: Extraction of the true baseline vector via double differencing.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
-<p>In a similar fashion to the single differencing algorithm, the double differencing algorithm requires the estimation of the unit direction vector from the LEO A to reference GPS satellite P, and from the LEO B to the reference GPS satellite Q. Once again, with the double-differenced relative range, and on the assumption that the signal path pairs from P to AB are parallel, and the path pairs from Q to AB are also parallel, one can de-construct the baseline vector AB since each single difference observation forms the base of a right-angled triangle.</p>
-<p>Since two reference satellites are now used in the creation of a double differenced equation, for N number of common GPS satellites in view, one can expect N-1 number of double differenced equations. Solving the entire system of equations leads to the baseline vector solution, with the error norm plotted below (error taken against a ground truth for two LEO units at a 100km baseline separation). It is observed that the final elimination of receiver clock biases creates an almost ten fold increase in the navigation accuracy.</p>
-<div class="figure align-center" id="id10">
-<img alt="_images/leogps_2diff_plot.png" src="_images/leogps_2diff_plot.png" />
-<p class="caption"><span class="caption-text">Figure 6.3: Relative position error norm of a double differenced 100km LEO baseline.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</div>
-<p>In its essence, the single differencing paradigm changed the structure of the navigation problem, eliminating most nuisance errors, while the double differencing paradigm went further and essentially eliminated the receiver clock bias at the expense of one equation in the entire system of equations, while also redefining the ambiguity term into a double-differential ambiguity.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>We can actually go one step further and perform triple-differencing, that is, performing a differencing measurement between two double-differences. This eliminates the ambiguity entirely, but it amplifies the random errors by another factor of root-2, and it further reduces the degrees of freedom by one, from N-1 to N-2, N being the number of GPS satellites. At that point, some may argue that estimating the ambiguity with the C/A range on a double-differencing measurement would give a better accuracy then.</p>
-</div>
-</div>
-<div class="section" id="contact-and-support">
-<h1>7. Contact and Support<a class="headerlink" href="#contact-and-support" title="Permalink to this headline">¶</a></h1>
-<p>For bugs, raise the issues in the <a class="reference external" href="https://github.com/sammmlow/LEOGPS/issues">GitHub repository</a>.</p>
-<p>For collaborations, reach out to me: <a class="reference external" href="mailto:sammmlow&#37;&#52;&#48;gmail&#46;com">sammmlow<span>&#64;</span>gmail<span>&#46;</span>com</a> (Samuel Y. W. Low)</p>
-<p><a class="reference external" href="https://www.linkedin.com/in/sammmlow"><img alt="linkedin" src="https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg" /></a> <a class="reference external" href="https://orcid.org/0000-0002-1911-701X/"><img alt="orcid" src="https://img.shields.io/badge/ID-0000--0002--1911--701X-a6ce39.svg" /></a></p>
-<p>The project is licensed under the MIT license.</p>
-</div>
+</section>
 
 
            </div>
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="docs_install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

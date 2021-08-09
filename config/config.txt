@@ -5,7 +5,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.1 (Latest)                         ##
+##                                    v 1.2 (Latest)                         ##
 ##                                                                           ##
 ##    Configuration File (For User-Defined Inputs)                           ##
 ##                                                                           ##
@@ -27,10 +27,10 @@ I: name1 GRCA
 I: name2 GRCB
 ~: 
 ~: Input the starting epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-01-45-00)
-I: dtstart 2010-07-27-00-00-00
+I: dtstart 2010-07-27-06-30-00
 ~:
 ~: Input the ending epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-03-45-00)
-I: dtstop 2010-07-27-22-00-00
+I: dtstop 2010-07-27-18-30-00
 ~: 
 ~: Input the timestep in seconds (i.e. 30)
 I: timestep 10
@@ -38,28 +38,16 @@ I: timestep 10
 ~: Input single or dual frequency processing (i.e. 1 or 2)
 I: freq 2
 ~: 
-~: Offset Earth's rotation during signal time-of-flight? (True/False)
-I: earthrotation True
+~: Enable code-carrier smoothing via Hatch filter (case sensitive True/False)?
+I: hatchfilter False
 ~: 
-~: Account for relativistic effects? (True/False)
-I: relativity True
-~: 
-~: Do you want to save the output plots for GPS ephemeris and clocks (True/False)?
-I: savefigs True
-~:
-~: Do you want to save the output report for GPS ephemeris and clocks (True/False)?
-I: savereport True
-~: 
-~: Do you want to enable code-carrier smoothing via recursive Hatch filter (True/False)?
-I: hatchfilter True
-~: 
-~: What is the length (integer number of epochs of RINEX observations) of the hatch filter used?
+~: What is the length (integer number of epochs) of the hatch filter used?
 I: hatchlength 10
 ~: 
-~: What is the tolerance (number of standard deviations) for the cycle slip detection algorithm?
+~: What is the tolerance (number of sigmas) for cycle slip detection?
 I: cycsliptol 3.0
 ~:
-~: What is the length of the sliding window filter for cycle slip detection in phase values?
+~: What is the length of the sliding window filter for cycle slip detection?
 I: cycsliplen 10
 ~: 
 ~: Set the antenna offset in X-direction (m)
@@ -70,6 +58,12 @@ I: antoffsetY 0.0
 ~: 
 ~: Set the antenna offset in Z-direction (m)
 I: antoffsetZ 0.0
+~:
+~: Select the output orbit ephemeris coordinate frame
+I: frameOrb ICRF
+~:
+~: Select the output relative baseline coordinate frame
+I: frameForm Hill
 ~:
 ###############################################################################
 ###############################################################################
