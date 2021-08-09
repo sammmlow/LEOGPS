@@ -10,20 +10,14 @@
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    Last modified 30-May-2021.                                             ##
+##    Last modified 09-Aug-2021.                                             ##
 ##    Website: https://github.com/sammmlow/LEOGPS                            ##
 ##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
-''' Module docstring for the main LEOGPS file
-
-This is the main script that calls the GUI (tkinter) to run.
-
-'''
-
-# Import our GUI libraries.
+# Import global libraries
 import tkinter
 
 # Import local libraries.
@@ -34,8 +28,8 @@ root = tkinter.Tk()
 root_gui = leogui.run_gui( root )
 root.mainloop()
 
-# To run LEOGPS without GUI, comment out lines 27-29.
-# Set your config.txt file manually.
-# Uncomment below and run this script.
+# To run LEOGPS manually without GUI, comment out lines 27-29. Then, edit 
+# your config.txt file manually. Finally, uncomment lines 34-35 and run.
+
 # from source import leorun
 # leorun.run()

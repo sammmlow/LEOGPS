@@ -9,12 +9,13 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    No inputs or outputs. Just a List of useful constants.                 ##
+##    Adapted from (and credits to) Bernese GNSS v5.2                        ##
 ##                                                                           ##
-## No inputs or outpots. Just a List of useful constants.                    ##
-## Adapted from (and credits to) Bernese GNSS v5.2                           ##
-##                                                                           ##
-## AUTHOR MODIFIED: 07-05-2019, by Samuel Y.W. Low                           ##
+##    Written by Bernese GNSS Developers                                     ##
+##    Last modified 08-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################

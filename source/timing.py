@@ -9,37 +9,61 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    This module comprises two functions: tcheck() and get_startstop().     ##
 ##                                                                           ##
-## This program checks the first / last epoch values in both RINEX obs files ##
-## The user would have also input the desired start/stop times and timesteps ##
-## This program will then take the intersection between all time intervals   ##
-## This selected time interval will then be used for processing throughout   ##
+##    tcheck() takes in the paths (pathlib.Path) of 02x RINEX v2 files,      ##
+##    as well as the user-defined dictionary of inputs from config.txt.      ##
+##    If both RINEX files and the user-defined timing parameters do not      ##
+##    have an overlapping duration (i.e. each RINEX file corresponds to      ##
+##    a different date or time), or if they have incoherent step sizes       ##
+##    then this function will output False. Else, this function will out-    ##
+##    put the scenario start time, scenario final time, the scenario step    ##
+##    size, as well as the RINEX file step size.                             ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    get_startstop() takes in a list, with elements of the list being       ##
+##    each line of the RINEX file, as strings, and returns three objects;    ##
+##    the observed start and stop times as datetime.datetime objects, and    ##
+##    the RINEX file time step as a datetime.timedelta object.               ##
 ##                                                                           ##
-## RINEX observation file (v2.xx) of LEO satellite                           ##
-## User-specified times (dtstart/dtstop) in config.txt                       ##
+##    The rest of LEOGPS will base its time on the output of tcheck().       ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
-##                                                                           ##
-## Two datetime objects: one start datetime, and one stop datetime.          ##
-## One timedelta object: time step, based on the user-defined or RINEX step. ##
-##                                                                           ##
-## REMARKS:                                                                  ##
-##                                                                           ##
-## The rest of LEOGPS will base its timings on the output of this program    ##
-##                                                                           ##
-## AUTHOR MODIFIED: 30-11-2019, by Samuel Y.W. Low                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 05-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
+# Import global libraries
 import datetime
 
-# Read both RINEX files and output the desired start and stop times.
-
 def tcheck(rnx1file, rnx2file, inps):
+    
+    ''' Reads both RINEX files and output the desired start and stop times.
+    Sets the start, stop, and time steps for the entire LEOGPS scenario.
+    
+    Parameters
+    ----------
+    rnx1file : pathlib.Path
+        Path of RINEX file of LEO-A
+    rnx2file : pathlib.Path
+        Path of RINEX file of LEO-B
+    inps : dict
+        A dictionary of inputs created by `inpxtr.inpxtr()`
+    
+    Returns
+    -------
+    tstart : datetime.datetime
+        Scenario start time for processing
+    tstop : datetime.datetime
+        Scenario stop time for processing
+    tstep : datetime.timedelta
+        Scenario time step used in processing
+    rnx1step : datetime.timedelta
+        Observed time step in the RINEX file
+    
+    '''
     
     # Let's first import all user-defined inputs
     name1    = inps['name1'] # 4-letter ID of spacecraft A
@@ -153,9 +177,27 @@ def tcheck(rnx1file, rnx2file, inps):
             
     return tstart, tstop, tstep, rnx1step
 
-# Function get_startstop gets the first and last epoch in one RINEX file.
+
 
 def get_startstop(rnxlines):
+    
+    ''' Gets the first and last epoch after reading one RINEX file. 
+    
+    Parameters
+    ----------
+    rnxlines : list
+        List of strings as lines of the RINEX file
+    
+    Returns
+    -------
+    rnxstart : datetime.datetime
+        Observed initial time stamp in RINEX file
+    rnxstop : datetime.datetime
+        Observed final time stamp in RINEX file
+    rnxstep : datetime.timedelta
+        Observed time step in RINEX file
+    
+    '''
     
     # Check for where the end of the RINEX header is located at.
     header_reached = False

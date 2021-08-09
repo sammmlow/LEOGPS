@@ -9,64 +9,80 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    Provides functions that correct for relativistic effects:              ##
 ##                                                                           ##
-## Provides a suite of functions that correct for relativistic effects:      ##
+##    1. SHAPIRO DELAY:                                                      ##
+##    Due to the space time curvature produced by the gravitational field,   ##
+##    the Euclidean range travelled by the signal, which is computed by      ##
+##    'posvel.py' must be corrected by the extra distance travelled.         ##
+##    Typically, Shapiro effects corrupt with about ~2cm ranging error.      ##
 ##                                                                           ##
-## 1. SHAPIRO DELAY:                                                         ##
-## --> Due to the space time curvature produced by the gravitational field,  ##
-## --> the Euclidean range travelled by the signal, which is computed by     ##
-## --> 'posvel.py' must be corrected by the extra distance travelled.        ##
-## --> Typically, Shapiro effects corrupt with about ~2cm ranging error.     ##
+##    2. CLOCK ADVANCE:                                                      ##
+##    The rate of advance of two identical clocks, one in the LEO satellite  ##
+##    and the other on the GPS satellite, will differ due to differences in  ##
+##    the gravitational potential (general relativity) and to the relative   ##
+##    speed between them (special relativity).                               ##
 ##                                                                           ##
-## 2. CLOCK ADVANCE:                                                         ##
-## --> The rate of advance of two identical clocks, one in the LEO satellite ##
-## --> and the other on the GPS satellite, will differ due to differences in ##
-## --> the gravitational potential (general relativity) and to the relative  ##
-## --> speed between them (special relativity).                              ##
+##    Formulae below are adapted from the ESA GNSS Guidebook.                ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
-##                                                                           ##
-## Position and velocities of LEO and GPS satellites as numpy arrays.        ##
-##                                                                           ##
-## OUTPUT:                                                                   ##
-##                                                                           ##
-## Relativistic orrections to the pseudorange in meters.                     ##
-##                                                                           ##
-## REMARKS:                                                                  ##
-##                                                                           ##
-## THANK GOD FOR DR ALBERT EINSTEIN!                                         ##
-##                                                                           ##
-## AUTHOR MODIFIED: 26-06-2019, by Samuel Y.W. Low                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 08-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
-
-# Formulas below adapted from ESA's GNSS Guidebook
-
-import math
+# Import global libraries
 import numpy as np
 
-# IMPORT LOCAL LIBRARIES
+# Import locla libraries
 from source import consts
 
 gm  = consts.GM  # GRAVITY CONSTANT * EARTH MASS
 c   = consts.C   # VELOCITY OF LIGHT (M/S)
 err = consts.ERR # # EARTH INERTIAL ROTATION RATE (RAD/S)
 
-# CLOCK ADVANCE EFFECT.
-
 def clockadv(gpspos,gpsvel):
+    '''Returns the clock advance effect on signal range as a path length
+    correction in meters.
+
+    Parameters
+    ----------
+    gpspos : numpy.ndarray
+        1x3 position of GPS satellite (ITRF)
+    gpsvel : numpy.ndarray
+        1x3 velocity of GPS satellite (ITRF)
+
+    Returns
+    -------
+    correction : float
+        Units in meters
+
+    '''
     
     # This effect is more dominant than the Shapiro Delay effect.
     
     return -2*np.dot(gpspos,gpsvel)/c # Units in meters, thus c is not squared
 
 # SHAPIRO DELAY EFFECT.
-
 def shapiro(leopos,gpspos):
-    
+    '''Returns the Shapiro delay effect on signal range as a path length
+    correction in meters.
+
+    Parameters
+    ----------
+    leopos : numpy.ndarray
+        1x3 position of LEO satellite (ITRF)
+    gpspos : numpy.ndarray
+        1x3 position of GPS satellite (ITRF)
+
+    Returns
+    -------
+    correction : float
+        Units in meters
+
+    '''
     # leo = geocentric distance between LEO satellite and Earth
     # gps = geocentric distance between GPS satellite and Earth
     # rel = relative distance between the receiving LEO and GPS satellite

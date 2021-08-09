@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Carrier Single Differencing &mdash; LEOGPS 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/leogps_favicon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Carrier Double Differencing" href="docs_cdgps2.html" />
+    <link rel="prev" title="First Scenario Run" href="docs_firstrun.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #222A35" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> LEOGPS
+          
+
+          
+            
+            <img src="_static/leogps_favicon2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firststep.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firstrun.html">First Scenario Run</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Differential Navigation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Carrier Single Differencing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LEOGPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Carrier Single Differencing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/docs_cdgps1.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="_images/leogps_logo.png" src="_images/leogps_logo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="carrier-single-differencing">
+<h1>Carrier Single Differencing<a class="headerlink" href="#carrier-single-differencing" title="Permalink to this headline">¶</a></h1>
+<p>This segment of the LEOGPS documentation gets into the technicals of baseline estimation between formation flying satellites (or even between static stations in general), and it assumes that the user has sufficient knowledge on single-point positioning concepts. The algorithm described in this section is based on carrier phase differencing, and is largely implemented in the code file <strong>ambest.py</strong> (ambiguity estimation). For a tutorial on the more basic aspects of GNSS, the user is invited to peruse <a class="reference external" href="https://gssc.esa.int/navipedia/index.php/Main_Page">ESA’s NaviPedia</a>.</p>
+<p>Carrier phase differential GPS, or CDGPS in summary, is the technique of estimating the relative position of a receiver with respect to another, over a short baseline. The carrier signal’s phase is typically exploited for precise point positioning due to its ranging precision, rather than using the unambiguous code. In the case of GPS signals, the ranging accuracy of the C/A code signal is typically on the order of ±3m for a typical GNSS receiver (on the modernized GPS block without selective availability); whereas the ranging accuracy of the carrier phase of the signal is on the order of millimeters due to the accuracy achievable in most receiver phase-locked loops today.</p>
+<p>The carrier phase range can be modelled as the observed phase, plus an integer number of wavelengths, and plus a series of systematic and random ranging errors. The goal of carrier phase differential GPS techniques is to remove these systematic ranging errors through differential measurements which cancel common and correlated sources of ranging errors observed by both receivers over a “short” baseline.</p>
+<p>The integer number of wavelengths however, is unknown and must be estimated. This is known as the “integer ambiguity resolution” problem in GNSS literature, and it can be estimated as a float, with subsequent integer fixing techniques (i.e., wide-lane, narrow-lane, or if the error covariances are known, then integer fixing by Peter Teunissen’s LAMBDA).</p>
+<figure class="align-center" id="id1">
+<img alt="_images/leogps_0diff_fig1.png" src="_images/leogps_0diff_fig1.png" />
+<figcaption>
+<p><span class="caption-text">Figure C1.1: Carrier phase ranging illustration highlighting the ambiguity N.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In any case, the receiver end only measures the instantaneous carrier phase modulo 360 degrees. It is unknown to the receiver how many integer cycles of the carrier signal has passed through the signal path taken from the emission from the GPS satellite to the receiver. Nevertheless, the RINEX file carrier phase observable would normally give an integer estimate nonetheless (usually using a pseudo-range model).</p>
+<p>In order to very accurately characterize the range, the number of integer cycles, hereby known as N, must be made known. The integer ambiguity of the carrier phase is red-boxed below.</p>
+<figure class="align-center" id="id2">
+<img alt="_images/leogps_0diff_eqn1.png" src="_images/leogps_0diff_eqn1.png" />
+<figcaption>
+<p><span class="caption-text">Equation C1.1: Carrier phase ranging model</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>On top of the integer ambiguity N, there are various other error sources that are modelled in the GPS signal range equation (Equation C1.1), of which are the following in descending order of importance and accuracy loss: the GPS satellite clock bias estimation errors, the LEO satellite clock bias, ionospheric path delays, and other relativistic effects such as clock advance effects and Shapiro path delays.</p>
+<p>The key to mitigating errors is the realization that error components shown in Equation C1.1, are highly correlated among GPS receivers in proximity. Subtracting measurements (differencing) between receivers will therefore “cancel” out systematic errors between the LEO satellites.</p>
+<figure class="align-center" id="id3">
+<img alt="_images/leogps_1diff_fig1.png" src="_images/leogps_1diff_fig1.png" />
+<figcaption>
+<p><span class="caption-text">Figure C1.2: Carrier phase single differencing between two LEOs</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In the case of the single differencing scenarios, the absolute carrier phase measurements taken by two LEOs are subtracted from each other. Using the carrier phase ranging model from Equation C1.1, the error sources that are common to both are red-boxed below.</p>
+<figure class="align-center" id="id4">
+<img alt="_images/leogps_1diff_eqn1.png" src="_images/leogps_1diff_eqn1.png" />
+<figcaption>
+<p><span class="caption-text">Equation C1.2: Common errors for a single differencing scenario</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Since the baseline of the LEO satellites are expected not to deviate beyond 200km, it is considered “short”, and thus likely that the ionospheric errors are correlated. Also, this means that the total number of and pseudo-range IDs of GPS satellites in view will not be any different between the two LEOs. Thus, in the single differencing case, between two LEOs and some k-th GPS satellite, differencing the carrier phase measurements between LEO A and B will remove systematic biases in ionospheric path delays, the k-th GPS satellite clock offsets, and common relativistic effects.</p>
+<figure class="align-center" id="id5">
+<img alt="_images/leogps_1diff_eqn2.png" src="_images/leogps_1diff_eqn2.png" />
+<figcaption>
+<p><span class="caption-text">Equation C1.3: Carrier phase single differencing equation</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>As a result, the single difference equation comprises only of the relative true ranges, the relative receiver clock bias estimation errors, and the relative carrier phase cycle integer ambiguities. For the epsilon error term, assuming both errors are Gaussian, this results also in a square-root-2 amplification in white Gaussian noise.</p>
+<p>If the receiver clock bias errors are small, then the baseline can actually already be derived from the single difference equation with little consequence to the accuracy of the baseline AB.</p>
+<figure class="align-center" id="id6">
+<img alt="_images/leogps_1diff_fig2.png" src="_images/leogps_1diff_fig2.png" />
+<figcaption>
+<p><span class="caption-text">Figure C1.3: Extraction of baseline vector AB from the single differencing equation.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In extracting the baseline vector AB in Figure C1.3, the experimenter makes a few assumptions. First, assume that the GPS satellite is far away enough such that the signal paths taken from the emitter to the receivers A and B are almost parallel. Second, assume also that the receiver will be able to estimate the direction vector from itself to the GPS satellite, which is given by g-hat in the Figure C1.3, without introducing new errors. This is possible only if coarse positioning estimates of itself is first achieved using the C/A or P code, and that the GPS navigation observables are correctly parsed. In most cases, since the distance of the GPS satellite to the LEO is on the order of about ~20,000km, any coarse positioning errors on the meter-level scale would not significantly affect the accuracy of the estimation of the g-hat vector. Next, a very rough estimate of the integer ambiguity can be estimated as a float using the pseudo-range values ρ from code measurements, and the known carrier wavelength λ.</p>
+<figure class="align-center">
+<img alt="_images/leogps_1diff_eqn3.png" src="_images/leogps_1diff_eqn3.png" />
+</figure>
+<p>One can now solve for the AB vector as seen in Figure C1.3, notwithstanding the fact that the receiver clock bias estimation errors were not cancelled out and will thus show up in some form in the accuracy of the positions. The single differenced baseline solution from LEOGPS for a 100km baseline separation is shown below:</p>
+<figure class="align-center" id="id7">
+<img alt="_images/leogps_1diff_plot.png" src="_images/leogps_1diff_plot.png" />
+<figcaption>
+<p><span class="caption-text">Figure C1.4: Relative position error norm of a single differenced 100km LEO baseline.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Observably, the single differenced solution still faces an accuracy &gt; 1m. Embedded in the error plots are likely the unaccounted relative receiver clock bias estimation errors, minor error sources such as antenna phase centre variations, et cetera, which were not differenced away, as well as other white noise error sources.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Every step of differencing amplifies the random error sources by root-2, assuming the noises are well-modelled as a Gaussian.</p>
+</div>
+<p>We can go a step further to difference a pair of single-difference observations in order to eliminate the remnant relative receiver clock bias estimation errors. This technique is known as double-differencing, and it will be explained in the next section.</p>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="docs_cdgps2.html" class="btn btn-neutral float-right" title="Carrier Double Differencing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="docs_firstrun.html" class="btn btn-neutral float-left" title="First Scenario Run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Samuel Y. W. Low.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXXXX-1', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

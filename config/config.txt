@@ -59,5 +59,11 @@ I: antoffsetY 0.0
 ~: Set the antenna offset in Z-direction (m)
 I: antoffsetZ 0.0
 ~:
+~: Select the output orbit ephemeris coordinate frame
+I: frameOrb ICRF
+~:
+~: Select the output relative baseline coordinate frame
+I: frameForm Hill
+~:
 ###############################################################################
 ###############################################################################

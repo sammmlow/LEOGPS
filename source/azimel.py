@@ -9,29 +9,25 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
 ##                                                                           ##
-## Conversion of ECEF XYZ coordinates to WGS84 LLA coordinates, and then the ##
-## calculation of the azimuth and elevation with respect from the LEO to the ##
-## GPS satellite.                                                            ##
+##    Conversion of ECEF XYZ coordinates to WGS84 LLA coordinates, and       ##
+##    then the calculation of the azimuth and elevation with respect         ##
+##    from the LEO to the GPS satellite.                                     ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Inputs: 3x1 ITRF position vector of a LEO and a GPS satellite.         ##
+##    Outputs: Azimuth and elevation (rad) from LEO to GPS satellite.        ##
 ##                                                                           ##
-## An XYZ coordinate of the LEO satellite and the GPS satellite.             ##
+##    The original efficient algorithm for conversion from ECEF to LLA       ##
+##    was taken from the following sources, by original author Olson, D.K.   ##
+##    (1996): "Converting Earth-Centered Earth-Fixed Coordinates to          ##
+##    Geodetic Coordinates". IEEE Transactions on Aerospace and Electronic   ##
+##    Systems, 32 (1996) 473-476.                                            ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
-##                                                                           ##
-## Azimuth and elevation (degrees) with from the LEO to the GPS satellite.   ##
-##                                                                           ##
-## REMARKS:                                                                  ##
-##                                                                           ##
-## The original efficient algorithm for conversion from ECEF to LLA was      ##
-## taken from the following sources, by original author Olson, D. K. (1996): ##
-## Converting Earth-Centered Earth-Fixed Coordinates to Geodetic Coordinates ##
-## IEEE Transactions on Aerospace and Electronic Systems, 32 (1996) 473-476. ##                                      ##
-##                                                                           ##
-## ORIGINAL AUTHOUR: Olson, D. K. (1996)                                     ##
-## AUTHOR MODIFIED: Samuel Y.W. Low (2019)                                   ##
+##    Original Algorithm By: Olson, D.K. (1996)                              ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 08-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -39,7 +35,25 @@
 import math
 import numpy as np
 
-def azimel(ecef,gpspos):
+def azimel(leopos,gpspos):
+    '''Returns azimuth and elevation angles (rad) from the LEO satellite to
+    the GPS satellite when providing an ECEF position coordinate of them both.
+    
+    Parameters
+    ----------
+    leopos : list
+        Position coordinate of LEO in ECEF [X,Y,Z]
+    gpspos : list
+        Position coordinate of GPS in ECEF [X,Y,Z]
+
+    Returns
+    -------
+    az : float
+        Azimuth angle (rad, -pi to +pi)
+    el : float
+        Azimuth angle (rad, -pi to +pi)
+
+    '''
     
     # WGS-84 ellipsoid parameters
     a = 6378137
@@ -56,10 +70,10 @@ def azimel(ecef,gpspos):
     
     # Convert ECEF (meters) to LLA (radians and meters)
     
-    def ecef2lla(ecef):
+    def ecef2lla(leopos):
     
-        w = math.sqrt(ecef[0] * ecef[0] + ecef[1] * ecef[1])
-        z = ecef[2]
+        w = math.sqrt(leopos[0] * leopos[0] + leopos[1] * leopos[1])
+        z = leopos[2]
         zp = abs(z)
         w2 = w * w
         r2 = z * z + w2
@@ -102,11 +116,11 @@ def azimel(ecef,gpspos):
         if z < 0:
             lat = -lat
             
-        return np.array([lat, math.atan2(ecef[1], ecef[0]), f + m * p / 2])
+        return np.array([lat, math.atan2(leopos[1], leopos[0]), f + m * p / 2])
 
     # Get latitude / longitude coordinates
     
-    lla = ecef2lla(ecef)
+    lla = ecef2lla(leopos)
     
     lat,lon = lla[0],lla[1]
     
@@ -127,9 +141,9 @@ def azimel(ecef,gpspos):
     rotmat = np.array([rotmat1,rotmat2,rotmat3])
     
     # Rotate the relative position vector
-    xRel = np.array(gpspos) - np.array(ecef)
+    xRel = np.array(gpspos) - np.array(leopos)
     
-    xENU = np.matmul(rotmat,xRel)
+    xENU = rotmat @ xRel
     
     xENUnorm = np.linalg.norm(xENU)
     
@@ -139,4 +153,4 @@ def azimel(ecef,gpspos):
     
     el = np.arcsin( xENU[2] / xENUnorm ) # Elevation angle
     
-    return [az,el]
+    return az, el

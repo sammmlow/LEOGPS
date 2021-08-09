@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/logo.png
+.. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/docs/_static/leogps_logo.png
     :width: 300 px
 
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
@@ -16,7 +16,7 @@
 :Project: LEOGPS
 :Github: https://github.com/sammmlow/LEOGPS
 :Documents: https://leogps.readthedocs.io/en/latest/
-:Version: 1.1 (Latest)
+:Version: 1.2 (Latest)
 
 |docs| |license|
 
@@ -52,15 +52,15 @@ The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, 
 
 The user can then run the application by running **'leogps.py'**, in the main directory, and you should see the LEOGPS GUI launch:
 
-.. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/gui/gui_v1.jpg
+.. image:: https://raw.githubusercontent.com/sammmlow/LEOGPS/master/docs/_static/gui-v12.jpg
 
-Next, you can paste the two RINEX observation files of your LEO satellite pairs in the inputs folder, key in your configuration parameters, and hit the **'Run LEOGPS'** button. That's it! LEOGPS will automatically source for the precise daily ephemeris and clock solutions, and process the raw GPS measurements to produce a report comprising:
+Next, you can paste the two RINEX observation files of your LEO satellite pairs in the inputs folder, key in your configuration parameters, and hit the **'Run LEOGPS'** button. That's it! LEOGPS will automatically source for the precise daily ephemeris and clock solutions, and process the raw GPS measurements to produce a report file in "LEOGPS_Results.txt" comprising:
 
 - The single point positions and velocities of both LEOs.
 - Precise baseline vectors between the two LEOs.
 - Dilution of precision values.
 
-LEOGPS will also (optionally, depending on your choice in the GUI) output plots or reports on the interpolated GPS satellite ephemeris and clock biases.
+LEOGPS will also output plots and reports on the interpolated GPS satellite ephemeris and clock biases.
 
 For full documentation, please refer to the `LEOGPS Read-The-Docs <https://leogps.readthedocs.io/en/latest/>`_.
 
@@ -68,6 +68,8 @@ For full documentation, please refer to the `LEOGPS Read-The-Docs <https://leogp
 
 Other Package Dependencies
 --------------------------
+
+Recommended Python Version > 3.6
 
 Core libraries necessary: NumPy (v1.14 and above), matplotlib, hatanaka
 
@@ -88,4 +90,4 @@ sammmlow@gmail.com
 
 |linkedin| |orcid|
 
-*Last Modified on 15-04-2021*
+*Last Modified on 09-Aug-2021*

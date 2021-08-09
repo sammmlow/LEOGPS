@@ -9,40 +9,38 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    Extraction of position information of GPS satellites across time.      ##
+##    Derivation of velocity of GPS satellites using numerical derivatives.  ##
 ##                                                                           ##
-## Extraction of position information of GPS satellites across time.         ##
-## Derivation of velocity of GPS satellites using first order derivative.    ##
+##    Inputs the final Product EPH file of GPS ephemeris, and CLK file       ##
+##    of GPS satellites (auto-download from COD if file is not present).     ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Outputs the GPS dictionary of the following nested key-value pairs:    ##
 ##                                                                           ##
-## Final Product EPH file of GPS ephemeris, and CLK file of GPS.             ##
-## (Auto-download from COD if online, and if file is not present).           ##
+##    gpsdata = {epoch1:{1: {px:123, py:123, pz:123,                         ##
+##                           vx:123, vy:123, vz:123,                         ##
+##                           clkb:123, clkd:123},                            ##
+##                       2: {px:123, py:123, pz:123,                         ##
+##                           vx:123, vy:123, vz:123,                         ##
+##                           clkb:123, clkd:123}, ...                        ##
+##                            ... ... ... ... ... ...                        ##
+##                       32:{px:123, py:123, pz:123,                         ##
+##                           vx:123, vy:123, vz:123,                         ##
+##                           clkb:123, clkd:123}} ...                        ##
+##               epoch2:{1: {px:123, py:123, pz:123,                         ##
+##                            ... ... ... ... ... ...}}}                     ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
+##    Use only SP3 orbit format for GPS only (no multi-GNSS support)         ##
 ##                                                                           ##
-## GPS dictionary of the following nested key-value pairs:                   ##
-## gpsdata = {epoch1:{1: {px:123, py:123, pz:123,                            ##
-##                        vx:123, vy:123, vz:123,                            ##
-##                        clkb:123, clkd:123},                               ##
-##                    2: {px:123, py:123, pz:123,                            ##
-##                        vx:123, vy:123, vz:123,                            ##
-##                        clkb:123, clkd:123}, ...                           ##
-##                         ... ... ... ... ... ...                           ##
-##                    32:{px:123, py:123, pz:123,                            ##
-##                        vx:123, vy:123, vz:123,                            ##
-##                        clkb:123, clkd:123}} ...                           ##
-##            epoch2:{1: {px:123, py:123, pz:123,                            ##
-##                         ... ... ... ... ... ...}}}                        ##
-##                                                                           ##
-## REMARKS: Use only SP3 orbit format for GPS only (no multi-GNSS support)   ##
-##                                                                           ##
-## AUTHOR RELEASE: 13-01-2021, by Samuel Y.W. Low                            ##
-## LAST MODIFIED:  15-04-2021, by Martin Valgur (Hatanaka in Python)         ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 07-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
+# Import global libraries
 import os
 import datetime
 import warnings
@@ -50,11 +48,35 @@ import numpy as np
 import urllib.request
 from pathlib import Path
 from unlzw3 import unlzw
+
+# Import local libraries
 from source import pubplt
 
-# Now, this is the main routine that parses ephemeris and clock data.
-
 def gpsxtr(inps, tstart, tstop, tstep):
+    '''Downloads the precise ephemeris, clock files, and Earth rotation
+    parameters from AIUB CODE FTP. Extracts and interpolates according to
+    the time step the ephemeris data of the (good) GPS satellites,
+    including clock bias and clock drift values.
+
+    Parameters
+    ----------
+    inps : dict
+        A dictionary of inputs created by `inpxtr.inpxtr()`
+    tstart : datetime.datetime
+        Scenario start time for processing
+    tstop : datetime.datetime
+        Scenario stop time for processing
+    tstep : datetime.timedelta
+        Scenario time step used in processing
+
+    Returns
+    -------
+    gpsdata : dict
+        Nested dictionary of GPS ephemeris and clock data
+    goodsats : list
+        Sorted list of GPS satellites without outages by PRN IDs
+
+    '''
     
     warnings.simplefilter('ignore', np.RankWarning) # Ignore polyfit warnings
     
@@ -87,7 +109,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     # Now, check for desired clock files. If non-existent, download them.
     for d in range(-1,days+1):
         
-        wd, wwww = gpsweekday( tstart + datetime.timedelta( days = d ) )
+        wd, wwww = _gpsweekday( tstart + datetime.timedelta( days = d ) )
         name = 'COD' + wwww + wd # File name, without file extension
         clkurl = codurl + year + '/' + name + '.CLK.Z' # URL of clock file
         filelist.append(name) # Add this into the list of files for parsing
@@ -278,7 +300,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     # Now, check for desired ephemeris files. If non-existent, download them.
     for d in range(-1,days+1):
         
-        wd, wwww = gpsweekday( tstart + datetime.timedelta( days = d ) )
+        wd, wwww = _gpsweekday( tstart + datetime.timedelta( days = d ) )
         name = 'COD' + wwww + wd # File name, without file extension
         ephurl = codurl + year + '/' + name + '.EPH.Z' # URL of ephemeris file
     
@@ -558,31 +580,57 @@ def gpsxtr(inps, tstart, tstop, tstep):
     ###########################################################################
     ###########################################################################
     
-    # In a final step, we plot the GPS ephemeris and clock biases.
+    # Finally, we should also extract the Earth rotation parameters from COD.
     
-    # First, check if the user wishes to plot GPS ephemeris and clock biases.
-    savefigs = inps['savefigs'] # User-defined option to save plots
-    saverept = inps['savereport'] # User-defined option to save report
+    for d in range(-1,days+1,7):
+        
+        wd, wwww = _gpsweekday( tstart + datetime.timedelta( days = d ) )
+        name = 'COD' + wwww + '7' # File name, without file extension
+        ephurl = codurl + year + '/' + name + '.ERP.Z' # URL of ephemeris file
     
-    # If so, then continue to save the final output report on GPS ephemeris.
-    if saverept == 'True':
-        print('Saving output report on interpolated GPS ephemerides. \n')
-        pubplt.gps_report(gpsdata, goodsats, inps)
+        # Check for SP3 ephemeris file, and download + unzip it if needed.
+        if os.path.exists(iwd+name+'.ERP') != True:
+            
+            print('ERP file for '+ name +' not found! Attempt download now...')
+            with urllib.request.urlopen(ephurl) as f:
+                data = unlzw(f.read())
+            (Path(iwd) / (name + '.ERP')).write_bytes(data)
+            
+            print('Completed downloading and unzipping of the ERP file!')
+            print('Unzipping completed! \n')
+        
+        else:
+            
+            print('ERP file for ' + name + ' found! \n')
     
-    # ... as well as ephemeris and clock plots.
-    if savefigs == 'True':
-        print('Saving plots on GPS position, velocity and clock biases. \n')
-        for SV in goodsats:
-            pubplt.gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps)
+    ###########################################################################
+    ###########################################################################
+    
+    
+    # Save the final output report on GPS ephemeris.
+    print('Saving output report on interpolated GPS ephemerides. \n')
+    pubplt.gps_report(gpsdata, goodsats, inps)
+    
+    # Save graphical plots on clock biases and ephemeris.
+    print('Saving plots on GPS position, velocity and clock biases. \n')
+    for SV in goodsats:
+        pubplt.gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps)
     
     ###########################################################################
     ###########################################################################
     
     return gpsdata, goodsats
 
-# We define a function that returns the day-of-week and the GPS week.
+##############################################################################
+##############################################################################
+###                                                                        ###
+###          FUNCTIONS THAT RETURNS THE DAY-OF-WEEK AND GPS WEEK           ###
+###                                                                        ###
+##############################################################################
+##############################################################################
 
-def gpsweekday(t):
+# We define an internal function that returns the day-of-week and GPS week.
+def _gpsweekday(t):
     
     # Logic below calculates the desired GPS day and week number.
     wkday = (t.weekday() + 1) % 7 # Weekday from Python to GPST

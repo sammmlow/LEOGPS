@@ -9,46 +9,45 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    This is the classical LAMBDA method that was originally authored by    ##
+##    Teunissen, Jonge, and Tiberius (1993). The code was later written      ##
+##    in MATLAB by Dr Sandra Verhagen and Dr Bofeng Li. It takes in a        ##
+##    vector of float ambiguities to the integer least-squares problem,      ##
+##    and covariance of the float ambiguities. It then runs the LAMBDA's     ##
+##    ILS search-&-shrink and spits out the ambiguity integers. The other    ##
+##    5 methods in original LAMBDA MATLAB code are not supported here        ##
+##    (feel free to edit the code and implement it youself!). The default    ##
+##    ncands = 2, as per original code. All support functions from the       ##
+##    original MATLAB code (decorrel, ldldecom) have been nested within      ##
+##    the main function as sub functions.                                    ##
 ##                                                                           ##
-## This is the classical LAMBDA method that was originally authored by       ##
-## Teunissen, Jonge, and Tiberius (1993). The code was later written in      ##
-## MATLAB by Dr Sandra Verhagen and Dr Bofeng Li. It takes in a vector of    ##
-## float ambiguities to the integer least-squares problem, and covariance    ##
-## of the float ambiguities. It then runs the LAMBDA's ILS search-&-shrink   ##
-## and spits out the ambiguity integers. The other 5 methods in original     ##
-## LAMBDA MATLAB code are not supported here (feel free to edit the code     ##
-## and implement it youself!). The default ncands = 2, as per original code. ##
-## All support functions from the original MATLAB code (decorrel, ldldecom)  ##
-## have been nested within the main function as sub functions.               ##
+##    Inputs:                                                                ##
+##    - ahat    : numpy array of float ambiguities                           ##
+##    - Qahat   : numpy covariance matrix for float ambiguities              ##
+##    - ncands  : number of candidates (optional parameter, default = 2)     ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Outputs:                                                               ##
+##    - afixed  : Array of size (n x ncands) with the estimated integer      ##
+##                candidates, sorted according to the corresponding squared  ##
+##                norms, best candidate first.                               ##
+##    - sqnorm  : Distance between integer candidate and float ambiguity     ##
+##                vectors in the metric of the variance-covariance matrix.   ##
 ##                                                                           ##
-##   - ahat    : numpy array of float ambiguities                            ##
-##   - Qahat   : numpy covariance matrix for float ambiguities               ##
-##   - ncands  : number of candidates (optional parameter, default = 2)      ##
+##    Some notes on translating the Matlab LAMBDA to Python:                 ##
+##     - Everything is identical EXCEPT MATLAB is ones-based indexing.       ##
+##     - Python is zeros-based indexing, and range function does not         ##
+##       include the upper limit index. Thus, only indices have changed.     ##
+##     - Example in MATLAB: for i = 1:5 => {1,2,3,4,5}                       ##
+##     - Equivalently in Python: for i in range(0,5) => {0,1,2,3,4}          ##
+##     - Indices are thus updated accordingly.                               ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
+##    Original Developer: Professor Peter Teunissen (TU Delft)               ##
+##    Original Authors: Dr Sandra Verhagen and Dr Bofeng Li (TU Delft)       ##
 ##                                                                           ##
-##   - afixed  : Array of size (n x ncands) with the estimated integer       ##
-##               candidates, sorted according to the corresponding squared   ##
-##               norms, best candidate first.                                ##
-##   - sqnorm  : Distance between integer candidate and float ambiguity      ##
-##               vectors in the metric of the variance-covariance matrix.    ##
-##                                                                           ##
-## REMARKS:                                                                  ##
-##                                                                           ##
-## Besides above changes, mostly syntax changes to this Python version:      ##
-##   - Everything is identical EXCEPT MATLAB is ones-based indexing.         ##
-##   - Python is zeros-based indexing, and range function does not           ##
-##     include the upper limit index. Thus, only indices have changed.       ##
-##   - Example in MATLAB: for i = 1:5 => {1,2,3,4,5}                         ##
-##   - Equivalently in Python: for i in range(0,5) => {0,1,2,3,4}            ##
-##   - Indices are thus updated accordingly.                                 ##
-##                                                                           ##
-## DEVELOPER: Professor Peter Teunissen (TU Delft)                           ##
-## ORIGINAL AUTHOR: Sandra Verhagen and Bofeng Li (TU Delft)                 ##
-## AUTHOR MODIFIED: 26-07-2019, by Samuel Y.W. Low, with permissions.        ##
+##    Author (Modified) by Samuel Y. W. Low, with permissions.               ##
+##    Last modified 08-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -56,6 +55,29 @@
 import numpy as np
 
 def LAMBDA( ahat, Qahat, ncands = 2 ):
+    '''Integer least-squares method with search-and-shrink for integer
+    estimation based on the provided float ambiguity vector (Nx1) ahat and
+    associated variance-covariance matrix (NxN) Qahat.
+    
+    Parameters
+    ----------
+    ahat : numpy.ndarray
+        N-length array of float ambiguities
+    Qahat : numpy.ndarray
+        NxN covariance matrix of ambiguities
+    ncands : int, optional
+        Number of search candidates (default = 2)
+
+    Returns
+    -------
+    afixed : 
+        (N x ncands) Array of with estimated integer candidates, sorted 
+        according to the corresponding squared norms, best candidate first.
+    sqnorm : 
+        (ncands x 1) Distance between integer candidate and float ambiguity 
+        vectors in the metric of the variance-covariance matrix Qahat.
+        
+    '''
     
     ###########################################################################
     ###########################################################################
@@ -467,14 +489,7 @@ def LAMBDA( ahat, Qahat, ncands = 2 ):
     ###########################################################################
     ###########################################################################
     
-    # Initialisation and some initial sanity checks...
-    
-    # Initialise all output variables
-    
-    sqnorm = np.array([])
-    
     # Test inputs: Is the Q-matrix symmetric?
-    
     if np.array_equal(Qahat,Qahat.transpose()) == False:
         print('Variance-covariance matrix is not symmetric!')
         return None
@@ -517,7 +532,7 @@ def LAMBDA( ahat, Qahat, ncands = 2 ):
     
     # Returns best amb-fix, second best amb-fix, and the square norm.
     
-    return afixed, sqnorm
+    return afixed, sqnormff
 
     ###########################################################################
     ###########################################################################

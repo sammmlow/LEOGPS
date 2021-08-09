@@ -9,45 +9,42 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    This module contains functions that support epoch-wise processing      ##
+##    for integer ambiguity resolution step. The chief function in the       ##
+##    module is the 'ambest' function, which outputs the precise relative    ##
+##    baseline vector between the two spacecraft. This processing is done    ##
+##    only for one epoch, and thus it is a snapshot-style of baseline        ##
+##    estimation rather than a sequential or batch of carrier phase          ##
+##    observations. All other supporting functions are called within         ##
+##    'ambest'. At the user-level, it is advised to modify contents only     ##
+##    within 'ambest' unless the user wishes to modify the core integer      ##
+##    ambiguity resolution algorithm.                                        ##
 ##                                                                           ##
-## This module contains functions that support epoch-wise processing for     ##
-## integer ambiguity resolution step. The chief function in the module is    ##
-## the 'ambest' function, which outputs the precise relative baseline vector ##
-## between the two spacecraft. This processing is done only for one epoch,   ##
-## and thus it is a snapshot-style of baseline estimation rather than a      ##
-## sequential or batch of carrier phase observations. All other supporting   ##
-## functions are called within 'ambest'. At the user-level, it is advised to ##
-## modify contents only within 'ambest' unless the user wishes to modify the ##
-## core integer ambiguity resolution algorithm.                              ##
+##    Inputs:                                                                ##
+##    epoch = datetime.datetime object                                       ##
+##    gps = {1:{'px':123, 'py':123, 'pz':123,...}, ... 32:(...)}             ##
+##    rx1 = {SV:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}              ##
+##    rx2 = {SV:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}              ##
+##    pos1 = [PosX,PosY,PosZ] of LEO satellite 1                             ##
+##    pos2 = [PosX,PosY,PosZ] of LEO satellite 2                             ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Output (in ITRF):                                                      ##
+##    baseline = np.array([ relativePosX, relativePosY, relativePosZ ])      ##
 ##                                                                           ##
-## epoch = datetime.datetime object                                          ##
-## gps = {1:{'px':123, 'py':123, 'pz':123,...}, ... 32:(...)}                ##
-## rx1 = {SV:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}                 ##
-## rx2 = {SV:{'C1':123,'L1':123,'L4':321,'flag':'none'},...}                 ##
-## pos1 = [PosX,PosY,PosZ,Bias] of LEO satellite 1                           ##
-## pos2 = [PosX,PosY,PosZ,Bias] of LEO satellite 2                           ##
+##    This is the key ingredient in LEOGPS for precise determination of      ##
+##    baselines. However, as of the current version v1.2 Alpha, it is        ##
+##    unable to find a suitable method that fixes the floats to integers     ##
+##    as a solution, and thus uses the pseudorange as an estimate for        ##
+##    the float solution only. This part of the code and algorithm is        ##
+##    still under development.                                               ##
 ##                                                                           ##
-##                                                                           ##
-## OUTPUT:                                                                   ##
-##                                                                           ##
-## Precisely determined relative baseline between the two LEOs in formation. ##
-##                                                                           ##
-## REMARKS:                                                                  ##
-##                                                                           ##
-## This is really the key ingredient in LEOGPS for precise determination of  ##
-## baselines. However, as of the current version v1.2 Alpha, it is unable to ##
-## find a suitable method that fixes the floats to integers as a solution,   ##
-## and thus uses the pseudorange as an estimate for the float solution only. ##
-## This part of the code and algorithm is still under development.           ##
-##                                                                           ##
-## AUTHOR MODIFIED: 30-May-2021, by Samuel Y.W. Low                          ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 09-Aug-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
-
 
 import numpy as np
 
@@ -58,7 +55,52 @@ from source import ambfix
 
 # Define the main ambiguity estimation function below
 
-def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
+def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps,
+            sigma=0.002, fix=False, covZD=None ):
+    '''Double difference ambiguity estimation for baseline estimation.
+    
+    Parameters
+    ----------
+    epoch : datetime.datetime
+        Current epoch of observables
+    gps : dict
+        Nested dictionary of GPS ephemeris and clock data across PRN IDs, for
+        a particular epoch. This dictionary is one tier deep in the output of
+        `gpsxtr.gpsxtr()`. In other words, `gps = gpsdict[epoch]` where
+        `gpsdict` is the output of `gpsxtr.gpsxtr()`
+    rx1 : dict
+        A nested dictionary comprising (LEO-A) code observations, carrier 
+        phase, doppler, and a carrier phase flag, for a particular epoch.
+        This dictionary is one tier deep in the output of `rinxtr.rinxtr()`
+        In other words, `rxi = rnxdata[epoch]` where `rnxdata` is the output
+        of `rinxtr.rinxtr()`
+    rx2 : dict
+        A nested dictionary comprising (LEO-B) code observations, carrier 
+        phase, doppler, and a carrier phase flag, for a particular epoch.
+        This dictionary is one tier deep in the output of `rinxtr.rinxtr()`
+        In other words, `rxi = rnxdata[epoch]` where `rnxdata` is the output
+        of `rinxtr.rinxtr()`
+    pos1 : numpy.ndarray
+        Position vector of LEO-A [Xp, Yp, Zp]
+    pos2 : numpy.ndarray
+        Position vector of LEO-B [Xp, Yp, Zp]
+    inps : dict
+        A dictionary of inputs created by `inpxtr.inpxtr()`
+    sigma : float, optional
+        Carrier phase variance (assumed uniform, default = 0.002m or 2mm).
+    fix : boolean, optional
+        Set to True to enable integer ambiguity fixing using LAMBDA. Otherwise,
+        use the float ambiguity approximated by the code range (default False)
+    covZD : numpy.ndarray
+        Covariance matrix of N zero difference observables (NxN dimension)
+
+    Returns
+    -------
+    baseline : numpy.ndarray
+        Relative position vector [Rx, Ry, Rz]. Returns a zero vector if the 
+        inertial position vectors of LEO-A or LEO-B are zero.
+
+    '''
     
     # Before anything else, check if the position vectors are valid.
     if np.sum(pos1) == 0.0 or np.sum(pos2) == 0.0:
@@ -84,8 +126,8 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
     pos1 = np.array(pos1)
     pos2 = np.array(pos2)       
     
-    # Get list of observable GPS satellites, with local function getgps.
-    glist = getgps(gps, rx1, rx2)
+    # Get list of observable GPS satellites, with local function _getgps.
+    glist = _getgps(gps, rx1, rx2)
     
     # If there are not enough common satellites between rx1 and rx2...
     if len(glist) < 4:
@@ -94,16 +136,16 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
         return np.array([0.0,0.0,0.0])
     
     # Get the double difference reference satellite SV number.
-    grefr = getref(gps, rx1, rx2, pos1, pos2)
+    grefr = _getref(gps, rx1, rx2, pos1, pos2)
     
     # Get the index of the double difference reference satellite.
     grefi = glist.index(grefr)
     
     # Get the observations (code phase, carrier phase, from both LEO 1 & 2).
-    obs = getobs( freqnum, gps, rx1, rx2 )
+    obs = _getobs( freqnum, gps, rx1, rx2 )
     
     # Get the DD transformation matrix.
-    diff = difference( len(glist), grefi )
+    diff = _difference( len(glist), grefi )
     
     # Form the zero-difference code and carrier observations of both LEOs
     codeZD = np.concatenate((np.array(obs['LEO1 Code']),
@@ -112,8 +154,8 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
                              np.array(obs['LEO2 Carr'])))
         
     # Form the double-difference code and carrier observations of both LEOs
-    codeDD = np.matmul(diff,codeZD) # Converts ZD values into DD values
-    carrDD = np.matmul(diff,carrZD) # Converts ZD values into DD values
+    codeDD = diff @ codeZD # Converts ZD values into DD values
+    carrDD = diff @ carrZD # Converts ZD values into DD values
     
     # Now, we can estimate the double difference float ambiguity estimates!
     ahat = np.array([]) # Initialise an empty array first.
@@ -127,11 +169,15 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
     
     # Else if true, perform LAMBDA integer ambiguity resolution.
     elif fix == True:
+        
         # Now, our final step is to estimate the covariance matrix of DD data.
-        # Currently, the covariance matrix is just a scaled identity matrix.
-        # You will have to change this manually as of v1.2, in this code.
-        covZD = sigma*np.identity(2*len(glist))
-        covDD = np.matmul(np.matmul(diff,covZD),diff.transpose())
+        # If the user does not specify a covariance matrix as an input argument
+        # then the covariance matrix is just a scaled identity matrix.
+        if covZD == None:
+            covZD = sigma*np.identity(2*len(glist))
+        
+        # Obtain the double-differenced carrier phase covariance matrix.
+        covDD = diff @ covZD @ diff.transpose()
         Qahat = covDD
         afix, sqnorm = ambfix.LAMBDA(ahat, Qahat)
         zfix = afix[0] # Choose the best ambiguities.
@@ -145,7 +191,7 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
     ###########################################################################
     
     # We now proceed to solve the least squares problem.
-    A = getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ) # Geometry matrix
+    A = _getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ) # Geometry
     B = wavelength * (carrDD - zfix) # Carrier phase minus integer ambiguities
     
     # Solve the equation now!
@@ -161,11 +207,11 @@ def ambest( epoch, gps, rx1, rx2, pos1, pos2, inps, sigma=0.002, fix=False ):
     # We could then find the mean of the float ambiguities.
     # We could also then calculate (empirically) the covariances.
     
-    return X[0] # Return the corrected relative positions.
+    return -1 * X[0] # Return the relative position from chief to deputy.
 
-# Define a function that outputs the observed GPS SVs by both LEOs
-
-def getgps( gps, rx1, rx2 ):
+# Define a function that outputs commonly observed GPS SVs by both LEOs
+def _getgps( gps, rx1, rx2 ):
+    '''Internal function that outputs common-observed GPS IDs by both LEOs'''
 
     Glist = [] # Ordered array of observed GPS satellites.
     
@@ -187,16 +233,15 @@ def getgps( gps, rx1, rx2 ):
     
     return Glist # Ordered array of observed GPS satellites.
 
-# Define a function that finds a DD reference based on elevation
-
-def getref( gps, rx1, rx2, pos1, pos2 ):
+def _getref( gps, rx1, rx2, pos1, pos2 ):
+    '''Internal function that finds a DD reference based on elevation'''
     
     # This function selects the reference GPS satellite based on elevation.
     # Input variables are all epoch-specific observations.
     
-    leopos = (0.5 * (pos1 + pos2))[:3] # Formation center
+    leopos = (0.5 * (pos1 + pos2)) # Formation center
     G_elev = {} # Dictionary variable to hold elevation angle information.
-    G_list = getgps(gps, rx1, rx2) # GPS satellites
+    G_list = _getgps(gps, rx1, rx2) # GPS satellites
         
     for k in G_list:
 
@@ -208,14 +253,12 @@ def getref( gps, rx1, rx2, pos1, pos2 ):
     Grefr = max(G_elev,key=G_elev.get)
     
     return Grefr
-
-# Define a function that finds the DD geometry matrix
     
-def getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ):
+def _getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ):
+    '''Internal function that finds the double difference geometry matrix'''
     
     DD_geom_mat = np.array([]) # Matrix for DD geometry vector.
-    leopos = (0.5 * (pos1 + pos2))[:3] # Formation center
-    erp = inps['earthrotation'] # Offset Earth rotation?
+    leopos = (0.5 * (pos1 + pos2)) # Formation center
     
     for k in glist:
         
@@ -241,34 +284,33 @@ def getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ):
             # Now, we need to compensate for the GPS satellite positions due
             # to Earth's rotation and the movement of the GPS satellites
             # during the signal time-of-flight.
-            if erp == 'True':
-                
-                # Get the signal time of flights for the k-th GPS SV
-                sigTOF_k = np.linalg.norm( gpsk - leopos ) / consts.C
-                
-                # Get the signal time of flights for the k-th GPS SV
-                sigTOF_r = np.linalg.norm( gpsr - leopos ) / consts.C
-                
-                # Rotation rate * TOF
-                Rk = consts.ERR * sigTOF_k
-                Rr = consts.ERR * sigTOF_r
-                
-                # Get the Earth rotation direction cosine matrices,
-                # using small angle approximations for simplicity.
-                dcm_k = np.array([[  1.0,   Rk, 0.0 ],
-                                  [ -1*Rk, 1.0, 0.0 ],
-                                  [  0.0,  0.0, 1.0 ]])
-                dcm_r = np.array([[  1.0,   Rr, 0.0 ],
-                                  [ -1*Rr, 1.0, 0.0 ],
-                                  [  0.0,  0.0, 1.0 ]])
-                
-                # Rotate the coordinate frame for GPS satellite positions
-                gpsk = np.matmul(dcm_k, gpsk)
-                gpsr = np.matmul(dcm_r, gpsr)
-                
-                # Compensate for GPS satellite motion during signal TOF
-                gpsk = gpsk - (gpskv * sigTOF_k)
-                gpsr = gpsr - (gpsrv * sigTOF_r)
+            
+            # Get the signal time of flights for the k-th GPS SV
+            sigTOF_k = np.linalg.norm( gpsk - leopos ) / consts.C
+            
+            # Get the signal time of flights for the k-th GPS SV
+            sigTOF_r = np.linalg.norm( gpsr - leopos ) / consts.C
+            
+            # Rotation rate * TOF
+            Rk = consts.ERR * sigTOF_k
+            Rr = consts.ERR * sigTOF_r
+            
+            # Get the Earth rotation direction cosine matrices,
+            # using small angle approximations for simplicity.
+            e_rate_k = np.array([[  1.0,   Rk, 0.0 ],
+                                 [ -1*Rk, 1.0, 0.0 ],
+                                 [  0.0,  0.0, 1.0 ]])
+            e_rate_r = np.array([[  1.0,   Rr, 0.0 ],
+                                 [ -1*Rr, 1.0, 0.0 ],
+                                 [  0.0,  0.0, 1.0 ]])
+            
+            # Rotate the coordinate frame for GPS satellite positions
+            gpsk = e_rate_k @ gpsk
+            gpsr = e_rate_r @ gpsr
+            
+            # Compensate for GPS satellite motion during signal TOF
+            gpsk = gpsk - (gpskv * sigTOF_k)
+            gpsr = gpsr - (gpsrv * sigTOF_r)
             
             # First, obtain the undifferenced relative vector of nth GPS.
             ZD_geom1 = gpsk - leopos
@@ -291,7 +333,11 @@ def getgeom( gps, glist, grefr, grefi, pos1, pos2, inps ):
 
 # Define a function that extracts code and carrier observations
 
-def getobs( freqnum, gps, rx1, rx2 ):
+def _getobs( freqnum, gps, rx1, rx2 ):
+    '''Internal function that extracts a list of four items, the code phase of 
+    LEO-A, the carrier phase of LEO-A, the code phase of LEO-B, and the carrier
+    phase of LEO-B
+    '''
     
     # Output is a dictionary with 4 keys:
     # obs['LEO1 Code'] = Code pseudorange observations of LEO1
@@ -308,7 +354,7 @@ def getobs( freqnum, gps, rx1, rx2 ):
     LEO2_Carr = [] # Carrier phase observations of LEO2
     
     # First, we find all SVs common to both RINEX observations.
-    glist = getgps(gps, rx1, rx2)
+    glist = _getgps(gps, rx1, rx2)
     
     # Consider the case of L1 only...
     
@@ -376,7 +422,11 @@ def getobs( freqnum, gps, rx1, rx2 ):
 
 # Define a matrix transforming 02x single to double difference values
 
-def difference( s, r ):
+def _difference( s, r ):
+    '''Internal function that outputs the transformation matrix that converts
+    an N-length vector of zero-difference observations into an (N-1) length
+    vector of double differenced observations.
+    '''
     
     # Generates the transformation matrix D at a particular time t.
     # Transforms a vector of zero difference phase observables [2s x 1]
@@ -396,6 +446,6 @@ def difference( s, r ):
     DD_ins = -1*np.ones(s-1) # Inserted at index k, to subtract reference.
     DD_mat = np.insert( np.identity(s-1), r, DD_ins, axis=1) # DD_ins
 
-    Transf = np.matmul(DD_mat, SD_mat) # Transform matrix from ZD to DD
+    Transf = DD_mat @ SD_mat # Transform matrix from ZD to DD
     
     return Transf

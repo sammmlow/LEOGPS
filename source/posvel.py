@@ -9,45 +9,88 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    Single point positioning using code via weighted least squares.        ##
+##    Doppler-based estimation of velocities only if Doppler is available.   ##
+##    Ionospheric delay for L1: Offset using GRAPHIC linear combination.     ##
+##    Ionospheric delay for L2: Offset using iono-free linear combination.   ##
+##    Clock sync done by extracting interpolating clock biases and drifts.   ##
+##    Relativistic effects: Shapiro effect + clock delay/advance.            ##
+##    This script 'posvel.py' is called for each epoch (loop-wise).          ##
 ##                                                                           ##
-## Code-based position estimation via weighted least squares estimation.     ##
-## Doppler-based estimation of velocities only if Doppler is available.      ##
-## Ionospheric delay for L1: Offset using the GRAPHIC linear combination.    ##
-## Ionospheric delay for L2: Dual-frequency iono-free linear combination.    ##
-## Clock sync done by extracting interpolating clock biases and drifts.      ##
-## Relativistic effects estimated: Shapiro effect + clock delay/advance.     ##
-## This script 'posvel.py' is called up for every epoch in 'leorun.py'       ##
+##    Inputs:                                                                ##
+##    epoch = datetime.datetime(2018,10,16,07,30,30)                         ##
+##    goodsats = [1,2,3... ...30,31,32]                                      ##
+##    gps = {1:{'px':123, 'py':123, 'pz':123,...}, ... 32:(...)}             ##
+##    rxi = {1:('C1':xxx,'P2':xxx,'L1':xxx,'L2':xxx) ... 32:(...)}           ##
+##    inps = dictionary of created by **inpxtr.inpxtr()**                    ##
+##    iters = number of iterations in iterative least squares (optional)     ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Outputs:                                                               ##
+##    posf = np.array([Xp,Yp,Zp,Tp])                                         ##
+##    velf = np.array([Xv,Yv,Zv,Tv])                                         ##
+##    dopf = np.array([GDOP,PDOP,TDOP])                                      ##
+##    clkb = np.array([Tp])                                                  ##
 ##                                                                           ##
-## epoch = datetime.datetime(2018,10,16,07,30,30), datetime object example   ##
-## goodsats = [1,2,3... ...30,31,32], a list of good GPS satellites as ints  ##
-## gps = {1:{'px':123, 'py':123, 'pz':123,...}, ... 32:(...)}                ##
-## rxi = {1:('C1':xxx,'P2':xxx,'L1':xxx,'L2':xxx) ... 32:(...)}              ##
-## inps = dictionary of inputs from user-specified parameters in config.txt  ##
-## iters = number of iterations to run multivariate linear regression        ##
+##    Only RINEX v2.xx format, GPS only, supported.                          ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
-##                                                                           ##
-## Three arrays of position XYZ, velocity XYZ, and an array for G/P/TDOP     ##
-##                                                                           ##
-## REMARKS: Use RINEX v2.xx format, GPS only, GLONASS/GALILEO unsupported    ##
-##                                                                           ##
-## AUTHOR MODIFIED: 29-02-2020, by Samuel Y.W. Low                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 07-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
+# Import global libraries
 import datetime
 import numpy as np
+
+# Import local libraries
 from source import consts
 from source import einstn
 
 # This is a position-velocity estimator for the SINGLE-EPOCH case.
-
 def posvel(epoch, goodsats, gps, rxi, inps, nm, iters = 6):
+    '''Single point positioning using code via weighted least squares, called
+    epoch-wise. In other words, **posvel()** is called to solve for positions 
+    at every single epoch set of observables snap-shot wise.
     
+    Parameters
+    ----------
+    epoch : datetime.datetime
+        Current epoch of observables
+    goodsats : list
+        Sorted list of GPS satellites without outages by PRN IDs
+    gps : dict
+        Nested dictionary of GPS ephemeris and clock data across PRN IDs, for
+        a particular epoch. This dictionary is one tier deep in the output of
+        `gpsxtr.gpsxtr()`. In other words, `gps = gpsdict[epoch]` where
+        `gpsdict` is the output of `gpsxtr.gpsxtr()`
+    rxi : dict
+        A nested dictionary comprising code observations, carrier phase,
+        doppler values, and a carrier phase flag, for a particular epoch.
+        This dictionary is one tier deep in the output of `rinxtr.rinxtr()`
+        In other words, `rxi = rnxdata[epoch]` where `rnxdata` is the output
+        of `rinxtr.rinxtr()`
+    inps : dict
+        A dictionary of inputs created by `inpxtr.inpxtr()`
+    nm : str
+        4-letter ID of the current spacecraft
+    iters : int, optional
+        Number of iterations in least squares (default 6).
+
+    Returns
+    -------
+    posf : numpy.ndarray
+        Position and clock bias [Xp, Yp, Zp, Tp]
+    velf : numpy.ndarray
+        Velocity and clock drift [Xv, Yv, Zv, Tv]
+    dopf : numpy.ndarray
+        Dilution of precision [GDOP, PDOP, TDOP]
+    clkb : numpy.ndarray
+        Clock bias length-one [Tp].
+
+    '''
     # gps = {1:{'px':123, 'py':123, 'pz':123,...}, ... 32:(...)}
     # rxi = {1:('C1':xxx,'P2':xxx,'L1':xxx,'L2':xxx) ... 32:(...)}
     
@@ -74,9 +117,6 @@ def posvel(epoch, goodsats, gps, rxi, inps, nm, iters = 6):
     WL2  = C/F2                 # L2 wavelength
     
     # Now, extract inputs from *config.txt*.
-    
-    rel        = inps['relativity'] # Enable relativistic correction?
-    erp        = inps['earthrotation'] # Offset Earth rotation?
     freqnum    = inps['freq'] # Check if single or dual frequency
     offsetX    = float(inps['antoffsetX']) # Antenna offset X
     offsetY    = float(inps['antoffsetY']) # Antenna offset Y
@@ -221,49 +261,37 @@ def posvel(epoch, goodsats, gps, rxi, inps, nm, iters = 6):
             gpsrng_obsv += gpsclb     # GPS satellite clock bias
             gpsrng_obsv -= Tp         # LEO satellite clock bias
             
-            # Compute the signal time of flight from GPS satellite to LEO
-            sigTOF = gpsrng_obsv / C
-            
             # The GPS positions are given in ECEF but at the transmission 
             # time of the GPS satellites, and at the reception time of the
             # LEO satellites. Two compensating calculations must be applied
-            # here, the first being 
+            # here. First, the GPS satellite motion across the signal time of
+            # flight must be accounted for, and second, the rotation of the
+            # entire fixed frame relative to inertial due to Earth rotation.
             
-            # even if the GPS satellite was inertially not moving, it would
-            # have experienced a change in position vector by virtue of Earth's
-            # rotation when its "stationarity" was converted into the
-            # rotating fixed frame. In the second thing, the GPS satellite is
-            # also moving inertially and so this also has to be compensated for.
+            # Compute the signal time of flight from GPS satellite to LEO
+            sigTOF = gpsrng_obsv / C
             
-            if erp == 'True':
-                
-                # Rotation rate * TOF
-                r = err * sigTOF 
-                
-                # Get the Earth rotation direction cosine matrix, with
-                # small angle approximations for simplicity.
-                e_rate = np.array([[  1.0,   r, 0.0 ],
-                                   [ -1*r, 1.0, 0.0 ],
-                                   [  0.0, 0.0, 1.0 ]])
-                
-                # Rotate the coordinate frame for GPS satellite position
-                gpspos = np.matmul(e_rate, gpspos)
+            # Rotation rate * TOF
+            r = err * sigTOF 
+            
+            # Get the Earth rotation direction cosine matrix, with
+            # small angle approximations for simplicity.
+            e_rate = np.array([[  1.0,   r, 0.0 ],
+                               [ -1*r, 1.0, 0.0 ],
+                               [  0.0, 0.0, 1.0 ]])
+            
+            # Rotate the coordinate frame for GPS satellite position
+            gpspos = e_rate @ gpspos
                 
             # Compensate for GPS satellite motion during signal TOF
             gpspos = gpspos - (gpsvel * sigTOF)
+                
+            # Compute the relativistic Clock Advance (~15m for statics)
+            clockadv  = einstn.clockadv(gpspos,gpsvel)
+            clockadv -= einstn.clockadv(leopos,leovel)
             
-            # Calculate the relativistic effects if 'rel' flag is true.
-            if rel == 'True':
-                
-                # Compute the relative Clock Advance (~15m for statics)
-                clockadv  = einstn.clockadv(gpspos,gpsvel)
-                clockadv -= einstn.clockadv(leopos,leovel)
-                
-                # Compute the Shapiro delay (~0.015m usually)
-                shapiro = einstn.shapiro(leopos,gpspos) 
-                
-            else:
-                shapiro, clockadv = 0.0, 0.0
+            # Compute the Shapiro delay (~0.015m usually)
+            shapiro = einstn.shapiro(leopos,gpspos) 
             
             # Update the range measurement model with relativistic effects
             gpsrng_obsv += shapiro    # Relativistic shapiro path delay
@@ -354,7 +382,7 @@ def posvel(epoch, goodsats, gps, rxi, inps, nm, iters = 6):
     
     # We would also like to calculate the PDOP, TDOP, and GDOP values.
     
-    H_mat = np.linalg.inv(np.matmul(A_mat.transpose(),A_mat))
+    H_mat = np.linalg.inv( A_mat.transpose() @ A_mat )
     
     H11 = H_mat[0][0] # X component of H matrix
     H22 = H_mat[1][1] # Y component of H matrix
@@ -400,8 +428,8 @@ def posvel(epoch, goodsats, gps, rxi, inps, nm, iters = 6):
     
     # Finally, we output the (hopefully) converged solution...
     
-    posf = np.array([Xp,Yp,Zp,Tp])
-    velf = np.array([Xv,Yv,Zv,Tv])
+    posf = np.array([Xp,Yp,Zp])
+    velf = np.array([Xv,Yv,Zv])
     dopf = np.array([GDOP,PDOP,TDOP])
     clkb = np.array([Tp])
     

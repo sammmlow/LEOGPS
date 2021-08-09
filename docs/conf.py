@@ -13,6 +13,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../source'))
 
 import sphinx_rtd_theme
 
@@ -55,7 +56,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['_static','_figures']
 
 html_theme_options = {
     'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
@@ -65,7 +66,7 @@ html_theme_options = {
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'vcs_pageview_mode': '',
-    'style_nav_header_background': '#202020',
+    'style_nav_header_background': '#222A35',
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,
@@ -73,3 +74,12 @@ html_theme_options = {
     'includehidden': True,
     'titles_only': False
 }
+
+# Get the direct path
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+# Add the HTML logo that displays on the top-left panel.
+html_logo = dir_path + '/_static/leogps_favicon2.png'
+
+# Add the HTML logo.
+html_favicon = '_static/leogps_favicon.png'

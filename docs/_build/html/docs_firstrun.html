@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>First Scenario Run &mdash; LEOGPS 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/leogps_favicon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Carrier Single Differencing" href="docs_cdgps1.html" />
+    <link rel="prev" title="First Steps" href="docs_firststep.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #222A35" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> LEOGPS
+          
+
+          
+            
+            <img src="_static/leogps_favicon2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firststep.html">First Steps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">First Scenario Run</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Differential Navigation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps1.html">Carrier Single Differencing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LEOGPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>First Scenario Run</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/docs_firstrun.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="_images/leogps_logo.png" src="_images/leogps_logo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="first-scenario-run">
+<h1>First Scenario Run<a class="headerlink" href="#first-scenario-run" title="Permalink to this headline">¶</a></h1>
+<p>First, for your own custom scenarios, set the correct 4-letter ID and date-times of your spacecraft scenario. When saving or running LEOGPS, these inputs for your scenario and spacecraft will be saved in the <strong>../LEOGPS/config/config.txt/</strong> file which the GUI interfaces with. Note that configuration input strings follow a strict format.</p>
+<p>Second, to use your own custom RINEX observation files, you should provide this in the <strong>/../input/</strong> folder, with two RINEX (v2.xx) observation files, one for each LEO satellite, by pasting it in the <strong>../LEOGPS/input/</strong> folder.</p>
+<p>The file naming convention for the RINEX observation files is an 8-character string comprising the 4-letter ID of the spacecraft (you can create one arbitrarily), the 3-digit GPS day-of-the-year, followed by a single zero digit. The file extension is the last two digits of the year, followed by the letter ‘O’. If the RINEX observation is Hatanaka-compressed, then the last letter of the file extension is a ‘D’.</p>
+<p>For example, the GRACE satellites’ decompressed observation file names are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GRCA2080</span><span class="mf">.10</span><span class="n">O</span>
+<span class="n">GRCB2080</span><span class="mf">.10</span><span class="n">O</span>
+</pre></div>
+</div>
+<p>The 4-letter ID of the two spacecrafts in the LEOGPS GUI must match the first 4-letters of the RINEX files provided!</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For help in understanding the RINEX format better, LEOGPS comes packaged with the RINEX v2.10 documentation in the <strong>reference</strong> directory.</p>
+</div>
+<p>For precise ephemeris and clock files, as long as the user has an active internet connection, you do not need to provide your own ephemeris and clock files, as LEOGPS will automatically source it from the University of Bern, CODE. However, in the event where the FTP is down, but the user has their own precise ephemeris and clock files, you can transfer these files into the <strong>/../input/</strong> folder and rename these files to follow the CODE naming convention so that LEOGPS detects these files and can use them offline without access to the FTP.</p>
+<p>The naming convention for precise clock and ephemeris files are also 8-character strings, starting with a ‘COD’, followed by the 4-digit GPS week number, followed by the 1-digit GPS day-of-week number. The file extension for precise ephemeris files is a ‘.EPH’ string, and for clock files it is a ‘.CLK’ string.</p>
+<p>For example, an ephemeris (.EPH) and clock file (.CLK) from CODE, on the second day of the Week (Tuesday), and on GPS Week Number 1594, would be named:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COD15942</span><span class="o">.</span><span class="n">EPH</span>
+<span class="n">COD15942</span><span class="o">.</span><span class="n">CLK</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a reference on geodetic calendar formats, refer to the <a class="reference external" href="https://geodesy.noaa.gov/CORS/Gpscal.shtml">this calendar</a>.</p>
+</div>
+<p>This concludes the basic setup of the LEOGPS default build.</p>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="docs_cdgps1.html" class="btn btn-neutral float-right" title="Carrier Single Differencing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="docs_firststep.html" class="btn btn-neutral float-left" title="First Steps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Samuel Y. W. Low.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXXXX-1', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

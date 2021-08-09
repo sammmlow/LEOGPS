@@ -9,31 +9,50 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    Extraction of input information from 'config.txt', by searching        ##
+##    for the config.txt file, and then parses the user-defined inputs.      ##
+##    Outputs a dictionary holding user-defined inputs from 'config.txt',    ##
+##    which can then be conveniently called in other python scripts as       ##
+##    function 'inpxtr.inpxtr()'                                             ##
 ##                                                                           ##
-## Extraction of input information from a 'config.txt' file.                 ##
-##                                                                           ##
-## INPUTS:                                                                   ##
-##                                                                           ##
-## Searches for the config.txt file, and then parses the user-defined inputs ##
-##                                                                           ##
-## OUTPUT:                                                                   ##
-##                                                                           ##
-## A variable holding all user-defined inputs from 'config.txt', which can   ##
-## then be conveniently called in other python scripts as function 'inpxtr()'##
-##                                                                           ##
-## AUTHOR MODIFIED: 27-11-2019, by Samuel Y.W. Low                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 07-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
+# Import global libraries
 import datetime
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 
 # We need a function that converts dates and times into GPS formats.
 
 def inptim(t):
+    '''Extract time parameters from **config.txt**, and translates them into 
+    five timing-related parameters to be used for processing later on. Called
+    internally only in `inpxtr.inpxtr()`.
     
+    Parameters
+    ----------
+    t : datetime.datetime
+        An epoch datetime object.
+    
+    Returns
+    -------
+    yyyy : int
+        4-digit Gregorian year
+    yy : str
+        2-digit Gregorian year (for RINEX file name)
+    doy : str
+        3-digit day-of-year (for RINEX file name)
+    wkday : int
+        1-digit day-of-week (Sunday = 0, Saturday = 6)
+    wwww : int
+        GPS week number (generally 4-digits)
+    
+    '''
     # t is a datetime.datetime object
     
     yyyy = t.year # The four digit representation of Gregorian year
@@ -57,19 +76,29 @@ def inptim(t):
 # We have to populate our inputs in the Python script now.
 
 def inpxtr():
+    '''Extract all parameters from **config.txt**. No input arguments.
+    
+    Returns
+    -------
+    inputdict : dict
+        A dictionary of key-value pairs comprising of key-values found in the
+        **config.txt** file. For example, the time step of the scenario would
+        be the key-value pair `{ 'timestep' : 30 }`
+        
+    '''
     
     # First, some housekeeping to get the required files you need.
-
-    cwd = dirname(dirname(abspath(__file__))) # Current working directory
-    iwd = cwd + '\config\config.txt' # Inputs files
+    
+    cwd = dirname(dirname(abspath(__file__))) # Current working directory (str)
+    iwd = join(cwd, 'config', 'config.txt') # Inputs files directory (str)
     
     # Some characteristic configuration parameters are accounted for here.
     
     integers = [ 'freq','timestep','hatchlength','cycsliplen' ]
-
+    
     inputfile = open(iwd,'r')
     inputdict = {} # Create a dictionary to store all the input 
-
+    
     for line in inputfile:
         
         # Check for input entry with an 'I'
@@ -129,18 +158,7 @@ def inpxtr():
                 inputdict[ 'dtstop_yy' ]    = inptim(dtstop)[1] # str
                 inputdict[ 'dtstop_doy' ]   = inptim(dtstop)[2] # str
                 inputdict[ 'dtstop_wkday' ] = inptim(dtstop)[3] # int
-                inputdict[ 'dtstop_wwww' ]  = inptim(dtstop)[4] # int
-                
-            # Check for the array of bad GPS satellites
-            elif line_inp[0] == 'badsats':
-                
-                badsats = []
-                badsatlist = line_inp[1].split(',')
-                
-                for elem in badsatlist:
-                    badsats.append(int(elem))
-                    
-                inputdict['badsats'] = badsats
+                inputdict[ 'dtstop_wwww' ]  = inptim(dtstop)[4] # int    
             
             # Else, just append input parameters into input dictionary
             else:

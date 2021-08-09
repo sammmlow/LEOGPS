@@ -9,47 +9,78 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    Extraction of RINEX observations C1/P1, P2, L1, L2, D1, D2. If         ##
+##    Doppler observables D1/D2 are not found in the RINEX observations,     ##
+##    then Doppler values will be estimated by a first-order derivative      ##
+##    of the L1/L2 phase values.                                             ##
 ##                                                                           ##
-## Extraction of RINEX observations C1/P1, P2, L1, L2, D1, D2                ##
-## If Doppler observables D1/D2 are not found in the RINEX observation file, ##
-## they will be estimated by a first-order derivative of L1/L2 phase values. ##
+##    Inputs: A RINEX observation file (v2.xx) of LEO satellite.             ##
+##    Only GPS observables (no multi-GNSS) are supported for now.            ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Output: RINEX observations as a dictionary of epochs, each epoch       ##
+##    with a sub-dictionary of GPS satellites based on SVIDs, and each       ##
+##    SVID with a sub dictionary of the various observations (C1/P1, P2,     ##
+##    L1, L2, D1, D2). Example output structure:                             ##
 ##                                                                           ##
-## RINEX observation file (v2.xx) of LEO satellite.                          ##
-## Only GPS observables (no multi-GNSS) are supported until new updates      ##
+##    Output = {epoch1 : {1 : {'C1':123, 'L1':123, ...                       ##
+##                             'L4':321, 'flag':'none'} ...} ...             ##
+##              epoch2 : {2 : {'C1':123, 'L1':123, ...                       ##
+##                             'L4':321, 'flag':'slip'} ...} ...             ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
+##              ... ... ... ... ... ...                                      ##
 ##                                                                           ##
-## RINEX observations as a dictionary of epochs, each epoch with a sub       ##
-## dictionary of GPS satellites based on SVIDs, and each SVID with a         ##
-## sub dictionary of the various observations (C1/P1,P2,L1,L2,D1,D2).        ##
-## Output = {epoch1:{5:{'C1':123,'L1':123, ... 'L4':321,'flag':'none'}...}...##
-##           epoch2:{3:{'C1':123,'L1':123, ... 'L4':321,'flag':'slip'}...}...##
-##           ... ... ... ... ... ...                                         ##
-##           epochX:{3:{'C1':123,'L1':123, ... 'L4':321,'flag':'none'}...}}  ##
+##              epochX : {1 : {'C1':123, 'L1':123, ...                       ##
+##                             'L4':321, 'flag':'none'} ...}}                ##
 ##                                                                           ##
-## REMARKS:                                                                  ##
+##    You may enable a code-carrier smoothing Hatch filter in the config     ##
+##    file. You may also change the length of the cycle slip filter, and     ##
+##    the filter, tolerance in terms of the number of standard deviations    ##
+##    in the config.txt. Ensure that RINEX observation files follow          ##
+##    4-letter ID naming convention Followed by the DOY + 0, with the        ##
+##    file extension .YYO.                                                   ##
 ##                                                                           ##
-## You may enable a code-carrier smoothing Hatch filter in the config file.  ##
-## You may also change the length of the cycle slip filter, and the filter,  ##
-## tolerance in terms of the number of standard deviations in the config.txt ##
-## Ensure that RINEX observation files follow 4-letter ID naming convention  ##
-## Followed by the DOY + 0, with the file extension .YYO                     ##
-##                                                                           ##
-## AUTHOR MODIFIED: 14-03-2020, by Samuel Y.W. Low                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 07-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
+# Import global libraries
 import datetime
+
+# Import local libraries
 from source import phasep
 from source import dopest
 
 # Function that begins parsing the RINEX file with the file name as input.
 
 def rinxtr(namepath, inps, goodsats, tstart, tstop, rnxstep):
+    '''Extraction of RINEX observations C1/P1, P2, L1, L2, D1, D2.
+
+    Parameters
+    ----------
+    namepath : str
+        Path to the RINEX observation file
+    inps : dict
+        A dictionary of inputs created by `inpxtr.inpxtr()`
+    goodsats : list
+        Sorted list of GPS satellites without outages by PRN IDs
+    tstart : datetime.datetime
+        Scenario start time for processing
+    tstop : datetime.datetime
+        Scenario stop time for processing
+    rnxstep :datetime.timedelta
+        Observed time step in RINEX file
+
+    Returns
+    -------
+    rnxproc : dict
+        A nested dictionary comprising code observations, carrier phase,
+        doppler values, and a carrier phase flag.
+
+    '''
     
     freqnum   = inps['freq'] # Single frequency or dual frequency processing?
     hatchfilt = inps['hatchfilter'] # Enable hatch filtering?

@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>First Steps &mdash; LEOGPS 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/leogps_favicon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="First Scenario Run" href="docs_firstrun.html" />
+    <link rel="prev" title="Installation" href="docs_install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #222A35" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> LEOGPS
+          
+
+          
+            
+            <img src="_static/leogps_favicon2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firstrun.html">First Scenario Run</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Differential Navigation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps1.html">Carrier Single Differencing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LEOGPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>First Steps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/docs_firststep.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="_images/leogps_logo.png" src="_images/leogps_logo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="first-steps">
+<h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
+<p>First, launch LEOGPS by running <strong>‘leogps.py’</strong> in a Python IDE or your terminal, and you will see a user-interface (UI) with input parameters as shown below.</p>
+<img alt="_images/gui-v12.png" src="_images/gui-v12.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>On the left face of the GUI, you would find text entries where you would input your scenario and spacecraft parameters. On the right face of the GUI, you would find an embedded plot object (matplotlib) which would display the relative orbit trajectory after resolving for the relative positions, in the local Hill Frame with satellite LEO-A as the chief (origin).</p>
+<p>We may now proceed to run the default LEOGPS scenario that comes with the build, for the GRACE formation flying satellite mission. On the UI, click <strong>Load Config</strong>. This loads the configuration inputs from <strong>config.txt</strong>, which, if you did not make any changes to, should correspond to the GRACE formation flying scenario on 27-07-2010 as an example.</p>
+<p>Whenever saving (<strong>Save Config</strong>) or running LEOGPS (<strong>Run LEOGPS</strong>), all inputs are saved in the <strong>../LEOGPS/config/config.txt/</strong> file. Once the processing starts, several things will happen.</p>
+<p>First, notice that the RINEX observation files in the <strong>../LEOGPS/input/</strong> will automatically be Hatanaka-decompressed (file extension changes from ‘D’ to ‘O’). LEOGPS accepts Hatanaka compressed and uncompressed RINEX files. The native LEOGPS comes with two Hatanaka-compressed (file extension ending with <strong>‘D’</strong>) RINEX observation files for GRACE A and B.</p>
+<p>Second, notice also that LEOGPS will automatically download daily precise (final) ephemeris and clock files from the <a class="reference external" href="ftp://ftp.aiub.unibe.ch/CODE/">University of Bern’s CODE FTP</a>, and unzip them automatically. Ephemeris files downloaded will span one day before and one day after the scenario date(s) so that the GPS satellite orbit interpolation can be done beyond the edges of the scenario time-line to prevent edge effects (i.e. ringing, poor polynomial fits etc).</p>
+<p>Third, the interpolated data of GPS ephemeris and clocks are saved and plotted in the <strong>../LEOGPS/output/</strong> folders.</p>
+<p>Fourth and finally, the desired main output of LEOGPS - the single point positioning (SPP) and carrier phase differential GPS (CDGPS) solutions, are saved in <strong>‘LEOGPS_Results.txt’</strong>.</p>
+<p>In the native LEOGPS build, the ground truths for the GRACE formation are also provided in the <strong>reference</strong> directory. These truths are the precise orbit determination solutions, with relative positions validated by the GRACE formation’s actual K-Band ranging radar data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The results shown in <strong>‘LEOGPS_Results.txt’</strong> are computed in the International Terrestrial Reference Frame (ITRS) which is an Earth-Centered Earth-Fixed (ECEF) frame. However, the plots in the GUI have been transformed into the local Hill-Frame of the chief satellite, at the origin, which by default is LEO-A (the first satellite).</p>
+</div>
+<p>Next, we will discuss what you should take careful note of in your own custom scenario runs.</p>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="docs_firstrun.html" class="btn btn-neutral float-right" title="First Scenario Run" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="docs_install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Samuel Y. W. Low.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXXXX-1', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

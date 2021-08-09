@@ -9,55 +9,78 @@
 ##    |____|___ \___/ \___|_| \___/                                          ##
 ##                                    v 1.2 (Stable)                         ##
 ##                                                                           ##
-## FILE DESCRIPTION:                                                         ##
+##    Screens the phase information in RINEX observables (C1,P2,L1,L2).      ##
+##    RINEX observables are stored as a dict returned by 'rinxtr.py'.        ##
 ##                                                                           ##
-## Screens the phase information in RINEX observables (e.g. C1,P2,L1,L2)     ##
-## RINEX observables are stored as a dictionary (produced by 'rinxtr.py')    ##
-## If freqnum == 1 (single frequency):                                       ##
-## We will perform a code-phase Melbourne-Wubbena linear combination         ##
-## If freqnum == 2 (dual frequency)                                          ##
-## We will perform a geometry-free linear combination to screen cycle slips  ##
+##    Inputs: Takes in the RINEX data dictionary formed preliminarily        ##
+##    from rinxtr.rinxtr(), for marking and cycle slip detection.            ##
 ##                                                                           ##
-## INPUTS:                                                                   ##
+##    Outputs: Phase-processed nested dictionary of RINEX observations.      ##
+##    The format is essentially the same, except in the third sub-dict       ##
+##    rnxdata[epoch][SV] has two new key-value pairs added. First, the       ##
+##    L4 intermediate carrier phase value; and second, a cycle slip flag     ##
+##    based on L4 observables computed.                                      ##
 ##                                                                           ##
-## No file inputs required; this programme is meant as a sub-routine.        ##
-## To be called by routine 'rinxtr.py', where it takes in a dictionary of    ##
-## RINEX observations as values, with SVs as the keys to the observations,   ##
-## and with the epochs as the keys to the SVs.                               ##
+##    If freqnum == 1 (single frequency):                                    ##
+##        L4 = Code-phase Melbourne-Wubbena linear combination               ##
 ##                                                                           ##
+##    If freqnum == 2 (dual frequency)                                       ##
+##        L4 = Geometry-free linear combination                              ##
 ##                                                                           ##
-## OUTPUT:                                                                   ##
+##    Where L4 will be used as a derived carrier phase value for cycle       ##
+##    slip detection by checking for phase values beyond a tolerance.        ##
 ##                                                                           ##
-## It outputs a phase-processed nested dictionary of RINEX observations.     ##
-## The format is essentially the same, except in the third sub-dictionary:   ##
-## rnxdata[epoch][SV] has two new key-value pairs added.                     ##
-## One, L4: the geometry-free linear combination / MBWB linear combination   ##
-## Two, a cycle slip flags based on L4 observables computed                  ##
-## The format is formatted as (and will be the format of 'rinxtr.py)         ##
+##    The format is formatted as (and will be the format of 'rinxtr.py)      ##
 ##                                                                           ##
-## Output = {epoch1:{5:{'C1':123,'L1':123, ... 'L4':321,'flag':'none'}...}...##
-##           epoch2:{3:{'C1':123,'L1':123, ... 'L4':321,'flag':'slip'}...}...##
-##           ... ... ... ... ... ...                                         ##
-##           epochX:{3:{'C1':123,'L1':123, ... 'L4':321,'flag':'none'}...}}  ##
+##    Output = {epoch1 : {1 : {'C1':123, 'L1':123, ...                       ##
+##                             'L4':321, 'flag':'none'} ...} ...             ##
+##              epoch2 : {2 : {'C1':123, 'L1':123, ...                       ##
+##                             'L4':321, 'flag':'slip'} ...} ...             ##
 ##                                                                           ##
-## REMARKS:                                                                  ##
+##              ... ... ... ... ... ...                                      ##
 ##                                                                           ##
-## This programme is run as a subroutine in 'rinxtr.py' only.                ##
-## It does not take in any other observation file, except 'config.txt'       ##
+##              epochX : {1 : {'C1':123, 'L1':123, ...                       ##
+##                             'L4':321, 'flag':'none'} ...}}                ##
 ##                                                                           ##
-## AUTHOR MODIFIED: 02-12-2019, by Samuel Y.W. Low                           ##
+##    This programme is run as a subroutine in 'rinxtr.py' only.             ##
+##    It does not take in any other observation file, except 'config.txt'    ##
+##                                                                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 07-Jun-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
 
+# Import global libraries
 import copy
 import warnings
 import numpy as np
 
 # The first function flags the carrier phase status at each epoch.
-
-
 def phsmrk(rnxdata, rnxstep, goodsats, inps):
+    '''Marks the **rnxdata** dict with carrier phase flags at each epoch.
+
+    Parameters
+    ----------
+    rnxdata : dict
+        A nested dictionary comprising code observations, carrier phase,
+        and doppler values.
+    rnxstep :datetime.timedelta
+        Observed time step in RINEX file
+    goodsats : list
+        Sorted list of GPS satellites without outages by PRN IDs
+    inps : dict
+        A dictionary of inputs created by `inpxtr.inpxtr()`
+
+    Returns
+    -------
+    rnxproc : dict
+        A nested dictionary comprising code observations, carrier phase,
+        doppler values, with an added L4 phase and a carrier phase flag.
+    
+    '''
     
     # Get the desired input parameters.
     freqnum = inps['freq']
@@ -293,8 +316,30 @@ def phsmrk(rnxdata, rnxstep, goodsats, inps):
     return rnxproc
 
 # The single-frequency code-carrier hatch filter. 
-
 def hatch1(rf,ri,pf,pi,M,ltype):
+    '''Single-frequency code-carrier hatch filter for a single data point. 
+    
+    Parameters
+    ----------
+    rf : float
+        Pseudorange at epoch [i]
+    ri : float
+        Pseudorange at epoch [i-1]
+    pf : float
+        Carrier phase at epoch [i]
+    pi : float
+        Carrier phase at epoch [i-1]
+    M : int
+        Hatch filter length
+    ltype : str
+        Frequency string ('L1' or 'L2')
+
+    Returns
+    -------
+    float
+        Smoothed code-phase value.
+
+    '''
 
     # r1,r2 are the pseudoranges of epoch (i) and (i-1) respectively
     # p1,p2 are the carrier phases of epoch (i) and (i-1) respectively
@@ -317,9 +362,33 @@ def hatch1(rf,ri,pf,pi,M,ltype):
     return (rf/M) + ((M-1)/M)*(ri+pf-pi)
 
 # The dual-frequency divergence free code-carrier hatch filter.
-
 def hatch2(rf,ri,pf1,pf2,pi1,pi2,M):
+    '''Dual-frequency code-carrier hatch filter for a single data point. 
+    
+    Parameters
+    ----------
+    rf : float
+        Pseudorange at epoch [i]
+    ri : float
+        Pseudorange at epoch [i-1]
+    pf1 : float
+        Carrier phase L1 at epoch [i]
+    pf2 : float
+        Carrier phase L2 at epoch [i]
+    pi1 : float
+        Carrier phase L1 at epoch [i-1]
+    pi2 : float
+        Carrier phase L2 at epoch [i-1]
+    M : int
+        Hatch filter length
 
+    Returns
+    -------
+    float
+        Smoothed code-phase value.
+
+    '''
+    
     # r1,r2 are the pseudoranges of epoch (i) and (i-1) respectively
     # p1,p2 are the carrier phases of epoch (i) and (i-1) respectively
     # M is the filter length
@@ -342,8 +411,30 @@ def hatch2(rf,ri,pf1,pf2,pi1,pi2,M):
     return (rf/M) + ((M-1)/M)*(ri+pdff-pdfi)
 
 # Code-carrier smoothing for single-frequency (standard Hatch filter).
-
 def ph1fil(rnxdata, rnxstep, goodsats, hatchlen):
+    '''Single-frequency hatch filter to be applied to the entire RINEX data
+    dictionary, for carrier phase values without cycle slips. This function
+    calls hatch1() repeatedly in the filter loop.
+    
+    Parameters
+    ----------
+    rnxdata : dict
+        A nested dictionary comprising code observations, carrier phase,
+        and doppler values.
+    rnxstep :datetime.timedelta
+        Observed time step in RINEX file
+    goodsats : list
+        Sorted list of GPS satellites without outages by PRN IDs
+    hatchlen : int
+        Length of the hatch filter
+        
+    Returns
+    -------
+    rnxdata : dict
+        A nested dictionary comprising code observations, carrier phase,
+        and doppler values, with the code values smoothed by Hatch filtering.
+    
+    '''
     
     print('Performing single-frequency L1 Hatch filtering for smoothing.')
         
@@ -435,6 +526,29 @@ def ph1fil(rnxdata, rnxstep, goodsats, hatchlen):
 # Code-carrier smoothing for dual frequency divergence free Hatch filter.
 
 def ph2fil(rnxdata, rnxstep, goodsats, hatchlen):
+    '''Dual-frequency hatch filter to be applied to the entire RINEX data
+    dictionary, for carrier phase values without cycle slips. This function
+    calls hatch2() repeatedly in the filter loop.
+    
+    Parameters
+    ----------
+    rnxdata : dict
+        A nested dictionary comprising code observations, carrier phase,
+        and doppler values.
+    rnxstep :datetime.timedelta
+        Observed time step in RINEX file
+    goodsats : list
+        Sorted list of GPS satellites without outages by PRN IDs
+    hatchlen : int
+        Length of the hatch filter
+        
+    Returns
+    -------
+    rnxdata : dict
+        A nested dictionary comprising code observations, carrier phase,
+        and doppler values, with the code values smoothed by Hatch filtering.
+    
+    '''
     
     print('Performing dual frequency divergence free Hatch filtering')
     
