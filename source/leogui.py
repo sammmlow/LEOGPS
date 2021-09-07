@@ -319,7 +319,7 @@ class run_gui:
         
         # Create the 3D axes matplotlib figure object, using the pack() method
         # of tkinter within the toolbarFrame object.
-        self.orbFig = Figure(figsize=(7,6), dpi=100,
+        self.orbFig = Figure(figsize=(5,4), dpi = master.winfo_fpixels('1i'),
                              linewidth=8, edgecolor="#DDDDDD")
         self.orbFig.set_tight_layout(True)
         self.orbPlot = FigureCanvasTkAgg(self.orbFig, self.toolbarFrame)
