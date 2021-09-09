@@ -62,8 +62,12 @@ class run_gui:
         #'''Constructor. Takes in a tkinter.Tk() object as the sole argument.'''
         
         # Create the main frame and window.
-        master.title('LEOGPS v1.2')
-        master.geometry('1600x1200')
+        master.title('LEOGPS v1.2 - Relative Satellite Navigation in Python')
+        screen_height = master.winfo_screenheight()
+        screen_width = master.winfo_screenwidth()
+        master_geometry  = str(int(screen_width*0.8)) + 'x'
+        master_geometry += str(int(screen_height*0.8))
+        master.geometry(master_geometry)
         
         #####################################################################
         #####################################################################
@@ -122,17 +126,28 @@ class run_gui:
         leogps_logo = dirname(dirname(abspath(__file__)))
         leogps_logo = leogps_logo + '\docs\_static\leogps_logo.png'
         
+        # Get the users current screen height.
+        screen_height = master.winfo_screenheight()
+        
         # Configure the background image and load the logo.
         image = Image.open( leogps_logo )
         photo = ImageTk.PhotoImage(image)
-        self.logo = tk.Label(image=photo)
-        self.logo.image = photo
-        self.logo.grid(row=0, column=0, padx=20, pady=20, columnspan=4)
+        image_h = photo.height()
+        image_w = photo.width()
+        logo_scale = image_w / image_h
+        logo_height = int(screen_height/10)
+        logo_width = int(logo_height*logo_scale)
+        image_resize = image.resize(( logo_width, logo_height ))
+        image_logo = ImageTk.PhotoImage(image_resize)
+        self.logo = tk.Label(image=image_logo)
+        self.logo.image = image_logo
+        self.logo.grid(row=0, column=0, padx=20, pady=20,
+                       sticky='w', columnspan=4)
         
         #####################################################################
         #####################################################################
         ###                                                               ###
-        ###            Add basic buttons for LOAD, SAVE, RUN              ###
+        ###         Add basic buttons for LOAD, SAVE, CLEAR, RUN          ###
         ###                                                               ###
         #####################################################################
         #####################################################################
