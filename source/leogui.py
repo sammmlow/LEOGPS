@@ -78,21 +78,21 @@ class run_gui:
         #####################################################################
         
         # Initialise the basic text labels (found in the configuration file):
-        self.txt01 = 'Input the 4-letter ID of spacecraft A (LEOA)'
-        self.txt02 = 'Input the 4-letter ID of spacecraft B (LEOB)'
-        self.txt03 = 'Set the epoch start in GPST (YYYY-MM-DD-HH-MN-SS)'
-        self.txt04 = 'Set the epoch final in GPST (YYYY-MM-DD-HH-MN-SS)'
-        self.txt05 = 'Input the timestep in seconds (i.e. 30)'
-        self.txt06 = 'Enable single or dual frequency processing?'
-        self.txt07 = 'Enable Code-Carrier Hatch filtering?'
-        self.txt08 = 'Set the window length of the hatch filter'
-        self.txt09 = 'Set one-sigma tolerance for cycle slip detection'
-        self.txt10 = 'Set window length for cycle slip detection filter'
-        self.txt11 = 'Set the GPS antenna X offset (m) for vehicle.'
-        self.txt12 = 'Set the GPS antenna Y offset (m) for vehicle.'
-        self.txt13 = 'Set the GPS antenna Z offset (m) for vehicle.'
-        self.txt14 = 'Select the output orbit ephemeris frame.'
-        self.txt15 = 'Select the output relative baseline frame.'
+        self.txt01 = '4-letter ID of spacecraft A (LEOA)'
+        self.txt02 = '4-letter ID of spacecraft B (LEOB)'
+        self.txt03 = 'Epoch start (YYYY-MM-DD-HH-MN-SS)'
+        self.txt04 = 'Epoch sinal (YYYY-MM-DD-HH-MN-SS)'
+        self.txt05 = 'Timestep in seconds (i.e. 30)'
+        self.txt06 = 'Enable L1 or L1/L2 processing?'
+        self.txt07 = 'Enable code-carrier Hatch filter?'
+        self.txt08 = 'Set Hatch filter window length'
+        self.txt09 = 'Set cycle slip detection one-sigma'
+        self.txt10 = 'Set cycle slip detection filter length'
+        self.txt11 = 'Set the GPS antenna X offset (m)'
+        self.txt12 = 'Set the GPS antenna Y offset (m)'
+        self.txt13 = 'Set the GPS antenna Z offset (m)'
+        self.txt14 = 'Select the inertial orbit frame.'
+        self.txt15 = 'Select the relative orbit frame.'
         
         # Initialise tkinter variables for the entries corresponding to above.
         self.var01 = tk.StringVar() # 4-letter ID of LEO A
