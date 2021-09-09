@@ -78,8 +78,8 @@ class run_gui:
         #####################################################################
         
         # Initialise the basic text labels (found in the configuration file):
-        self.txt01 = '4-letter ID of spacecraft A (LEOA)'
-        self.txt02 = '4-letter ID of spacecraft B (LEOB)'
+        self.txt01 = 'Spacecraft A 4-letter ID (LEOA)'
+        self.txt02 = 'Spacecraft B 4-letter ID (LEOB)'
         self.txt03 = 'Epoch start (YYYY-MM-DD-HH-MN-SS)'
         self.txt04 = 'Epoch sinal (YYYY-MM-DD-HH-MN-SS)'
         self.txt05 = 'Timestep in seconds (i.e. 30)'
@@ -135,7 +135,7 @@ class run_gui:
         image_h = photo.height()
         image_w = photo.width()
         logo_scale = image_w / image_h
-        logo_height = int(screen_height/10)
+        logo_height = int(screen_height/8)
         logo_width = int(logo_height*logo_scale)
         image_resize = image.resize(( logo_width, logo_height ))
         image_logo = ImageTk.PhotoImage(image_resize)
@@ -171,6 +171,14 @@ class run_gui:
         self.runBtn = tk.Button(master, text='Run LEOGPS', command=self.run)
         self.runBtn.grid(row=0, column=8, padx=20, pady=2)
         self.runBtn.configure(bg="light blue")
+        
+        #####################################################################
+        #####################################################################
+        ###                                                               ###
+        ###               Add labels and main data entries                ###
+        ###                                                               ###
+        #####################################################################
+        #####################################################################
         
         # Input the 4-letter ID of the first spacecraft (i.e. LEOA).
         self.label01 = tk.Label(master, text=self.txt01 )
