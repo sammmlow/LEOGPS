@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __| ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Stable)                         ##
+##                                    v 1.3 (Stable)                         ##
 ##                                                                           ##
 ##    This module contains functions that support epoch-wise processing      ##
 ##    for integer ambiguity resolution step. The chief function in the       ##

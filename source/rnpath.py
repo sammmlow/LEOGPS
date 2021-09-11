@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __| ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Stable)                         ##
+##                                    v 1.3 (Stable)                         ##
 ##                                                                           ##
 ##    This module is a RINEX path finder. If an observation file is          ##
 ##    found, with the 4-letter spacecraft ID matching the user's inputs      ##

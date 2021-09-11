@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __| ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Stable)                         ##
+##                                    v 1.3 (Stable)                         ##
 ##                                                                           ##
 ##    Module for rotation matrices supporting ICRF-to-ITRF conversion.       ##
 ##    Uses the IAU1976 Theory of Precession and IAU1980 Theory of Nutation.  ##

@@ -7,14 +7,14 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __| ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Stable)                         ##
+##                                    v 1.3 (Stable)                         ##
 ##                                                                           ##
 ##    This module holds various functions that publish and plot the results  ##
 ##    of either the GPS interpolated ephemeris and clock data, or results    ##
 ##    from the formation satellites' positioning and baseline estimation.    ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    Last modified 07-Jun-2021.                                             ##
+##    Last modified 08-Aug-2021.                                             ##
 ##    Website: https://github.com/sammmlow/LEOGPS                            ##
 ##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##

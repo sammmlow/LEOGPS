@@ -5,7 +5,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __  ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Latest)                         ##
+##                                    v 1.3 (Latest)                         ##
 ##                                                                           ##
 ##    Configuration File (For User-Defined Inputs)                           ##
 ##                                                                           ##
@@ -63,7 +63,7 @@ I: antoffsetZ 0.0
 I: frameOrb ICRF
 ~:
 ~: Select the output relative baseline coordinate frame
-I: frameForm Hill
+I: frameForm ICRF
 ~:
 ###############################################################################
 ###############################################################################

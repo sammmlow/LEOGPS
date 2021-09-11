@@ -7,14 +7,14 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __| ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Stable)                         ##
+##                                    v 1.3 (Stable)                         ##
 ##                                                                           ##
 ##    This file contains the GUI class which based on Python tkinter.        ##
 ##    The class will be called in the main LEOGPS python file.               ##
 ##    (No inputs and outputs, just the GUI class object).                    ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    Last modified 09-Aug-2021                                              ##
+##    Last modified 09-Sep-2021                                              ##
 ##    Website: https://github.com/sammmlow/LEOGPS                            ##
 ##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##
@@ -81,18 +81,18 @@ class run_gui:
         self.txt01 = 'Spacecraft A 4-letter ID (LEOA)'
         self.txt02 = 'Spacecraft B 4-letter ID (LEOB)'
         self.txt03 = 'Epoch start (YYYY-MM-DD-HH-MN-SS)'
-        self.txt04 = 'Epoch sinal (YYYY-MM-DD-HH-MN-SS)'
+        self.txt04 = 'Epoch final (YYYY-MM-DD-HH-MN-SS)'
         self.txt05 = 'Timestep in seconds (i.e. 30)'
         self.txt06 = 'Enable L1 or L1/L2 processing?'
         self.txt07 = 'Enable code-carrier Hatch filter?'
         self.txt08 = 'Set Hatch filter window length'
-        self.txt09 = 'Set cycle slip detection one-sigma'
+        self.txt09 = 'No. of sigmas in cycle slip detection'
         self.txt10 = 'Set cycle slip detection filter length'
-        self.txt11 = 'Set the GPS antenna X offset (m)'
-        self.txt12 = 'Set the GPS antenna Y offset (m)'
-        self.txt13 = 'Set the GPS antenna Z offset (m)'
-        self.txt14 = 'Select the inertial orbit frame.'
-        self.txt15 = 'Select the relative orbit frame.'
+        self.txt11 = 'GPS antenna Body-Frame X offset (m)'
+        self.txt12 = 'GPS antenna Body-Frame Y offset (m)'
+        self.txt13 = 'GPS antenna Body-Frame Z offset (m)'
+        self.txt14 = 'Absolute orbit frame (not in plot)' 
+        self.txt15 = 'Relative orbit frame (default Hill)'
         
         # Initialise tkinter variables for the entries corresponding to above.
         self.var01 = tk.StringVar() # 4-letter ID of LEO A
@@ -135,7 +135,7 @@ class run_gui:
         image_h = photo.height()
         image_w = photo.width()
         logo_scale = image_w / image_h
-        logo_height = int(screen_height/8)
+        logo_height = int(screen_height/6)
         logo_width = int(logo_height*logo_scale)
         image_resize = image.resize(( logo_width, logo_height ))
         image_logo = ImageTk.PhotoImage(image_resize)
@@ -275,7 +275,8 @@ class run_gui:
         # Set the GPS antenna offset in X-direction (m) for vehicle.
         self.label11 = tk.Label(master, text=self.txt11 )
         self.label11.grid(row=11, column=0, padx=40, pady=2, sticky='w')
-        self.entry11 = tk.Entry(master, width=10, textvariable=self.var11)
+        self.entry11 = tk.Entry(master, width=10, textvariable=self.var11,
+                                state=tk.DISABLED)
         self.entry11.grid(row=11, column=1, padx=5, pady=2, sticky='w',
                           columnspan=2)
         self.errtx11 = tk.Label(master, text='', fg='red' )
@@ -284,7 +285,8 @@ class run_gui:
         # Set the GPS antenna offset in Y-direction (m) for vehicle.
         self.label12 = tk.Label(master, text=self.txt12 )
         self.label12.grid(row=12, column=0, padx=40, pady=2, sticky='w')
-        self.entry12 = tk.Entry(master, width=10, textvariable=self.var12)
+        self.entry12 = tk.Entry(master, width=10, textvariable=self.var12,
+                                state=tk.DISABLED)
         self.entry12.grid(row=12, column=1, padx=5, pady=2, sticky='w',
                           columnspan=2)
         self.errtx12 = tk.Label(master, text='', fg='red' )
@@ -293,7 +295,8 @@ class run_gui:
         # Set the GPS antenna offset in Z-direction (m) for vehicle.
         self.label13 = tk.Label(master, text=self.txt13 )
         self.label13.grid(row=13, column=0, padx=40, pady=2, sticky='w')
-        self.entry13 = tk.Entry(master, width=10, textvariable=self.var13)
+        self.entry13 = tk.Entry(master, width=10, textvariable=self.var13,
+                                state=tk.DISABLED)
         self.entry13.grid(row=13, column=1, padx=5, pady=2, sticky='w',
                           columnspan=2)
         self.errtx13 = tk.Label(master, text='', fg='red' )
@@ -342,7 +345,7 @@ class run_gui:
         
         # Create the 3D axes matplotlib figure object, using the pack() method
         # of tkinter within the toolbarFrame object.
-        self.orbFig = Figure(figsize=(5,4), dpi = master.winfo_fpixels('1i'),
+        self.orbFig = Figure(figsize=(5,4), dpi = master.winfo_fpixels('2.0c'),
                              linewidth=8, edgecolor="#DDDDDD")
         self.orbFig.set_tight_layout(True)
         self.orbPlot = FigureCanvasTkAgg(self.orbFig, self.toolbarFrame)

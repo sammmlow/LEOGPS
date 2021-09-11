@@ -7,7 +7,7 @@
 ##    | |  | __ /   \ / __| _ | __|                                          ##
 ##    | |__| __| ( ) | (_ |  _|__ \                                          ##
 ##    |____|___ \___/ \___|_| \___/                                          ##
-##                                    v 1.2 (Stable)                         ##
+##                                    v 1.3 (Stable)                         ##
 ##                                                                           ##
 ##    Single point positioning using code via weighted least squares.        ##
 ##    Doppler-based estimation of velocities only if Doppler is available.   ##
@@ -34,7 +34,7 @@
 ##    Only RINEX v2.xx format, GPS only, supported.                          ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    Last modified 07-Jun-2021.                                             ##
+##    Last modified 08-Aug-2021.                                             ##
 ##    Website: https://github.com/sammmlow/LEOGPS                            ##
 ##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
 ##                                                                           ##

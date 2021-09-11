@@ -6,7 +6,7 @@
    ##    | |  | __ /   \ / __| _ | __|                                      ##
    ##    | |__| __  ( ) | (_ |  _|__ \                                      ##
    ##    |____|___ \___/ \___|_| \___/                                      ##
-   ##                                    v 1.2 (Stable)                     ##
+   ##                                    v 1.3 (Stable)                     ##
    ##                                                                       ##
    ###########################################################################
    ###########################################################################
@@ -20,7 +20,7 @@ Carrier Single Differencing
 
 This segment of the LEOGPS documentation gets into the technicals of baseline estimation between formation flying satellites (or even between static stations in general), and it assumes that the user has sufficient knowledge on single-point positioning concepts. The algorithm described in this section is based on carrier phase differencing, and is largely implemented in the code file **ambest.py** (ambiguity estimation). For a tutorial on the more basic aspects of GNSS, the user is invited to peruse `ESA's NaviPedia <https://gssc.esa.int/navipedia/index.php/Main_Page>`_.
 
-Carrier phase differential GPS, or CDGPS in summary, is the technique of estimating the relative position of a receiver with respect to another, over a short baseline. The carrier signal’s phase is typically exploited for precise point positioning due to its ranging precision, rather than using the unambiguous code. In the case of GPS signals, the ranging accuracy of the C/A code signal is typically on the order of ±3m for a typical GNSS receiver (on the modernized GPS block without selective availability); whereas the ranging accuracy of the carrier phase of the signal is on the order of millimeters due to the accuracy achievable in most receiver phase-locked loops today.
+Carrier phase differential GPS, or CDGPS in summary, is the technique of estimating the relative position of a receiver with respect to another, over a short baseline. The carrier signal’s phase is typically exploited for precise point positioning due to its ranging precision, rather than using the unambiguous code. In the case of GPS signals, the ranging accuracy of the C/A code signal is typically on the order of ±3m for a typical GNSS receiver (on the modernized GPS block without selective availability); whereas the ranging accuracy of the carrier phase of the signal is on the order of millimeters due to the relatively short wavelength (19.05cm for L1 for example) and the accuracy achievable in most receiver phase-locked loops today.
 
 The carrier phase range can be modelled as the observed phase, plus an integer number of wavelengths, and plus a series of systematic and random ranging errors. The goal of carrier phase differential GPS techniques is to remove these systematic ranging errors through differential measurements which cancel common and correlated sources of ranging errors observed by both receivers over a “short” baseline. 
 

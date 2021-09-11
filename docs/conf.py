@@ -1,3 +1,20 @@
+###############################################################################
+###############################################################################
+##                                                                           ##
+##     _    ___  ___   ___ ___ ___                                           ##
+##    | |  | __ /   \ / __| _ | __|                                          ##
+##    | |__| __| ( ) | (_ |  _|__ \                                          ##
+##    |____|___ \___/ \___|_| \___/                                          ##
+##                                    v 1.3 (Stable)                         ##
+##                                                                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    Last modified 11-Sep-2021.                                             ##
+##    Website: https://github.com/sammmlow/LEOGPS                            ##
+##    Documentation: https://leogps.readthedocs.io/en/latest/                ##
+##                                                                           ##
+###############################################################################
+###############################################################################
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -25,7 +42,7 @@ copyright = '2021, Samuel Y. W. Low'
 author = 'Samuel Y. W. Low'
 
 # The full version, including alpha/beta/rc tags
-release = '1.2'
+release = '1.3'
 
 # -- General configuration ---------------------------------------------------
 
@@ -35,7 +52,8 @@ release = '1.2'
 extensions = ["sphinx_rtd_theme",
               "sphinx.ext.autodoc",
               "sphinx.ext.coverage",
-              "sphinx.ext.napoleon"]
+              "sphinx.ext.napoleon",
+              "sphinx_panels"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

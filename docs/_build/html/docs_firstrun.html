@@ -8,7 +8,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>First Scenario Run &mdash; LEOGPS 1.2 documentation</title>
+  <title>First Scenario Run &mdash; LEOGPS 1.3 documentation</title>
   
 
   
@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
+  <link rel="stylesheet" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
+  <link rel="stylesheet" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
 
   
   
@@ -181,20 +184,20 @@
 </div>
 <section id="first-scenario-run">
 <h1>First Scenario Run<a class="headerlink" href="#first-scenario-run" title="Permalink to this headline">¶</a></h1>
-<p>First, for your own custom scenarios, set the correct 4-letter ID and date-times of your spacecraft scenario. When saving or running LEOGPS, these inputs for your scenario and spacecraft will be saved in the <strong>../LEOGPS/config/config.txt/</strong> file which the GUI interfaces with. Note that configuration input strings follow a strict format.</p>
-<p>Second, to use your own custom RINEX observation files, you should provide this in the <strong>/../input/</strong> folder, with two RINEX (v2.xx) observation files, one for each LEO satellite, by pasting it in the <strong>../LEOGPS/input/</strong> folder.</p>
-<p>The file naming convention for the RINEX observation files is an 8-character string comprising the 4-letter ID of the spacecraft (you can create one arbitrarily), the 3-digit GPS day-of-the-year, followed by a single zero digit. The file extension is the last two digits of the year, followed by the letter ‘O’. If the RINEX observation is Hatanaka-compressed, then the last letter of the file extension is a ‘D’.</p>
-<p>For example, the GRACE satellites’ decompressed observation file names are:</p>
+<p>Now, your LEOGPS scenario should have begun running.</p>
+<p>First, let us discuss about the RINEX observation files. Notice that the RINEX observation files have file names that match the 4-letter ID and date-times in your LEOGPS scenario. For example, the GRACE satellites’ decompressed observation file names are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GRCA2080</span><span class="mf">.10</span><span class="n">O</span>
 <span class="n">GRCB2080</span><span class="mf">.10</span><span class="n">O</span>
 </pre></div>
 </div>
-<p>The 4-letter ID of the two spacecrafts in the LEOGPS GUI must match the first 4-letters of the RINEX files provided!</p>
+<p>Notice also that in the <strong>../LEOGPS/input/</strong> directory, RINEX files ending with <strong>D</strong> in the file extension will automatically be Hatanaka-decompressed (file extension changes from ‘D’ to ‘O’). LEOGPS accepts Hatanaka compressed and uncompressed RINEX files. The native LEOGPS v1.3 comes with four Hatanaka-compressed RINEX observation files for the GRACE A and B formation (a joint formation flying project by NASA and DLR), and the Lumelite A and B formation (by NUS STAR).</p>
+<p>To use your own custom RINEX observation files for your own spacecraft, you should provide the RINEX files following the same file naming convention in the <strong>/../LEOGPS/input/</strong> folder, with RINEX version 2.XX only, one for each LEO satellite. The file naming convention for RINEX observation files is an 8-character string comprising the 4-letter ID of the spacecraft (you can create one arbitrarily), the 3-digit GPS day-of-the-year, followed by a single zero digit. The file extension is the last two digits of the year, followed by the letter ‘O’. If the RINEX observation is Hatanaka-compressed, then the last letter of the file extension is a ‘D’.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For help in understanding the RINEX format better, LEOGPS comes packaged with the RINEX v2.10 documentation in the <strong>reference</strong> directory.</p>
+<p>For help in understanding the contents of RINEX formatted files better, LEOGPS comes packaged with the RINEX v2.10 documentation in the <strong>reference</strong> directory.</p>
 </div>
-<p>For precise ephemeris and clock files, as long as the user has an active internet connection, you do not need to provide your own ephemeris and clock files, as LEOGPS will automatically source it from the University of Bern, CODE. However, in the event where the FTP is down, but the user has their own precise ephemeris and clock files, you can transfer these files into the <strong>/../input/</strong> folder and rename these files to follow the CODE naming convention so that LEOGPS detects these files and can use them offline without access to the FTP.</p>
+<p>Second, for supporting files, notice also that LEOGPS will automatically download daily precise (final) ephemeris and clock files from the <a class="reference external" href="ftp://ftp.aiub.unibe.ch/CODE/">University of Bern’s CODE FTP</a>, and unzip them automatically. Ephemeris files downloaded will span one day before and one day after the scenario date(s) so that the GPS satellite orbit interpolation can be done beyond the edges of the scenario time-line to prevent edge effects (i.e. ringing, poor polynomial fits etc).</p>
+<p>As long as the user has an active internet connection, you do not need to provide your own ephemeris and clock files, as LEOGPS will automatically source it from the University of Bern, CODE. However, in the event where the FTP is down, but the user has their own precise ephemeris and clock files, you can transfer these files into the <strong>/../input/</strong> folder and rename these files to follow the CODE naming convention so that LEOGPS detects these files and can use them offline without access to the FTP.</p>
 <p>The naming convention for precise clock and ephemeris files are also 8-character strings, starting with a ‘COD’, followed by the 4-digit GPS week number, followed by the 1-digit GPS day-of-week number. The file extension for precise ephemeris files is a ‘.EPH’ string, and for clock files it is a ‘.CLK’ string.</p>
 <p>For example, an ephemeris (.EPH) and clock file (.CLK) from CODE, on the second day of the Week (Tuesday), and on GPS Week Number 1594, would be named:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COD15942</span><span class="o">.</span><span class="n">EPH</span>
@@ -205,7 +208,10 @@
 <p class="admonition-title">Note</p>
 <p>For a reference on geodetic calendar formats, refer to the <a class="reference external" href="https://geodesy.noaa.gov/CORS/Gpscal.shtml">this calendar</a>.</p>
 </div>
-<p>This concludes the basic setup of the LEOGPS default build.</p>
+<p>Third, the interpolated data of GPS ephemeris and clocks are saved and plotted in the <strong>../LEOGPS/output/</strong> folders. There would be a text file report of interpolated GPS ephemeris, as well as graphical plots of GPS satellites of PRN IDs 1 to 32 (or fewer, due to spacecraft outages, manoeuvres, servicing etc).</p>
+<p>Fourth and finally, the desired main output of LEOGPS - the single point positioning (SPP) and carrier phase differential GPS (CDGPS) solutions, are saved in <strong>‘LEOGPS_Results.txt’</strong>. You can open this text file using Excel or any string formatting language you would like to use. Note that for the individual spacecraft ephemeris, the outputs are in the coordinate reference frame chosen in the GUI under the input label <strong>Orbit frame</strong>; for the relative baseline vector (relative position vector) the outputs are in the coordinate reference frame chosen in the GUI under the input label <strong>Relative orbit frame</strong>. It is recommended (and of more use) to display the relative orbit in the Euler-Hill reference frame, which takes Spacecraft A as the chief or reference spacecraft.</p>
+<p>In the native LEOGPS build, the ground truths for the GRACE formation are also provided in the <strong>reference</strong> directory. These truths are the precise orbit determination solutions, with relative position magnitudes validated by the GRACE formation’s actual K-Band ranging radar data.</p>
+<p>This concludes the explanation of the basic setup of LEOGPS. For more information on relative baseline determination, refer to the tutorials on differential GPS in the next page(s).</p>
 </section>
 
 

@@ -6,7 +6,7 @@
    ##    | |  | __ /   \ / __| _ | __|                                      ##
    ##    | |__| __  ( ) | (_ |  _|__ \                                      ##
    ##    |____|___ \___/ \___|_| \___/                                      ##
-   ##                                    v 1.2 (Stable)                     ##
+   ##                                    v 1.3 (Stable)                     ##
    ##                                                                       ##
    ###########################################################################
    ###########################################################################
@@ -137,6 +137,8 @@ phasep.py
 ---------
 
 The **phasep.py** module augments the RINEX data dictionary parsed out by **rinxtr.py** module. It comprises the cycle slip detection and marking function **phsmrk()**, as well as the hatch filtering algorithm **ph1fil()** for L1 observables, and **ph2fil()** for L1 + L2 observables. Within the hatch filtering loop, each code-phase data point at each time step is computed by the **hatch1()** or **hatch2()** functions.
+
+In this module, the carrier phase cycle slip detection algorithm is done by performing an interpolation of combined L4 (see **rinxtr.py** above) carrier phase data, and observing if there are any single points of data that exceed "X" sigmas of the interpolated carrier phase. "X" refers to the user-specified number of standard deviations as a cut-off point for declaring deviant observations as cycle slips. Such deviant observations will trigger the script to mark that epoch's observation and GPS PRN ID with a cycle slip string flag, and print a warning message to the user in the terminal. However, as of Version 1.3, LEOGPS does not attempt to repair or reject that particular observation.
 
 .. automodule:: phasep
    :members:
