@@ -23,7 +23,7 @@ First, launch LEOGPS by running **'leogps.py'** in a Python IDE or your terminal
 .. figure:: /_figures/gui-v1-3.jpg
    :align: center
    
-   *GUI of LEOGPS*
+   GUI of LEOGPS
 
 |
 
