@@ -25,7 +25,7 @@ from source import leogui
 
 # Initialise the GUI.
 root = tkinter.Tk()
-root_gui = leogui.run_gui( root )
+root_gui = leogui.RunGUI( root )
 root.mainloop()
 
 # To run LEOGPS manually without GUI, comment out lines 27-29. Then, edit 

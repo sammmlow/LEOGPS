@@ -30,11 +30,11 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
 
-# Import the local libraries
+# Import local libraries
 from source import leorun
 from source import frames
 
-class run_gui:
+class RunGUI:
     
     '''This class represents the entire LEOGPS GUI, as a TKinter object.
     The constructor takes in a single tkinter.Tk() object as the root GUI.
@@ -649,11 +649,11 @@ class run_gui:
         # 9. Number of standard deviations for cycle slip tolerance.
         
         self.var09.set(inps['cycsliptol'])
-        if type(inps['cycsliptol']) == float:
+        if type(inps['cycsliptol']) == float and inps['cycsliptol'] > 0.0:
             errmsg = ''
             self.errtx09.configure(text='')
         else:
-            errmsg = 'Error! Tolerance must be float! \n'
+            errmsg = 'Error! Tolerance must be positive float! \n'
             self.errtx09.configure(text='!')
         self.error_msgprint += errmsg
         

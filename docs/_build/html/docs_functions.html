@@ -204,36 +204,36 @@
 <h2>leogui.py<a class="headerlink" href="#leogui-py" title="Permalink to this headline">¶</a></h2>
 <p>The first item to be called when running <strong>leogps.py</strong> is the root GUI object (tkinter.Tk() object). This object interfaces directly with <strong>config.txt</strong> to save or load your input parameters.</p>
 <span class="target" id="module-leogui"></span><dl class="py class">
-<dt class="sig sig-object py" id="leogui.run_gui">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">leogui.</span></span><span class="sig-name descname"><span class="pre">run_gui</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.run_gui" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="leogui.RunGUI">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">leogui.</span></span><span class="sig-name descname"><span class="pre">RunGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class represents the entire LEOGPS GUI, as a TKinter object.
 The constructor takes in a single tkinter.Tk() object as the root GUI.
 All buttons in the GUI are linked to the methods described below.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="leogui.run_gui.cfg_R">
-<span class="sig-name descname"><span class="pre">cfg_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.run_gui.cfg_R" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="leogui.RunGUI.cfg_R">
+<span class="sig-name descname"><span class="pre">cfg_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.cfg_R" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does two things. First, this method checks that all inputs
 in config.txt are correct. Second, it copies the input parameters into
 the GUI (as TKinter variables).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="leogui.run_gui.cfg_W">
-<span class="sig-name descname"><span class="pre">cfg_W</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.run_gui.cfg_W" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="leogui.RunGUI.cfg_W">
+<span class="sig-name descname"><span class="pre">cfg_W</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.cfg_W" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does two things. First, this method checks that all inputs
 in the GUI are correct. Second, it copies the GUI parameters into the
 config.txt file, overwriting it.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="leogui.run_gui.clr">
-<span class="sig-name descname"><span class="pre">clr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.run_gui.clr" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="leogui.RunGUI.clr">
+<span class="sig-name descname"><span class="pre">clr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.clr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears all existing relative orbit plots in the LEOGPS GUI.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="leogui.run_gui.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.run_gui.run" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="leogui.RunGUI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the LEOGPS program using the leorun.py script and plots the
 relative trajectory.</p>
 </dd></dl>
