@@ -199,6 +199,7 @@
 <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <p>The order of functions in this API reference goes according to the chronological order of which they are called in the native LEOGPS processing work flow (see previous page). Functions that are currently not in use in the current native work flow are listed at the end of this page.</p>
+<hr class="docutils" />
 <div class="section" id="leogui-py">
 <h2>leogui.py<a class="headerlink" href="#leogui-py" title="Permalink to this headline">¶</a></h2>
 <p>The first item to be called when running <strong>leogps.py</strong> is the root GUI object (tkinter.Tk() object). This object interfaces directly with <strong>config.txt</strong> to save or load your input parameters.</p>
@@ -240,6 +241,7 @@ relative trajectory.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="leorun-py">
 <h2>leorun.py<a class="headerlink" href="#leorun-py" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>leorun.run()</strong> function is called once the user clicks on <strong>Run LEOGPS</strong>.</p>
@@ -251,6 +253,7 @@ No input arguments needed, and returns None.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="inpxtr-py">
 <h2>inpxtr.py<a class="headerlink" href="#inpxtr-py" title="Permalink to this headline">¶</a></h2>
 <p>The first thing that is run in the native work flow is to extract all the inputs from <strong>config.txt</strong>. This is done through the <strong>inpxtr</strong> module which comprises two functions. First, <strong>inpxtr.inptim()</strong>, extracts the dates and times from the config file and outputs them in GPS time format. Second, <strong>inpxtr.inpxtr()</strong> extracts all the other processing parameters.</p>
@@ -294,6 +297,7 @@ be the key-value pair <cite>{ ‘timestep’ : 30 }</cite></p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="rnpath-py">
 <h2>rnpath.py<a class="headerlink" href="#rnpath-py" title="Permalink to this headline">¶</a></h2>
 <p>The second step is to search for the RINEX file paths based on the 4-letter IDs of both spacecraft, and to perform Hatanaka decompression if necessary.</p>
@@ -316,6 +320,7 @@ be the key-value pair <cite>{ ‘timestep’ : 30 }</cite></p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="timing-py">
 <h2>timing.py<a class="headerlink" href="#timing-py" title="Permalink to this headline">¶</a></h2>
 <p>The third step involves deconflicting all the timing parameters. The routine <strong>timing.py</strong> will take in three sets of timings: the user-specified start-stop times in the GUI or in <strong>config.txt</strong>, and the start-stop times from both of the RINEX observation files. This module will then output the intersection of all three timelines. This module will also check if the time steps of the RINEX files and time step specified by the user are compatible.</p>
@@ -364,6 +369,7 @@ Sets the start, stop, and time steps for the entire LEOGPS scenario.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="gpsxtr-py">
 <h2>gpsxtr.py<a class="headerlink" href="#gpsxtr-py" title="Permalink to this headline">¶</a></h2>
 <p>The fourth step is to extract out the interpolated GPS satellite ephemeris and clock data.</p>
@@ -417,6 +423,7 @@ including clock bias and clock drift values.</p>
 <p>The secondary output of <strong>gpsxtr.gpsxtr()</strong> is the <strong>goodsats</strong> list, which is a sorted list of GPS satellite PRN IDs whose observables had no outages.</p>
 <p>An auxiliary function <strong>gpsxtr.gpsweekday()</strong> exists but is not documented here. It converts a datetime object into two string variables: the GPS day-of-week and the GPS week number. This is a similar function to <strong>inpxtr.inptim()</strong>.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="rinxtr-py">
 <h2>rinxtr.py<a class="headerlink" href="#rinxtr-py" title="Permalink to this headline">¶</a></h2>
 <p>The fifth step involves the extraction of RINEX observations C1/P1, P2, L1, L2, D1, D2, with carrier phase marking, and cycle slip detection performed using the <strong>phasep.py</strong> module.</p>
@@ -471,6 +478,7 @@ doppler values, and a carrier phase flag.</p>
 <p>You may also change the length of the cycle slip filter, and the filter tolerance in terms of the number of standard deviations through the GUI or manually in the config file.</p>
 <p>Do ensure that RINEX observation files follow 4-letter ID naming convention followed by the DOY + 0, with the file extension .YYO.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="phasep-py">
 <h2>phasep.py<a class="headerlink" href="#phasep-py" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>phasep.py</strong> module augments the RINEX data dictionary parsed out by <strong>rinxtr.py</strong> module. It comprises the cycle slip detection and marking function <strong>phsmrk()</strong>, as well as the hatch filtering algorithm <strong>ph1fil()</strong> for L1 observables, and <strong>ph2fil()</strong> for L1 + L2 observables. Within the hatch filtering loop, each code-phase data point at each time step is computed by the <strong>hatch1()</strong> or <strong>hatch2()</strong> functions.</p>
@@ -605,6 +613,7 @@ doppler values, with an added L4 phase and a carrier phase flag.</p>
 <p>The RINEX data dictionary returned by <strong>phasep.phsmrk(), phasep.ph1fil(), phasep.ph2fil()</strong> all share the same nested dictionary key-value pairs as the output of the <strong>rinxtr.rinxtr()</strong> function.</p>
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="dopest-py">
 <h2>dopest.py<a class="headerlink" href="#dopest-py" title="Permalink to this headline">¶</a></h2>
 <p>If Doppler observables D1/D2 are not found in the RINEX observations, then Doppler values will be estimated through the <strong>dopest.py</strong> module, by estimating a first-order derivative of the L1/L2 phase values numerically using polynomial fitting.</p>
@@ -636,6 +645,7 @@ phase values are present in sequence.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="posvel-py">
 <h2>posvel.py<a class="headerlink" href="#posvel-py" title="Permalink to this headline">¶</a></h2>
 <p>The sixth step is to perform single point positioning (SPP), using the code pseudorange equations, solved via weighted least squares epoch-wise. Thus, the primary function <strong>posvel.posvel()</strong> is called once for each satellite and for each epoch.</p>
@@ -684,6 +694,7 @@ of <cite>rinxtr.rinxtr()</cite></p></li>
 </div>
 <p>In the main work flow <strong>leorun.run()</strong>, this function will be called once in each epoch for each of the two satellites. Both SPP results will be used in the carrier phase ambiguity estimation.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="einstn-py">
 <h2>einstn.py<a class="headerlink" href="#einstn-py" title="Permalink to this headline">¶</a></h2>
 <p>The ‘Einstein’ module, comprises two main functions: one to compute the clock advance and one to compute the Shapiro path delay. In both functions, the output is converted to the equivalent path-length in meters.</p>
@@ -739,6 +750,7 @@ correction in meters.</p>
 </div>
 <p>This module will be called in <strong>posvel.py</strong> during the setup of pseudorange model in the iterative least squares solution of single-point positioning.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="azimel-py">
 <h2>azimel.py<a class="headerlink" href="#azimel-py" title="Permalink to this headline">¶</a></h2>
 <p>While elevation-dependent or azimuth-dependent weighting is not built into the iterative least squares processing of LEOGPS for single point positioning, this module exists (but is not used) if the user wishes to compute azimuths and elevations from the LEO to GPS satellites anyway.</p>
@@ -765,6 +777,7 @@ the GPS satellite when providing an ECEF position coordinate of them both.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="ambest-py">
 <h2>ambest.py<a class="headerlink" href="#ambest-py" title="Permalink to this headline">¶</a></h2>
 <p>This is the seventh processing step, which is the carrier phase integer or float ambiguity resolution step. This module contains functions that support epoch-wise processing for integer ambiguity resolution step.</p>
@@ -816,6 +829,7 @@ inertial position vectors of LEO-A or LEO-B are zero.</p>
 <p>If the user wishes to set their own custom zero difference covariance matrix, the user can input this in the optional <cite>covZD</cite> argument. If the user does not specify the <cite>covZD</cite> argument, then <cite>covZD</cite> by default will revert to an identity matrix scaled by the <cite>sigma</cite> argument above. Thus, running LAMBDA (by setting <cite>fix = True</cite> when calling <strong>ambest.py</strong>), but not setting a custom <cite>covZD</cite> argument, only has the equivalent effect of integer rounding.</p>
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="ambfix-py">
 <h2>ambfix.py<a class="headerlink" href="#ambfix-py" title="Permalink to this headline">¶</a></h2>
 <p>This module holds the classical LAMBDA method that was originally authored by Teunissen, Jonge, and Tiberius (1993). The code was later written in MATLAB by Dr Sandra Verhagen and Dr Bofeng Li. It takes in a vector of float ambiguities to the integer least-squares (ILS) problem, and covariance of the float ambiguities. It then runs the LAMBDA’s ILS search-&amp;-shrink and spits out the ambiguity integers. The other 5 methods in original LAMBDA MATLAB code are not supported here (feel free to edit the code and implement it youself). The default <cite>ncands = 2</cite>, as per original code. All supporting functions from the original MATLAB code (<cite>decorrel</cite>, <cite>ldldecom</cite>, <cite>ssearch</cite>) have been nested within the main function as sub functions.</p>
@@ -850,9 +864,10 @@ vectors in the metric of the variance-covariance matrix Qahat.</p></li>
 <p>LAMBDA always first applies a decorrelation before the integer estimation. For ILS this is required to guarantee an efficient search. For rounding and bootstrapping it is required in order to get higher success rates (although rounding and bootstrapping is not included in LEOGPS).</p>
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="frames-py">
 <h2>frames.py<a class="headerlink" href="#frames-py" title="Permalink to this headline">¶</a></h2>
-<p>This is the eighth step in the LEOGPS native processing work flow. This step performs the conversion of the coordinate reference frames between ITRF and ICRF, via the IAU1976 Theory of Precession and IAU1980 Theory of Nutation. For the visualisation of the formation geometry, it is recommended that the user select the Hill frame as the relative coordinate frame. By default, the reference frame in the downloaded ephemeris files in AIUB CODE’s FTP is the ITRF.</p>
+<p>This is the eighth step in the LEOGPS native processing work flow. This step performs the conversion of the coordinate reference frames between ITRF and ICRF, via the IAU1976 Theory of Precession and IAU1980 Theory of Nutation. For the visualisation of the formation geometry, it is recommended that the user select the Hill frame as the relative orbit coordinate frame. By default, the reference frame in the downloaded ephemeris files in AIUB CODE’s FTP is the ITRF.</p>
 <span class="target" id="module-frames"></span><dl class="py function">
 <dt class="sig sig-object py" id="frames.cep2icrf">
 <span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">cep2icrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.cep2icrf" title="Permalink to this definition">¶</a></dt>
@@ -1030,6 +1045,7 @@ functions in sequence: <cite>itrf2cep()</cite> and <cite>cep2icrf()</cite>.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="pubplt-py">
 <h2>pubplt.py<a class="headerlink" href="#pubplt-py" title="Permalink to this headline">¶</a></h2>
 <p>In the final stage, after all processing is done, the <strong>pubplt.py</strong> module publishes the information into output files in the <cite>outputs</cite> folder, found in the LEOGPS root directory.</p>
@@ -1109,6 +1125,7 @@ dop2 (1x3), cb2 (1x1), baseline (1x3)]</p></li>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="consts-py">
 <h2>consts.py<a class="headerlink" href="#consts-py" title="Permalink to this headline">¶</a></h2>
 <p>The following is a list of common constants used throughout LEOGPS, extracted from the University of Bern, Center for Orbit Determination in Europe (CODE):</p>
@@ -1157,7 +1174,8 @@ dop2 (1x3), cb2 (1x1), baseline (1x3)]</p></li>
 <span class="n">ERR</span>    <span class="o">=</span> <span class="mf">7.2921150e-5</span>     <span class="c1"># EARTH INERTIAL ROTATION RATE     RAD/SEC</span>
 </pre></div>
 </div>
-<p>This API reference was automatically generated using Sphinx’ Autodoc feature, using the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">NumPy docstring format</a>, and last updated on 6th June 2021.</p>
+<hr class="docutils" />
+<p>This API reference was automatically generated using Sphinx’ Autodoc feature, using the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">NumPy docstring format</a>, and last updated on 11th September 2021.</p>
 </div>
 </div>
 

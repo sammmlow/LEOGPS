@@ -20,6 +20,8 @@ API Reference
 
 The order of functions in this API reference goes according to the chronological order of which they are called in the native LEOGPS processing work flow (see previous page). Functions that are currently not in use in the current native work flow are listed at the end of this page.
 
+####
+
 leogui.py
 ---------
 
@@ -27,6 +29,8 @@ The first item to be called when running **leogps.py** is the root GUI object (t
 
 .. automodule:: leogui
    :members:
+
+####
 
 leorun.py
 ---------
@@ -36,6 +40,8 @@ The **leorun.run()** function is called once the user clicks on **Run LEOGPS**.
 .. automodule:: leorun
    :members:
 
+####
+
 inpxtr.py
 ---------
 
@@ -43,6 +49,8 @@ The first thing that is run in the native work flow is to extract all the inputs
 
 .. automodule:: inpxtr
    :members:
+
+####
 
 rnpath.py
 ---------
@@ -52,6 +60,8 @@ The second step is to search for the RINEX file paths based on the 4-letter IDs 
 .. automodule:: rnpath
    :members:
 
+####
+
 timing.py
 ---------
 
@@ -59,6 +69,8 @@ The third step involves deconflicting all the timing parameters. The routine **t
 
 .. automodule:: timing
    :members:
+
+####
 
 gpsxtr.py
 ---------
@@ -94,6 +106,8 @@ An example structure of this dictionary is given below::
 The secondary output of **gpsxtr.gpsxtr()** is the **goodsats** list, which is a sorted list of GPS satellite PRN IDs whose observables had no outages.
 
 An auxiliary function **gpsxtr.gpsweekday()** exists but is not documented here. It converts a datetime object into two string variables: the GPS day-of-week and the GPS week number. This is a similar function to **inpxtr.inptim()**.
+
+####
 
 rinxtr.py
 ---------
@@ -133,6 +147,8 @@ You may also change the length of the cycle slip filter, and the filter toleranc
 
 Do ensure that RINEX observation files follow 4-letter ID naming convention followed by the DOY + 0, with the file extension .YYO.
 
+####
+
 phasep.py
 ---------
 
@@ -145,6 +161,8 @@ In this module, the carrier phase cycle slip detection algorithm is done by perf
 
 .. note:: The RINEX data dictionary returned by **phasep.phsmrk(), phasep.ph1fil(), phasep.ph2fil()** all share the same nested dictionary key-value pairs as the output of the **rinxtr.rinxtr()** function.
 
+####
+
 dopest.py
 ---------
 
@@ -152,6 +170,8 @@ If Doppler observables D1/D2 are not found in the RINEX observations, then Doppl
 
 .. automodule:: dopest
    :members:
+
+####
 
 posvel.py
 ---------
@@ -169,6 +189,8 @@ Doppler-based estimation of velocities will also be performed if Doppler data is
 
 In the main work flow **leorun.run()**, this function will be called once in each epoch for each of the two satellites. Both SPP results will be used in the carrier phase ambiguity estimation.
 
+####
+
 einstn.py
 ---------
 
@@ -183,6 +205,8 @@ The 'Einstein' module, comprises two main functions: one to compute the clock ad
 
 This module will be called in **posvel.py** during the setup of pseudorange model in the iterative least squares solution of single-point positioning.
 
+####
+
 azimel.py
 ---------
 
@@ -190,6 +214,8 @@ While elevation-dependent or azimuth-dependent weighting is not built into the i
 
 .. automodule:: azimel
    :members:
+
+####
 
 ambest.py
 ---------
@@ -205,6 +231,8 @@ An option exists to perform integer fixing (see the `fix` argument above) using 
 
 .. note:: If the user wishes to set their own custom zero difference covariance matrix, the user can input this in the optional `covZD` argument. If the user does not specify the `covZD` argument, then `covZD` by default will revert to an identity matrix scaled by the `sigma` argument above. Thus, running LAMBDA (by setting `fix = True` when calling **ambest.py**), but not setting a custom `covZD` argument, only has the equivalent effect of integer rounding.
 
+####
+
 ambfix.py
 ---------
 
@@ -215,13 +243,17 @@ This module holds the classical LAMBDA method that was originally authored by Te
 
 .. note:: LAMBDA always first applies a decorrelation before the integer estimation. For ILS this is required to guarantee an efficient search. For rounding and bootstrapping it is required in order to get higher success rates (although rounding and bootstrapping is not included in LEOGPS).
 
+####
+
 frames.py
 ---------
 
-This is the eighth step in the LEOGPS native processing work flow. This step performs the conversion of the coordinate reference frames between ITRF and ICRF, via the IAU1976 Theory of Precession and IAU1980 Theory of Nutation. For the visualisation of the formation geometry, it is recommended that the user select the Hill frame as the relative coordinate frame. By default, the reference frame in the downloaded ephemeris files in AIUB CODE's FTP is the ITRF.
+This is the eighth step in the LEOGPS native processing work flow. This step performs the conversion of the coordinate reference frames between ITRF and ICRF, via the IAU1976 Theory of Precession and IAU1980 Theory of Nutation. For the visualisation of the formation geometry, it is recommended that the user select the Hill frame as the relative orbit coordinate frame. By default, the reference frame in the downloaded ephemeris files in AIUB CODE's FTP is the ITRF.
 
 .. automodule:: frames
    :members:
+
+####
 
 pubplt.py
 ---------
@@ -232,6 +264,8 @@ Specifically, there are three functions in this module: a function to save as a 
 
 .. automodule:: pubplt
    :members:
+
+####
 
 consts.py
 ---------
@@ -282,4 +316,6 @@ The following is a list of common constants used throughout LEOGPS, extracted fr
 	HUMREF = 50.0             # HUMIDITY AT HREF                 %
 	ERR    = 7.2921150e-5     # EARTH INERTIAL ROTATION RATE     RAD/SEC
 
-This API reference was automatically generated using Sphinx' Autodoc feature, using the `NumPy docstring format <https://numpydoc.readthedocs.io/en/latest/format.html>`_, and last updated on 6th June 2021.
+####
+
+This API reference was automatically generated using Sphinx' Autodoc feature, using the `NumPy docstring format <https://numpydoc.readthedocs.io/en/latest/format.html>`_, and last updated on 11th September 2021.

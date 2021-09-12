@@ -63,7 +63,7 @@ I: antoffsetZ 0.0
 I: frameOrb ICRF
 ~:
 ~: Select the output relative baseline coordinate frame
-I: frameForm ICRF
+I: frameForm Hill
 ~:
 ###############################################################################
 ###############################################################################
