@@ -6,7 +6,7 @@
    ##    | |  | __ /   \ / __| _ | __|                                      ##
    ##    | |__| __  ( ) | (_ |  _|__ \                                      ##
    ##    |____|___ \___/ \___|_| \___/                                      ##
-   ##                                    v 1.2 (Stable)                     ##
+   ##                                    v 1.3 (Stable)                     ##
    ##                                                                       ##
    ###########################################################################
    ###########################################################################
@@ -29,7 +29,7 @@
 
 :Github: https://github.com/sammmlow/LEOGPS
 :Documents: https://leogps.readthedocs.io/en/latest/
-:Version: 1.2 (Latest)
+:Version: 1.3 (Latest)
 :Author: Samuel Y. W. Low
 
 |docs| |license| |linkedin| |orcid|
