@@ -59,7 +59,14 @@ class RunGUI:
 
     def __init__(self, master):
         
-        #'''Constructor. Takes in a tkinter.Tk() object as the sole argument.'''
+        '''
+        Loads the GUI class object, taking a tkinter.Tk() object as input.
+        
+        Example initialisation:
+        >> root = tkinter.Tk()
+        >> root_gui = run_gui( root )
+        >> root.mainloop()
+        '''
         
         # Create the main frame and window.
         master.title('LEOGPS v1.2 - Relative Satellite Navigation in Python')
@@ -389,6 +396,12 @@ class RunGUI:
     #####################################################################
     
     def _callback_hatch(self):
+        
+        '''
+        Basically a call back function to disable the Hatch filter parameters
+        if Hatch filtering was disabled.
+        '''
+        
         try:
             _hatch = self.var07.get()
             if _hatch == 0:
@@ -411,6 +424,20 @@ class RunGUI:
     
     def cfg_R(self):
         
+        '''
+        This method does two things. First, this method checks that all inputs
+        in config.txt are correct. Second, it copies the input parameters into
+        the GUI's TKinter variables.
+        '''
+        
+        # First, ask the user if he/she wishes to proceed.
+        cfg_R_msg = 'Load parameters from the "config.txt" file? \n'
+        cfg_R_msg += '(This will overwrite existing inputs in the GUI!)'
+        cfg_R_ask = tk.messagebox.askyesno('Load Config', cfg_R_msg)
+        if cfg_R_ask == False:
+            return None
+        
+        # Else, continue with loading the configuration file.
         cwd = dirname(dirname(abspath(__file__))) # Current working directory
         iwd = join(cwd, 'config', 'config.txt') # Inputs files
         inputfile = open(iwd,'r') # Open the config.txt file
@@ -798,7 +825,20 @@ class RunGUI:
     
     def cfg_W(self):
         
-        # Reset the GUI error message variable.
+        '''
+        This method does two things. First, this method checks that all inputs
+        in the GUI are correct. Second, it copies the GUI parameters into the
+        config.txt file after all checks are complete.
+        '''
+        
+        # First, ask the user if he/she wishes to proceed.
+        cfg_W_msg = 'Save GUI parameters into the "config.txt" file? \n'
+        cfg_W_msg += '(This will overwrite parameters in "config.txt"!)'
+        cfg_W_ask = tk.messagebox.askyesno('Save Config', cfg_W_msg)
+        if cfg_W_ask == False:
+            return None
+        
+        # Else, continue with saving the configurations.
         self.error_msgprint = ''
         
         # Get the directory paths.
@@ -1290,6 +1330,13 @@ class RunGUI:
     
     def clr(self):
         
+        # First, ask the user if he/she wishes to proceed.
+        clr_msg = 'Clear the plot in the GUI?'
+        clr_ask = tk.messagebox.askyesno('Clear Plots', clr_msg)
+        if clr_ask == False:
+            return None
+        
+        # Else, continue with clearing the plots.
         self.orbAxis.clear()
         self.orbPlot.draw()
         
@@ -1305,6 +1352,12 @@ class RunGUI:
     #########################################################################
     
     def run(self):
+        
+        # First, ask the user if he/she wishes to proceed.
+        run_msg = 'Save Parameters and Run LEOGPS?'
+        run_ask = tk.messagebox.askyesno('Run LEOGPS?', run_msg)
+        if run_ask == False:
+            return None
         
         try:
             
