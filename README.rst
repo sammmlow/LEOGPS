@@ -26,11 +26,11 @@
 LEOGPS
 ------
 
-LEOGPS is an open-source Python package that takes in GPS observations of formation flying satellites in pairs, to perform single point positioning (SPP) and precise relative positioning via carrier phase double-differential GPS (CDGPS). It currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format.
+LEOGPS is an open-source Python software which performs relative satellite navigation between **two formation flying satellites**, with the objective of high accuracy relative positioning. Specifically, LEOGPS solves for the double-differenced baseline (using float ambiguity resolution) between satellites flying in formation in Low Earth Orbit (LEO). As such, the relative positioning accuracy diminishes with increasing formation baseline lengths.
 
-LEOGPS gives credit to the University of Bern, for their kind sharing of CODE precise GPS ephemeris and clock files FTP.
+LEOGPS currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format. LEOGPS also uses the precise ephemeris (.EPH) and clock bias and drift files (.CLK) provided by the University of Bern, Center for Orbit Determination in Europe (​CODE). As such, the coordinate frame used in the relative positioning is the International Terrestrial Reference Frame (ITRS) which is an Earth-Centered Earth-Fixed (ECEF) frame. Since the ephemeris files and RINEX v2 observations default to GPS Time, it is very important to also note that the time scale used in LEOGPS output files is GPS Time (as opposed to UTC).
 
-*Note that for formation flying applications, the purely kinematic CDGPS approach in LEOGPS is usually accurate up to 1m for baselines less than 200km.* 
+This project also gives sincere appreciation and credit to the University of Bern, for their provision of the CODE FTP.
 
 Installation and First Steps
 ----------------------------
