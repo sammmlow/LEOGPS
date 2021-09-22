@@ -32,7 +32,6 @@ from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
 
 # Import local libraries
 from source import leorun
-from source import frames
 
 class RunGUI:
     
@@ -69,11 +68,11 @@ class RunGUI:
         '''
         
         # Create the main frame and window.
-        master.title('LEOGPS v1.2 - Relative Satellite Navigation in Python')
+        master.title('LEOGPS v1.3 - Relative Satellite Navigation in Python')
         screen_height = master.winfo_screenheight()
         screen_width = master.winfo_screenwidth()
-        master_geometry  = str(int(screen_width*0.8)) + 'x'
-        master_geometry += str(int(screen_height*0.8))
+        master_geometry  = str(int(screen_width*0.85)) + 'x'
+        master_geometry += str(int(screen_height*0.85))
         master.geometry(master_geometry)
         
         #####################################################################
