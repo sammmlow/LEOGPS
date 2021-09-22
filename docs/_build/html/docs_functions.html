@@ -1,77 +1,35 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>API Reference &mdash; LEOGPS 1.3 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/leogps_favicon.png"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Processing Flow" href="docs_process.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #222A35" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> LEOGPS
-          
-
-          
-            
             <img src="_static/leogps_favicon2.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,18 +37,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
@@ -127,91 +74,50 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #222A35" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">LEOGPS</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>API Reference</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/docs_functions.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <img alt="_images/leogps_logo.png" src="_images/leogps_logo.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="section" id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline"></a></h1>
 <p>The order of functions in this API reference goes according to the chronological order of which they are called in the native LEOGPS processing work flow (see previous page). Functions that are currently not in use in the current native work flow are listed at the end of this page.</p>
 <hr class="docutils" />
-<div class="section" id="leogui-py">
-<h2>leogui.py<a class="headerlink" href="#leogui-py" title="Permalink to this headline">¶</a></h2>
+<section id="leogui-py">
+<h2>leogui.py<a class="headerlink" href="#leogui-py" title="Permalink to this headline"></a></h2>
 <p>The first item to be called when running <strong>leogps.py</strong> is the root GUI object (tkinter.Tk() object). This object interfaces directly with <strong>config.txt</strong> to save or load your input parameters.</p>
 <span class="target" id="module-leogui"></span><dl class="py class">
 <dt class="sig sig-object py" id="leogui.RunGUI">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">leogui.</span></span><span class="sig-name descname"><span class="pre">RunGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">leogui.</span></span><span class="sig-name descname"><span class="pre">RunGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI" title="Permalink to this definition"></a></dt>
 <dd><p>This class represents the entire LEOGPS GUI, as a TKinter object.
 The constructor takes in a single tkinter.Tk() object as the root GUI.
 All buttons in the GUI are linked to the methods described below.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="leogui.RunGUI.cfg_R">
-<span class="sig-name descname"><span class="pre">cfg_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.cfg_R" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cfg_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.cfg_R" title="Permalink to this definition"></a></dt>
 <dd><p>This method does two things. First, this method checks that all inputs
 in config.txt are correct. Second, it copies the input parameters into
 the GUI (as TKinter variables).</p>
@@ -219,7 +125,7 @@ the GUI (as TKinter variables).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="leogui.RunGUI.cfg_W">
-<span class="sig-name descname"><span class="pre">cfg_W</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.cfg_W" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cfg_W</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.cfg_W" title="Permalink to this definition"></a></dt>
 <dd><p>This method does two things. First, this method checks that all inputs
 in the GUI are correct. Second, it copies the GUI parameters into the
 config.txt file, overwriting it.</p>
@@ -227,39 +133,39 @@ config.txt file, overwriting it.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="leogui.RunGUI.clr">
-<span class="sig-name descname"><span class="pre">clr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.clr" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.clr" title="Permalink to this definition"></a></dt>
 <dd><p>Clears all existing relative orbit plots in the LEOGPS GUI.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="leogui.RunGUI.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.run" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#leogui.RunGUI.run" title="Permalink to this definition"></a></dt>
 <dd><p>Run the LEOGPS program using the leorun.py script and plots the
 relative trajectory.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="leorun-py">
-<h2>leorun.py<a class="headerlink" href="#leorun-py" title="Permalink to this headline">¶</a></h2>
+<section id="leorun-py">
+<h2>leorun.py<a class="headerlink" href="#leorun-py" title="Permalink to this headline"></a></h2>
 <p>The <strong>leorun.run()</strong> function is called once the user clicks on <strong>Run LEOGPS</strong>.</p>
 <span class="target" id="module-leorun"></span><dl class="py function">
 <dt class="sig sig-object py" id="leorun.run">
-<span class="sig-prename descclassname"><span class="pre">leorun.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#leorun.run" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">leorun.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#leorun.run" title="Permalink to this definition"></a></dt>
 <dd><p>Basically runs the primary workflow for LEOGPS’ relative positioning.
 No input arguments needed, and returns None.</p>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="inpxtr-py">
-<h2>inpxtr.py<a class="headerlink" href="#inpxtr-py" title="Permalink to this headline">¶</a></h2>
+<section id="inpxtr-py">
+<h2>inpxtr.py<a class="headerlink" href="#inpxtr-py" title="Permalink to this headline"></a></h2>
 <p>The first thing that is run in the native work flow is to extract all the inputs from <strong>config.txt</strong>. This is done through the <strong>inpxtr</strong> module which comprises two functions. First, <strong>inpxtr.inptim()</strong>, extracts the dates and times from the config file and outputs them in GPS time format. Second, <strong>inpxtr.inpxtr()</strong> extracts all the other processing parameters.</p>
 <span class="target" id="module-inpxtr"></span><dl class="py function">
 <dt class="sig sig-object py" id="inpxtr.inptim">
-<span class="sig-prename descclassname"><span class="pre">inpxtr.</span></span><span class="sig-name descname"><span class="pre">inptim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inpxtr.inptim" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inpxtr.</span></span><span class="sig-name descname"><span class="pre">inptim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inpxtr.inptim" title="Permalink to this definition"></a></dt>
 <dd><p>Extract time parameters from <strong>config.txt</strong>, and translates them into
 five timing-related parameters to be used for processing later on. Called
 internally only in <cite>inpxtr.inpxtr()</cite>.</p>
@@ -282,7 +188,7 @@ internally only in <cite>inpxtr.inpxtr()</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inpxtr.inpxtr">
-<span class="sig-prename descclassname"><span class="pre">inpxtr.</span></span><span class="sig-name descname"><span class="pre">inpxtr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inpxtr.inpxtr" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inpxtr.</span></span><span class="sig-name descname"><span class="pre">inpxtr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inpxtr.inpxtr" title="Permalink to this definition"></a></dt>
 <dd><p>Extract all parameters from <strong>config.txt</strong>. No input arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -296,14 +202,14 @@ be the key-value pair <cite>{ ‘timestep’ : 30 }</cite></p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="rnpath-py">
-<h2>rnpath.py<a class="headerlink" href="#rnpath-py" title="Permalink to this headline">¶</a></h2>
+<section id="rnpath-py">
+<h2>rnpath.py<a class="headerlink" href="#rnpath-py" title="Permalink to this headline"></a></h2>
 <p>The second step is to search for the RINEX file paths based on the 4-letter IDs of both spacecraft, and to perform Hatanaka decompression if necessary.</p>
 <span class="target" id="module-rnpath"></span><dl class="py function">
 <dt class="sig sig-object py" id="rnpath.rnpath">
-<span class="sig-prename descclassname"><span class="pre">rnpath.</span></span><span class="sig-name descname"><span class="pre">rnpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnpath.rnpath" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">rnpath.</span></span><span class="sig-name descname"><span class="pre">rnpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnpath.rnpath" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the paths to RINEX files, following AIUB CODE’s naming convention.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -319,14 +225,14 @@ be the key-value pair <cite>{ ‘timestep’ : 30 }</cite></p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="timing-py">
-<h2>timing.py<a class="headerlink" href="#timing-py" title="Permalink to this headline">¶</a></h2>
+<section id="timing-py">
+<h2>timing.py<a class="headerlink" href="#timing-py" title="Permalink to this headline"></a></h2>
 <p>The third step involves deconflicting all the timing parameters. The routine <strong>timing.py</strong> will take in three sets of timings: the user-specified start-stop times in the GUI or in <strong>config.txt</strong>, and the start-stop times from both of the RINEX observation files. This module will then output the intersection of all three timelines. This module will also check if the time steps of the RINEX files and time step specified by the user are compatible.</p>
 <span class="target" id="module-timing"></span><dl class="py function">
 <dt class="sig sig-object py" id="timing.get_startstop">
-<span class="sig-prename descclassname"><span class="pre">timing.</span></span><span class="sig-name descname"><span class="pre">get_startstop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxlines</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#timing.get_startstop" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">timing.</span></span><span class="sig-name descname"><span class="pre">get_startstop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxlines</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#timing.get_startstop" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the first and last epoch after reading one RINEX file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -345,7 +251,7 @@ be the key-value pair <cite>{ ‘timestep’ : 30 }</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="timing.tcheck">
-<span class="sig-prename descclassname"><span class="pre">timing.</span></span><span class="sig-name descname"><span class="pre">tcheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnx1file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnx2file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#timing.tcheck" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">timing.</span></span><span class="sig-name descname"><span class="pre">tcheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnx1file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnx2file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#timing.tcheck" title="Permalink to this definition"></a></dt>
 <dd><p>Reads both RINEX files and output the desired start and stop times.
 Sets the start, stop, and time steps for the entire LEOGPS scenario.</p>
 <dl class="field-list simple">
@@ -368,16 +274,16 @@ Sets the start, stop, and time steps for the entire LEOGPS scenario.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="gpsxtr-py">
-<h2>gpsxtr.py<a class="headerlink" href="#gpsxtr-py" title="Permalink to this headline">¶</a></h2>
+<section id="gpsxtr-py">
+<h2>gpsxtr.py<a class="headerlink" href="#gpsxtr-py" title="Permalink to this headline"></a></h2>
 <p>The fourth step is to extract out the interpolated GPS satellite ephemeris and clock data.</p>
 <p>The primary output of <strong>gpsxtr.gpsxtr()</strong> is the <strong>gpsdata</strong> dictionary, which is a three-layer nested dictionary comprising all of the Lagrange-interpolated ephemeris and clock data. The first layer keys are the epochs (<em>datetime.datetime</em>). The second layer keys are the PRN IDs of GPS satellites. The third layer keys are the XYZ coordinates of the position vectors, XYZ coordinates of the velocity vectors, the clock bias, and clock drift. Third layer values are all floats.</p>
 <p>All GPS coordinates are in ITRF by default. No coordinate reference frame transformations were performed between the raw and the interpolated GPS ephemeris.</p>
 <span class="target" id="module-gpsxtr"></span><dl class="py function">
 <dt class="sig sig-object py" id="gpsxtr.gpsxtr">
-<span class="sig-prename descclassname"><span class="pre">gpsxtr.</span></span><span class="sig-name descname"><span class="pre">gpsxtr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gpsxtr.gpsxtr" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gpsxtr.</span></span><span class="sig-name descname"><span class="pre">gpsxtr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gpsxtr.gpsxtr" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads the precise ephemeris, clock files, and Earth rotation
 parameters from AIUB CODE FTP. Extracts and interpolates according to
 the time step the ephemeris data of the (good) GPS satellites,
@@ -422,10 +328,10 @@ including clock bias and clock drift values.</p>
 </div>
 <p>The secondary output of <strong>gpsxtr.gpsxtr()</strong> is the <strong>goodsats</strong> list, which is a sorted list of GPS satellite PRN IDs whose observables had no outages.</p>
 <p>An auxiliary function <strong>gpsxtr.gpsweekday()</strong> exists but is not documented here. It converts a datetime object into two string variables: the GPS day-of-week and the GPS week number. This is a similar function to <strong>inpxtr.inptim()</strong>.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="rinxtr-py">
-<h2>rinxtr.py<a class="headerlink" href="#rinxtr-py" title="Permalink to this headline">¶</a></h2>
+<section id="rinxtr-py">
+<h2>rinxtr.py<a class="headerlink" href="#rinxtr-py" title="Permalink to this headline"></a></h2>
 <p>The fifth step involves the extraction of RINEX observations C1/P1, P2, L1, L2, D1, D2, with carrier phase marking, and cycle slip detection performed using the <strong>phasep.py</strong> module.</p>
 <p>An additional ‘flag’ key will be added to the RINEX observables to mark them. These are the possible values belonging to the ‘flag’ keys.</p>
 <ul class="simple">
@@ -439,7 +345,7 @@ including clock bias and clock drift values.</p>
 <p>If Doppler observables D1/D2 are not found in the RINEX observations, then Doppler values will be estimated through the <strong>dopest.py</strong> module, by estimating a first-order derivative of the L1/L2 phase values numerically using polynomial fitting.</p>
 <span class="target" id="module-rinxtr"></span><dl class="py function">
 <dt class="sig sig-object py" id="rinxtr.rinxtr">
-<span class="sig-prename descclassname"><span class="pre">rinxtr.</span></span><span class="sig-name descname"><span class="pre">rinxtr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinxtr.rinxtr" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">rinxtr.</span></span><span class="sig-name descname"><span class="pre">rinxtr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinxtr.rinxtr" title="Permalink to this definition"></a></dt>
 <dd><p>Extraction of RINEX observations C1/P1, P2, L1, L2, D1, D2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -477,15 +383,15 @@ doppler values, and a carrier phase flag.</p>
 <p>If the user opts for code-carrier smoothing Hatch filter (either through the GUI or in the config file), then hatch filtering will be called in <strong>rinxtr.rinxtr()</strong> using the <strong>phasep.py</strong> module.</p>
 <p>You may also change the length of the cycle slip filter, and the filter tolerance in terms of the number of standard deviations through the GUI or manually in the config file.</p>
 <p>Do ensure that RINEX observation files follow 4-letter ID naming convention followed by the DOY + 0, with the file extension .YYO.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="phasep-py">
-<h2>phasep.py<a class="headerlink" href="#phasep-py" title="Permalink to this headline">¶</a></h2>
+<section id="phasep-py">
+<h2>phasep.py<a class="headerlink" href="#phasep-py" title="Permalink to this headline"></a></h2>
 <p>The <strong>phasep.py</strong> module augments the RINEX data dictionary parsed out by <strong>rinxtr.py</strong> module. It comprises the cycle slip detection and marking function <strong>phsmrk()</strong>, as well as the hatch filtering algorithm <strong>ph1fil()</strong> for L1 observables, and <strong>ph2fil()</strong> for L1 + L2 observables. Within the hatch filtering loop, each code-phase data point at each time step is computed by the <strong>hatch1()</strong> or <strong>hatch2()</strong> functions.</p>
 <p>In this module, the carrier phase cycle slip detection algorithm is done by performing an interpolation of combined L4 (see <strong>rinxtr.py</strong> above) carrier phase data, and observing if there are any single points of data that exceed “X” sigmas of the interpolated carrier phase. “X” refers to the user-specified number of standard deviations as a cut-off point for declaring deviant observations as cycle slips. Such deviant observations will trigger the script to mark that epoch’s observation and GPS PRN ID with a cycle slip string flag, and print a warning message to the user in the terminal. However, as of Version 1.3, LEOGPS does not attempt to repair or reject that particular observation.</p>
 <span class="target" id="module-phasep"></span><dl class="py function">
 <dt class="sig sig-object py" id="phasep.hatch1">
-<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">hatch1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ltype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.hatch1" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">hatch1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ltype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.hatch1" title="Permalink to this definition"></a></dt>
 <dd><p>Single-frequency code-carrier hatch filter for a single data point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -509,7 +415,7 @@ doppler values, and a carrier phase flag.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="phasep.hatch2">
-<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">hatch2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.hatch2" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">hatch2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.hatch2" title="Permalink to this definition"></a></dt>
 <dd><p>Dual-frequency code-carrier hatch filter for a single data point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -534,7 +440,7 @@ doppler values, and a carrier phase flag.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="phasep.ph1fil">
-<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">ph1fil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatchlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.ph1fil" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">ph1fil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatchlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.ph1fil" title="Permalink to this definition"></a></dt>
 <dd><p>Single-frequency hatch filter to be applied to the entire RINEX data
 dictionary, for carrier phase values without cycle slips. This function
 calls hatch1() repeatedly in the filter loop.</p>
@@ -560,7 +466,7 @@ and doppler values, with the code values smoothed by Hatch filtering.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="phasep.ph2fil">
-<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">ph2fil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatchlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.ph2fil" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">ph2fil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatchlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.ph2fil" title="Permalink to this definition"></a></dt>
 <dd><p>Dual-frequency hatch filter to be applied to the entire RINEX data
 dictionary, for carrier phase values without cycle slips. This function
 calls hatch2() repeatedly in the filter loop.</p>
@@ -586,7 +492,7 @@ and doppler values, with the code values smoothed by Hatch filtering.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="phasep.phsmrk">
-<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">phsmrk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.phsmrk" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">phasep.</span></span><span class="sig-name descname"><span class="pre">phsmrk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phasep.phsmrk" title="Permalink to this definition"></a></dt>
 <dd><p>Marks the <strong>rnxdata</strong> dict with carrier phase flags at each epoch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -612,14 +518,14 @@ doppler values, with an added L4 phase and a carrier phase flag.</p>
 <p class="admonition-title">Note</p>
 <p>The RINEX data dictionary returned by <strong>phasep.phsmrk(), phasep.ph1fil(), phasep.ph2fil()</strong> all share the same nested dictionary key-value pairs as the output of the <strong>rinxtr.rinxtr()</strong> function.</p>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="dopest-py">
-<h2>dopest.py<a class="headerlink" href="#dopest-py" title="Permalink to this headline">¶</a></h2>
+<section id="dopest-py">
+<h2>dopest.py<a class="headerlink" href="#dopest-py" title="Permalink to this headline"></a></h2>
 <p>If Doppler observables D1/D2 are not found in the RINEX observations, then Doppler values will be estimated through the <strong>dopest.py</strong> module, by estimating a first-order derivative of the L1/L2 phase values numerically using polynomial fitting.</p>
 <span class="target" id="module-dopest"></span><dl class="py function">
 <dt class="sig sig-object py" id="dopest.dopest">
-<span class="sig-prename descclassname"><span class="pre">dopest.</span></span><span class="sig-name descname"><span class="pre">dopest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dopest.dopest" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dopest.</span></span><span class="sig-name descname"><span class="pre">dopest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnxdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnxstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dopest.dopest" title="Permalink to this definition"></a></dt>
 <dd><p>Estimation of Doppler (carrier phase rates) using carrier phase.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -644,16 +550,16 @@ phase values are present in sequence.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="posvel-py">
-<h2>posvel.py<a class="headerlink" href="#posvel-py" title="Permalink to this headline">¶</a></h2>
+<section id="posvel-py">
+<h2>posvel.py<a class="headerlink" href="#posvel-py" title="Permalink to this headline"></a></h2>
 <p>The sixth step is to perform single point positioning (SPP), using the code pseudorange equations, solved via weighted least squares epoch-wise. Thus, the primary function <strong>posvel.posvel()</strong> is called once for each satellite and for each epoch.</p>
 <p>In the code phase ranging equation, GPS satellite clock biases are offset from the output of the <strong>gpsxtr.py</strong> module. Ionospheric delays are handled too. In the L1 case, the GRAPHIC linear combination is used. In the L2 case, the ionosphere-free linear combination is used. Other effects such as the signal time-of-flight, the effects of Earth rotation, relativistic Shapiro effect, relativistic clock delays and clock advances are also offset. Functions to compute the relativistic effects are given in the next section, under <strong>einstn.py</strong>.</p>
 <p>Doppler-based estimation of velocities will also be performed if Doppler data is available in the RINEX data dictionary parsed out by <strong>rinxtr.py</strong> module. By default, if Doppler data is missing, the <strong>dopest.py</strong> module would have worked its magic to estimate the Doppler values.</p>
 <span class="target" id="module-posvel"></span><dl class="py function">
 <dt class="sig sig-object py" id="posvel.posvel">
-<span class="sig-prename descclassname"><span class="pre">posvel.</span></span><span class="sig-name descname"><span class="pre">posvel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rxi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#posvel.posvel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">posvel.</span></span><span class="sig-name descname"><span class="pre">posvel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rxi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#posvel.posvel" title="Permalink to this definition"></a></dt>
 <dd><p>Single point positioning using code via weighted least squares, called
 epoch-wise. In other words, <strong>posvel()</strong> is called to solve for positions
 at every single epoch set of observables snap-shot wise.</p>
@@ -693,14 +599,14 @@ of <cite>rinxtr.rinxtr()</cite></p></li>
 <p>Tropospheric effects are <strong>not</strong> handled in <strong>posvel.py</strong> as LEOGPS was built for spaceborne receivers and not for terrestrial receivers. However, if you wish to include terrestrial receivers, you can include the tropospheric modelled offsets (i.e. Saastamoinen, Hopfield, or Differential Refraction models etc) to the observed range variable <em>gpsrng_obsv</em> from lines 258 to 297.</p>
 </div>
 <p>In the main work flow <strong>leorun.run()</strong>, this function will be called once in each epoch for each of the two satellites. Both SPP results will be used in the carrier phase ambiguity estimation.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="einstn-py">
-<h2>einstn.py<a class="headerlink" href="#einstn-py" title="Permalink to this headline">¶</a></h2>
+<section id="einstn-py">
+<h2>einstn.py<a class="headerlink" href="#einstn-py" title="Permalink to this headline"></a></h2>
 <p>The ‘Einstein’ module, comprises two main functions: one to compute the clock advance and one to compute the Shapiro path delay. In both functions, the output is converted to the equivalent path-length in meters.</p>
 <span class="target" id="module-einstn"></span><dl class="py function">
 <dt class="sig sig-object py" id="einstn.clockadv">
-<span class="sig-prename descclassname"><span class="pre">einstn.</span></span><span class="sig-name descname"><span class="pre">clockadv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpspos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpsvel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#einstn.clockadv" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">einstn.</span></span><span class="sig-name descname"><span class="pre">clockadv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpspos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpsvel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#einstn.clockadv" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the clock advance effect on signal range as a path length
 correction in meters.</p>
 <dl class="field-list simple">
@@ -721,7 +627,7 @@ correction in meters.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="einstn.shapiro">
-<span class="sig-prename descclassname"><span class="pre">einstn.</span></span><span class="sig-name descname"><span class="pre">shapiro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leopos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpspos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#einstn.shapiro" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">einstn.</span></span><span class="sig-name descname"><span class="pre">shapiro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leopos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpspos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#einstn.shapiro" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the Shapiro delay effect on signal range as a path length
 correction in meters.</p>
 <dl class="field-list simple">
@@ -749,14 +655,14 @@ correction in meters.</p>
 <p><strong>Shapiro Delay:</strong> Due to the space time curvature produced by the gravitational field, the Euclidean range travelled by the signal, which is computed by <strong>posvel.py</strong> must be corrected by the extra distance travelled. Typically, Shapiro effects corrupt the range model with about ~2cm ranging error.</p>
 </div>
 <p>This module will be called in <strong>posvel.py</strong> during the setup of pseudorange model in the iterative least squares solution of single-point positioning.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="azimel-py">
-<h2>azimel.py<a class="headerlink" href="#azimel-py" title="Permalink to this headline">¶</a></h2>
+<section id="azimel-py">
+<h2>azimel.py<a class="headerlink" href="#azimel-py" title="Permalink to this headline"></a></h2>
 <p>While elevation-dependent or azimuth-dependent weighting is not built into the iterative least squares processing of LEOGPS for single point positioning, this module exists (but is not used) if the user wishes to compute azimuths and elevations from the LEO to GPS satellites anyway.</p>
 <span class="target" id="module-azimel"></span><dl class="py function">
 <dt class="sig sig-object py" id="azimel.azimel">
-<span class="sig-prename descclassname"><span class="pre">azimel.</span></span><span class="sig-name descname"><span class="pre">azimel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leopos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpspos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#azimel.azimel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">azimel.</span></span><span class="sig-name descname"><span class="pre">azimel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leopos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpspos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#azimel.azimel" title="Permalink to this definition"></a></dt>
 <dd><p>Returns azimuth and elevation angles (rad) from the LEO satellite to
 the GPS satellite when providing an ECEF position coordinate of them both.</p>
 <dl class="field-list simple">
@@ -776,15 +682,15 @@ the GPS satellite when providing an ECEF position coordinate of them both.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="ambest-py">
-<h2>ambest.py<a class="headerlink" href="#ambest-py" title="Permalink to this headline">¶</a></h2>
+<section id="ambest-py">
+<h2>ambest.py<a class="headerlink" href="#ambest-py" title="Permalink to this headline"></a></h2>
 <p>This is the seventh processing step, which is the carrier phase integer or float ambiguity resolution step. This module contains functions that support epoch-wise processing for integer ambiguity resolution step.</p>
 <p>The chief function in the module is the <strong>‘ambest()’</strong> function, which outputs the precise relative baseline vector between the two spacecraft. This processing is done snapshot-wise, and thus has to be called for each epoch of carrier phase observations. All other supporting functions are called within <strong>‘ambest()’</strong>. At the user-level, it is advised to modify contents only within ‘ambest’ unless the user wishes to modify the core float ambiguity resolution algorithm.</p>
 <span class="target" id="module-ambest"></span><dl class="py function">
 <dt class="sig sig-object py" id="ambest.ambest">
-<span class="sig-prename descclassname"><span class="pre">ambest.</span></span><span class="sig-name descname"><span class="pre">ambest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covZD</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ambest.ambest" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ambest.</span></span><span class="sig-name descname"><span class="pre">ambest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covZD</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ambest.ambest" title="Permalink to this definition"></a></dt>
 <dd><p>Double difference ambiguity estimation for baseline estimation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -828,14 +734,14 @@ inertial position vectors of LEO-A or LEO-B are zero.</p>
 <p class="admonition-title">Note</p>
 <p>If the user wishes to set their own custom zero difference covariance matrix, the user can input this in the optional <cite>covZD</cite> argument. If the user does not specify the <cite>covZD</cite> argument, then <cite>covZD</cite> by default will revert to an identity matrix scaled by the <cite>sigma</cite> argument above. Thus, running LAMBDA (by setting <cite>fix = True</cite> when calling <strong>ambest.py</strong>), but not setting a custom <cite>covZD</cite> argument, only has the equivalent effect of integer rounding.</p>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="ambfix-py">
-<h2>ambfix.py<a class="headerlink" href="#ambfix-py" title="Permalink to this headline">¶</a></h2>
+<section id="ambfix-py">
+<h2>ambfix.py<a class="headerlink" href="#ambfix-py" title="Permalink to this headline"></a></h2>
 <p>This module holds the classical LAMBDA method that was originally authored by Teunissen, Jonge, and Tiberius (1993). The code was later written in MATLAB by Dr Sandra Verhagen and Dr Bofeng Li. It takes in a vector of float ambiguities to the integer least-squares (ILS) problem, and covariance of the float ambiguities. It then runs the LAMBDA’s ILS search-&amp;-shrink and spits out the ambiguity integers. The other 5 methods in original LAMBDA MATLAB code are not supported here (feel free to edit the code and implement it youself). The default <cite>ncands = 2</cite>, as per original code. All supporting functions from the original MATLAB code (<cite>decorrel</cite>, <cite>ldldecom</cite>, <cite>ssearch</cite>) have been nested within the main function as sub functions.</p>
 <span class="target" id="module-ambfix"></span><dl class="py function">
 <dt class="sig sig-object py" id="ambfix.LAMBDA">
-<span class="sig-prename descclassname"><span class="pre">ambfix.</span></span><span class="sig-name descname"><span class="pre">LAMBDA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ahat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qahat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ambfix.LAMBDA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ambfix.</span></span><span class="sig-name descname"><span class="pre">LAMBDA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ahat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qahat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ambfix.LAMBDA" title="Permalink to this definition"></a></dt>
 <dd><p>Integer least-squares method with search-and-shrink for integer
 estimation based on the provided float ambiguity vector (Nx1) ahat and
 associated variance-covariance matrix (NxN) Qahat.</p>
@@ -863,14 +769,14 @@ vectors in the metric of the variance-covariance matrix Qahat.</p></li>
 <p class="admonition-title">Note</p>
 <p>LAMBDA always first applies a decorrelation before the integer estimation. For ILS this is required to guarantee an efficient search. For rounding and bootstrapping it is required in order to get higher success rates (although rounding and bootstrapping is not included in LEOGPS).</p>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="frames-py">
-<h2>frames.py<a class="headerlink" href="#frames-py" title="Permalink to this headline">¶</a></h2>
+<section id="frames-py">
+<h2>frames.py<a class="headerlink" href="#frames-py" title="Permalink to this headline"></a></h2>
 <p>This is the eighth step in the LEOGPS native processing work flow. This step performs the conversion of the coordinate reference frames between ITRF and ICRF, via the IAU1976 Theory of Precession and IAU1980 Theory of Nutation. For the visualisation of the formation geometry, it is recommended that the user select the Hill frame as the relative orbit coordinate frame. By default, the reference frame in the downloaded ephemeris files in AIUB CODE’s FTP is the ITRF.</p>
 <span class="target" id="module-frames"></span><dl class="py function">
 <dt class="sig sig-object py" id="frames.cep2icrf">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">cep2icrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.cep2icrf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">cep2icrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.cep2icrf" title="Permalink to this definition"></a></dt>
 <dd><p>Transformation of the conventional ephemeris pole frame (the True-Of-
 Epoch frame) to the international celestial reference frame (ICRF), by
 discounting precession and nutation. This transformation is performed
@@ -896,7 +802,7 @@ function will return two vectors (position and velocity).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="frames.cep2itrf">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">cep2itrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.cep2itrf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">cep2itrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.cep2itrf" title="Permalink to this definition"></a></dt>
 <dd><p>Transformation of the conventional ephemeris pole frame (CEP) to the
 international terrestrial reference frame (ITRF) by accounting for the
 diurnal rotation of the Earth, and accounting for the motion of the poles
@@ -922,7 +828,7 @@ that matches the CEP to the ITRF. This function will return two vectors
 
 <dl class="py function">
 <dt class="sig sig-object py" id="frames.icrf2cep">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">icrf2cep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.icrf2cep" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">icrf2cep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.icrf2cep" title="Permalink to this definition"></a></dt>
 <dd><p>Transformation of the international celestial reference frame (ICRF)
 to the conventional ephemeris pole frame (the True-Of-Epoch frame), by
 correcting precession and nutation. This transformation is performed using
@@ -948,7 +854,7 @@ will return two vectors (position and velocity).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="frames.icrf2hill">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">icrf2hill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.icrf2hill" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">icrf2hill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.icrf2hill" title="Permalink to this definition"></a></dt>
 <dd><p>Takes in a relative position vector, or baseline vector, as well as
 the chief position and velocity vectors. All inputs in ICRF. Transforms
 the relative position vector, or baseline vector, to the satellite local
@@ -972,7 +878,7 @@ vertical local horizontal Euler-Hill Frame of the chief spacecraft.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="frames.icrf2itrf">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">icrf2itrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.icrf2itrf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">icrf2itrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.icrf2itrf" title="Permalink to this definition"></a></dt>
 <dd><p>Transformation of the international celestial reference frame (ICRF) to
 the international terrestrial reference frame (ITRF), by calling the two
 functions in sequence: <cite>icrf2cep</cite> and <cite>cep2itrf()</cite>.</p>
@@ -996,7 +902,7 @@ functions in sequence: <cite>icrf2cep</cite> and <cite>cep2itrf()</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="frames.itrf2cep">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">itrf2cep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.itrf2cep" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">itrf2cep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.itrf2cep" title="Permalink to this definition"></a></dt>
 <dd><p>Transformation of the international terrestrial reference frame (ITRF)
 to the conventional ephemeris pole frame (CEP) by discounting for the
 diurnal rotation of the Earth, and discounting the motion of the poles,
@@ -1022,7 +928,7 @@ and velocity).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="frames.itrf2icrf">
-<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">itrf2icrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.itrf2icrf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">frames.</span></span><span class="sig-name descname"><span class="pre">itrf2icrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#frames.itrf2icrf" title="Permalink to this definition"></a></dt>
 <dd><p>Transformation of the international terrestrial reference frame (ITRF)
 to the international celestial reference frame (ICRF), by calling the two
 functions in sequence: <cite>itrf2cep()</cite> and <cite>cep2icrf()</cite>.</p>
@@ -1044,15 +950,15 @@ functions in sequence: <cite>itrf2cep()</cite> and <cite>cep2icrf()</cite>.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="pubplt-py">
-<h2>pubplt.py<a class="headerlink" href="#pubplt-py" title="Permalink to this headline">¶</a></h2>
+<section id="pubplt-py">
+<h2>pubplt.py<a class="headerlink" href="#pubplt-py" title="Permalink to this headline"></a></h2>
 <p>In the final stage, after all processing is done, the <strong>pubplt.py</strong> module publishes the information into output files in the <cite>outputs</cite> folder, found in the LEOGPS root directory.</p>
 <p>Specifically, there are three functions in this module: a function to save as a plot graph the interpolated GPS ephemeris and clock biases; a function to save as a text report the interpolated GPS ephemeris and clock biases; and a function to save the final ephemeris and precise baselines estimated of both LEO-A and LEO-B.</p>
 <span class="target" id="module-pubplt"></span><dl class="py function">
 <dt class="sig sig-object py" id="pubplt.gps_graphs">
-<span class="sig-prename descclassname"><span class="pre">pubplt.</span></span><span class="sig-name descname"><span class="pre">gps_graphs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SV</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_usr_dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_usr_ss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpsdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pubplt.gps_graphs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pubplt.</span></span><span class="sig-name descname"><span class="pre">gps_graphs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SV</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_usr_dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_usr_ss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpsdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pubplt.gps_graphs" title="Permalink to this definition"></a></dt>
 <dd><p>Generates a plot of the GPS position, velocity, and clock bias (ITRF).
 Plots will be saved in the <cite>output/gps_plots</cite> folder.</p>
 <dl class="field-list simple">
@@ -1077,7 +983,7 @@ Plots will be saved in the <cite>output/gps_plots</cite> folder.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pubplt.gps_report">
-<span class="sig-prename descclassname"><span class="pre">pubplt.</span></span><span class="sig-name descname"><span class="pre">gps_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpsdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pubplt.gps_report" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pubplt.</span></span><span class="sig-name descname"><span class="pre">gps_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpsdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goodsats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pubplt.gps_report" title="Permalink to this definition"></a></dt>
 <dd><p>Generates an ASCII text report of GPS position, velocity, and clock
 bias (ITRF). Report will be saved in the <cite>output/gps_report</cite> folder.</p>
 <dl class="field-list simple">
@@ -1100,7 +1006,7 @@ bias (ITRF). Report will be saved in the <cite>output/gps_report</cite> folder.<
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pubplt.leo_results">
-<span class="sig-prename descclassname"><span class="pre">pubplt.</span></span><span class="sig-name descname"><span class="pre">leo_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pubplt.leo_results" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pubplt.</span></span><span class="sig-name descname"><span class="pre">leo_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pubplt.leo_results" title="Permalink to this definition"></a></dt>
 <dd><p>Generates the final report comprising the solutions to single-point
 positions and velocities of LEO-A and LEO-B, the dilution of precisions,
 the receiver clock bias values, and the precise relative baseline vectors.
@@ -1124,10 +1030,10 @@ dop2 (1x3), cb2 (1x1), baseline (1x3)]</p></li>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="consts-py">
-<h2>consts.py<a class="headerlink" href="#consts-py" title="Permalink to this headline">¶</a></h2>
+<section id="consts-py">
+<h2>consts.py<a class="headerlink" href="#consts-py" title="Permalink to this headline"></a></h2>
 <p>The following is a list of common constants used throughout LEOGPS, extracted from the University of Bern, Center for Orbit Determination in Europe (CODE):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span>      <span class="o">=</span> <span class="mf">299792458.0</span>      <span class="c1"># VELOCITY OF LIGHT                M/SEC</span>
 <span class="n">FREQ1</span>  <span class="o">=</span> <span class="mf">1575420000.0</span>     <span class="c1"># L1-CARRIER FREQUENCY   GPS       1/SEC</span>
@@ -1176,67 +1082,48 @@ dop2 (1x3), cb2 (1x1), baseline (1x3)]</p></li>
 </div>
 <hr class="docutils" />
 <p>This API reference was automatically generated using Sphinx’ Autodoc feature, using the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">NumPy docstring format</a>, and last updated on 11th September 2021.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="docs_process.html" class="btn btn-neutral float-left" title="Processing Flow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Samuel Y. W. Low.
-
-    </p>
+    <p>&#169; Copyright 2021, Samuel Y. W. Low.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
     <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-1"></script>
     <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    ga('create', 'UA-XXXXXXX-1', 'auto');
-    
-    ga('send', 'pageview');
-    </script>
-
-    
-   
+      gtag('config', 'UA-XXXXXXX-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>
