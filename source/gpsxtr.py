@@ -47,7 +47,7 @@ import warnings
 import numpy as np
 import urllib.request
 from pathlib import Path
-from unlzw3 import unlzw
+from ncompress import decompress as unlzw
 
 # Import local libraries
 from source import pubplt

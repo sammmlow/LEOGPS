@@ -47,7 +47,7 @@ Second, you should do a pip install in your terminal of `Martin Valgur's Pythoni
 
     pip install hatanaka
 
-The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" (and GZIP, thanks to the unlzw3 library) which are Windows-only executables, making the (de)compression possible across all platforms.
+The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" (and GZIP, thanks to the ncompress library) which are Windows-only executables, making the (de)compression possible across all platforms.
 
 The user can then run the application by running **'leogps.py'**, in the main directory, and you should see the LEOGPS GUI launch:
 

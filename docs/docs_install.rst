@@ -35,6 +35,6 @@ The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, 
 That's it! No further setup is needed, unless you need any of the other package dependencies.
 
 .. note:: Package dependencies include: 
-   copy, datetime, decimal, hatanaka, math, matplotlib, numpy, os, pathlib, PIL, tkinter, unlzw3, urllib, warnings
+   copy, datetime, decimal, hatanaka, math, matplotlib, numpy, os, pathlib, PIL, tkinter, ncompress, urllib, warnings
 
 Next, we will run and explain the setup behind the default native scenario packaged in LEOGPS - a formation flying scenario at ~200km in-track baseline of the GRACE mission.
