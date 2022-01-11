@@ -15,8 +15,8 @@
 
 |
 
-API Reference 
-=============
+Function Reference 
+==================
 
 The order of functions in this API reference goes according to the chronological order of which they are called in the native LEOGPS processing work flow (see previous page). Functions that are currently not in use in the current native work flow are listed at the end of this page.
 

@@ -24,13 +24,17 @@ First, find the LEOGPS GitHub repository in this `GitHub link <https://github.co
    
    git clone https://github.com/sammmlow/LEOGPS.git
 
-Second, you should do a pip install in your terminal of Martin Valgur's Pythonic translation of `Hatanaka (de)compression in Python <https://pypi.org/project/hatanaka/>`_:
+Second, you should do a pip install in your terminal of Martin Valgur's Pythonic translation of `Hatanaka (de)compression in Python <https://pypi.org/project/hatanaka/>`_ as well as the `ncompress library <https://github.com/vapier/ncompress>`_ by running:
 
 .. code-block:: bash
 
    pip install hatanaka
 
-The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" and "GZIP" Windows-only executables, making the (de)compression possible across all operating systems.
+.. code-block:: bash
+
+   pip install ncompress
+
+The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" and "GZIP" Windows-only executables, making the (de)compression possible across all operating systems. The Ncompress library is a fast, simple LZW file compressor.
 
 That's it! No further setup is needed, unless you need any of the other package dependencies.
 

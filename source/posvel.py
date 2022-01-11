@@ -60,7 +60,7 @@ def posvel(epoch, goodsats, gps, rxi, inps, nm, iters = 6):
     epoch : datetime.datetime
         Current epoch of observables
     goodsats : list
-        Sorted list of GPS satellites without outages by PRN IDs
+        Sorted list of integers of SV IDs e.g. [1,2,3,5,6,9,10,...,31,32]
     gps : dict
         Nested dictionary of GPS ephemeris and clock data across PRN IDs, for
         a particular epoch. This dictionary is one tier deep in the output of

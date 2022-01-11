@@ -53,7 +53,7 @@
 <p class="caption"><span class="caption-text">Advanced References</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">Function Reference</a></li>
 </ul>
 
         </div>
@@ -90,16 +90,19 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/sammmlow/LEOGPS.git
 </pre></div>
 </div>
-<p>Second, you should do a pip install in your terminal of Martin Valgur’s Pythonic translation of <a class="reference external" href="https://pypi.org/project/hatanaka/">Hatanaka (de)compression in Python</a>:</p>
+<p>Second, you should do a pip install in your terminal of Martin Valgur’s Pythonic translation of <a class="reference external" href="https://pypi.org/project/hatanaka/">Hatanaka (de)compression in Python</a> as well as the <a class="reference external" href="https://github.com/vapier/ncompress">ncompress library</a> by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install hatanaka
 </pre></div>
 </div>
-<p>The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older “RNX2CRX” and “GZIP” Windows-only executables, making the (de)compression possible across all operating systems.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install ncompress
+</pre></div>
+</div>
+<p>The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older “RNX2CRX” and “GZIP” Windows-only executables, making the (de)compression possible across all operating systems. The Ncompress library is a fast, simple LZW file compressor.</p>
 <p>That’s it! No further setup is needed, unless you need any of the other package dependencies.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Package dependencies include:
-copy, datetime, decimal, hatanaka, math, matplotlib, numpy, os, pathlib, PIL, tkinter, unlzw3, urllib, warnings</p>
+copy, datetime, decimal, hatanaka, math, matplotlib, numpy, os, pathlib, PIL, tkinter, ncompress, urllib, warnings</p>
 </div>
 <p>Next, we will run and explain the setup behind the default native scenario packaged in LEOGPS - a formation flying scenario at ~200km in-track baseline of the GRACE mission.</p>
 </section>
