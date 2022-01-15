@@ -1,0 +1,14 @@
+# File: .readthedocs.yaml
+
+version: 2
+
+# Configuration of the Python environment to be used
+python:
+   install:
+   - requirements: docs/requirements.txt
+   - method: pip
+
+# Configuration for Sphinx documentation
+sphinx:
+   configuration: docs/conf.py
+   fail_on_warning: true
