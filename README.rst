@@ -26,7 +26,9 @@
 LEOGPS
 ------
 
-LEOGPS is an open-source Python software which performs relative satellite navigation between **two formation flying satellites**, with the objective of high accuracy relative positioning. Specifically, LEOGPS solves for the double-differenced baseline (using float ambiguity resolution) between satellites flying in formation in Low Earth Orbit (LEO). As such, the relative positioning accuracy diminishes with increasing formation baseline lengths.
+LEOGPS is an open-source Python software which performs relative satellite navigation between **two formation flying satellites** in low Earth orbit (LEO), with the objective of high accuracy relative positioning via double differential GPS. It uses a TKinter GUI to assist in processing your GPS measurements, and also provides a number of well documented functions, with minimal external package dependencies, useful for your processing (see advanced references in the documentation).
+
+LEOGPS is not a PyPI packaged Python project. There is no installation possible through "pip" or via "conda" for Anaconda users. Simply performing a **git clone** of this repository is all you need to get started.
 
 LEOGPS currently supports only observations from the GPS constellation (L1/L2 frequency), with observation files in RINEX v2.XX format. LEOGPS also uses the precise ephemeris (.EPH) and clock bias and drift files (.CLK) provided by the University of Bern, Center for Orbit Determination in Europe (​CODE). As such, the coordinate frame used in the relative positioning is the International Terrestrial Reference Frame (ITRS) which is an Earth-Centered Earth-Fixed (ECEF) frame. Since the ephemeris files and RINEX v2 observations default to GPS Time, it is very important to also note that the time scale used in LEOGPS output files is GPS Time (as opposed to UTC).
 
@@ -41,13 +43,17 @@ First, clone this repository by running in your terminal (or Git Bash):
     
 	git clone https://github.com/sammmlow/LEOGPS.git
 
-Second, you should do a pip install in your terminal of `Martin Valgur's Pythonic translation of Yuri Hatanaka's compression library for RINEX files <https://pypi.org/project/hatanaka/>`_
+Second, you should do a pip install in your terminal (or Anaconda prompt) of Martin Valgur's Pythonic translation of `Hatanaka (de)compression in Python <https://pypi.org/project/hatanaka/>`_ as well as the `ncompress library <https://github.com/vapier/ncompress>`_ by running:
 
 .. code-block:: bash
 
-    pip install hatanaka
+   pip install hatanaka
 
-The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" (and GZIP, thanks to the ncompress library) which are Windows-only executables, making the (de)compression possible across all platforms.
+.. code-block:: bash
+
+   pip install ncompress
+
+The Hatanaka library in Python was contributed in v1.1, and replaces the older "RNX2CRX" (and GZIP, thanks to the ncompress library) which are Windows-only executables, making the (de)compression possible across all platforms.
 
 The user can then run the application by running **'leogps.py'**, in the main directory, and you should see the LEOGPS GUI launch:
 

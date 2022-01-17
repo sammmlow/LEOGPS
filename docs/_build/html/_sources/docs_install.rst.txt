@@ -36,9 +36,12 @@ Second, you should do a pip install in your terminal of Martin Valgur's Pythonic
 
 The Hatanaka library in Python was kindly contributed by Martin Valgur in v1.1, and replaces the older "RNX2CRX" and "GZIP" Windows-only executables, making the (de)compression possible across all operating systems. The Ncompress library is a fast, simple LZW file compressor.
 
-That's it! No further setup is needed, unless you need any of the other package dependencies.
+You may wish to do further pip installs for any additional package dependencies listed below.
 
-.. note:: Package dependencies include: 
-   copy, datetime, decimal, hatanaka, math, matplotlib, numpy, os, pathlib, PIL, tkinter, ncompress, urllib, warnings
+.. note:: **Standard Python packages (you should have them already):** 
+   copy, datetime, decimal, math, os, pathlib, tkinter, urllib, warnings
+
+.. note:: **Additional package dependencies:** 
+   numpy, matplotlib, hatanaka, PIL (pillow), ncompress
 
 Next, we will run and explain the setup behind the default native scenario packaged in LEOGPS - a formation flying scenario at ~200km in-track baseline of the GRACE mission.
