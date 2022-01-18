@@ -35,7 +35,7 @@ The first item to be called when running **leogps.py** is the root GUI object (t
 leorun.py
 ---------
 
-The **leorun.run()** function is called once the user clicks on **Run LEOGPS**.
+The **leorun.run()** function is called once the user clicks on **Run LEOGPS**. This file is useful for the user as a guide for creating a custom top-level LEOGPS script that utilizes all of the other functions (i.e. if the user wishes to perform baseline estimation between N number of agents instead of only 2, or for customised processing of GPS observables).
 
 .. automodule:: leorun
    :members:
@@ -45,7 +45,7 @@ The **leorun.run()** function is called once the user clicks on **Run LEOGPS**.
 inpxtr.py
 ---------
 
-The first thing that is run in the native work flow is to extract all the inputs from **config.txt**. This is done through the **inpxtr** module which comprises two functions. First, **inpxtr.inptim()**, extracts the dates and times from the config file and outputs them in GPS time format. Second, **inpxtr.inpxtr()** extracts all the other processing parameters.
+The first thing that is run in the native work flow is to extract all the inputs from **config.txt**. This is done through the **inpxtr** module which comprises two functions. First, **inpxtr.inptim()**, extracts the dates and times from the **config.txt** file and outputs them in GPS time format. Second, **inpxtr.inpxtr()** extracts all the other processing parameters. The outputs of this file will be used in most of the LEOGPS functions. If you would like to customise your own LEOGPS scripts, or add new configuration parameters in the **config.txt** file, there is no need to change this **inpxtr.inpxtr()** function, it should automatically pick up all parameters in **config.txt**.
 
 .. automodule:: inpxtr
    :members:
@@ -55,7 +55,7 @@ The first thing that is run in the native work flow is to extract all the inputs
 rnpath.py
 ---------
 
-The second step is to search for the RINEX file paths based on the 4-letter IDs of both spacecraft, and to perform Hatanaka decompression if necessary.
+The second step after extracting the inputs using **inpxtr.inpxtr()** is to search for the RINEX file paths based on the 4-letter IDs of both spacecraft, and to perform Hatanaka decompression if necessary. This script performs all of that.
 
 .. automodule:: rnpath
    :members:

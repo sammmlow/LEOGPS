@@ -19,6 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Carrier Single Differencing" href="docs_cdgps1.html" />
     <link rel="prev" title="Processing Flow" href="docs_process.html" /> 
 </head>
 
@@ -44,11 +45,6 @@
 <li class="toctree-l1"><a class="reference internal" href="docs_firststep.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs_firstrun.html">First Scenario Run</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Differential Navigation</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="docs_cdgps1.html">Carrier Single Differencing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
-</ul>
 <p class="caption"><span class="caption-text">Advanced References</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="docs_process.html">Processing Flow</a></li>
@@ -72,6 +68,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#consts-py">consts.py</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Differential Navigation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps1.html">Carrier Single Differencing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_cdgps2.html">Carrier Double Differencing</a></li>
 </ul>
 
         </div>
@@ -150,7 +151,7 @@ relative trajectory.</p>
 <hr class="docutils" />
 <section id="leorun-py">
 <h2>leorun.py<a class="headerlink" href="#leorun-py" title="Permalink to this headline"></a></h2>
-<p>The <strong>leorun.run()</strong> function is called once the user clicks on <strong>Run LEOGPS</strong>.</p>
+<p>The <strong>leorun.run()</strong> function is called once the user clicks on <strong>Run LEOGPS</strong>. This file is useful for the user as a guide for creating a custom top-level LEOGPS script that utilizes all of the other functions (i.e. if the user wishes to perform baseline estimation between N number of agents instead of only 2, or for customised processing of GPS observables).</p>
 <span class="target" id="module-leorun"></span><dl class="py function">
 <dt class="sig sig-object py" id="leorun.run">
 <span class="sig-prename descclassname"><span class="pre">leorun.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#leorun.run" title="Permalink to this definition"></a></dt>
@@ -162,7 +163,7 @@ No input arguments needed, and returns None.</p>
 <hr class="docutils" />
 <section id="inpxtr-py">
 <h2>inpxtr.py<a class="headerlink" href="#inpxtr-py" title="Permalink to this headline"></a></h2>
-<p>The first thing that is run in the native work flow is to extract all the inputs from <strong>config.txt</strong>. This is done through the <strong>inpxtr</strong> module which comprises two functions. First, <strong>inpxtr.inptim()</strong>, extracts the dates and times from the config file and outputs them in GPS time format. Second, <strong>inpxtr.inpxtr()</strong> extracts all the other processing parameters.</p>
+<p>The first thing that is run in the native work flow is to extract all the inputs from <strong>config.txt</strong>. This is done through the <strong>inpxtr</strong> module which comprises two functions. First, <strong>inpxtr.inptim()</strong>, extracts the dates and times from the <strong>config.txt</strong> file and outputs them in GPS time format. Second, <strong>inpxtr.inpxtr()</strong> extracts all the other processing parameters. The outputs of this file will be used in most of the LEOGPS functions. If you would like to customise your own LEOGPS scripts, or add new configuration parameters in the <strong>config.txt</strong> file, there is no need to change this <strong>inpxtr.inpxtr()</strong> function, it should automatically pick up all parameters in <strong>config.txt</strong>.</p>
 <span class="target" id="module-inpxtr"></span><dl class="py function">
 <dt class="sig sig-object py" id="inpxtr.inptim">
 <span class="sig-prename descclassname"><span class="pre">inpxtr.</span></span><span class="sig-name descname"><span class="pre">inptim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inpxtr.inptim" title="Permalink to this definition"></a></dt>
@@ -206,7 +207,7 @@ be the key-value pair <cite>{ ‘timestep’ : 30 }</cite></p>
 <hr class="docutils" />
 <section id="rnpath-py">
 <h2>rnpath.py<a class="headerlink" href="#rnpath-py" title="Permalink to this headline"></a></h2>
-<p>The second step is to search for the RINEX file paths based on the 4-letter IDs of both spacecraft, and to perform Hatanaka decompression if necessary.</p>
+<p>The second step after extracting the inputs using <strong>inpxtr.inpxtr()</strong> is to search for the RINEX file paths based on the 4-letter IDs of both spacecraft, and to perform Hatanaka decompression if necessary. This script performs all of that.</p>
 <span class="target" id="module-rnpath"></span><dl class="py function">
 <dt class="sig sig-object py" id="rnpath.rnpath">
 <span class="sig-prename descclassname"><span class="pre">rnpath.</span></span><span class="sig-name descname"><span class="pre">rnpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnpath.rnpath" title="Permalink to this definition"></a></dt>
@@ -1090,6 +1091,7 @@ dop2 (1x3), cb2 (1x1), baseline (1x3)]</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="docs_process.html" class="btn btn-neutral float-left" title="Processing Flow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="docs_cdgps1.html" class="btn btn-neutral float-right" title="Carrier Single Differencing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
