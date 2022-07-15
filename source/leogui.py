@@ -29,8 +29,10 @@ from os.path import dirname, abspath, join
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
-
+from pathlib import Path
+import os
 # Import local libraries
+
 from source import leorun
 
 class RunGUI:
@@ -130,8 +132,8 @@ class RunGUI:
         
         # Define the path to the LEOGPS logo file.
         leogps_logo = dirname(dirname(abspath(__file__)))
-        leogps_logo = leogps_logo + '\docs\_static\leogps_logo.png'
-        
+        leogps_logo = leogps_logo + os.sep + 'docs' + os.sep + '_static' + os.sep + 'leogps_logo.png'
+        print(leogps_logo)
         # Get the users current screen height.
         screen_height = master.winfo_screenheight()
         
