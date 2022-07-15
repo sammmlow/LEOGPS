@@ -88,7 +88,7 @@ def gpsxtr(inps, tstart, tstop, tstep):
     
     # We will download them into our directories, below, later on.
     cwd = inps['cwd'] # Get current main working directory
-    iwd = cwd + '\\input\\' # Get directory for ephemeris / clock files
+    iwd = cwd + os.sep + "input" + os.sep # Get directory for ephemeris / clock files
     os.chdir(cwd) # Ensure the user is running in the main directory.
     
     # Then, we must retrieve all number of days of GPS and CLK data needed    
