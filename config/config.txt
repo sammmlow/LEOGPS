@@ -22,16 +22,16 @@
 
 ~:
 ~: Input the 4-letter ID of the first spacecraft (i.e. LEOA)
-I: name1 VEHA
+I: name1 GRCA
 ~:
 ~: Input the 4-letter ID of the second spacecraft (i.e. LEOB)
-I: name2 VEHC
+I: name2 GRCB
 ~: 
 ~: Input the starting epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-01-45-00)
-I: dtstart 2018-10-16-07-30-00
+I: dtstart 2010-07-27-06-30-00
 ~:
 ~: Input the ending epoch in YYYY-MM-DD-HH-MN-SS (i.e. 1980-12-31-03-45-00)
-I: dtstop 2018-10-16-10-30-00
+I: dtstop 2010-07-27-18-30-00
 ~: 
 ~: Input the timestep in seconds (i.e. 30)
 I: timestep 1
