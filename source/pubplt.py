@@ -48,7 +48,13 @@ def gps_report(gpsdata, goodsats, inps):
     
     cwd = inps['cwd'] # Get current main working directory
     
-    file_path = open(cwd+ os.sep + 'output' + os.sep + 'gps_report' +  os.sep +'GPS_Report.txt', 'w')
+    
+    full_file_path = cwd + os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'gps_report' 
+    if not os.path.exists(full_file_path):
+        os.makedirs(full_file_path)
+        
+        
+    file_path = open(full_file_path + os.sep +'GPS_Report.txt', 'w')
     
     line = 'G         '
     line += 'Pos_X (km)       '
@@ -183,7 +189,12 @@ def gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps):
     
     # Tight-spaced plot
     plt.tight_layout()
-    plt.savefig(cwd + os.sep + 'output' + os.sep + 'gps_plots' + os.sep + 'GPS_SV' + str(SV) + '_PVT.png')
+    
+    parent_folder = cwd + os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'gps_plots' + os.sep
+    if not os.path.exists(parent_folder):
+        os.makedirs(parent_folder)
+        
+    plt.savefig(parent_folder + str(SV) + '_PVT.png')
     
     # Close this figure
     plt.close(fig)
@@ -220,7 +231,7 @@ def leo_results(results, inps):
     frameOrb = inps['frameOrb']
     frameForm = inps['frameForm']
     
-    file_path = open(cwd+ os.sep + 'output' + os.sep + 'LEOGPS_Results.txt', 'w')
+    file_path = open(cwd+ os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'LEOGPS_Results.txt', 'w')
     
     line  = 'Date       '
     line += 'Time      '
@@ -315,6 +326,6 @@ def leo_results(results, inps):
     file_path.close()
     
     print('Completed processing in LEOGPS! Output file stored:')
-    print(cwd + os.sep + 'output'+ os.sep + 'LEOGPS_Results.txt \n')
+    print(cwd + os.sep + inps['filepath'] + os.sep +  'output'+ os.sep + 'LEOGPS_Results.txt \n')
     
     return None

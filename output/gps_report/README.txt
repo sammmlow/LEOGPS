@@ -1,1 +1,0 @@
-This folder keeps all records of interpolated GPS ephemeris (XYZ positions and velocities) saved in a text file.
