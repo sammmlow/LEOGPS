@@ -86,6 +86,7 @@ class RunGUI:
         #####################################################################
         
         # Initialise the basic text labels (found in the configuration file):
+        
         self.txt01 = 'Spacecraft A 4-letter ID (LEOA)'
         self.txt02 = 'Spacecraft B 4-letter ID (LEOB)'
         self.txt03 = 'Epoch start (YYYY-MM-DD-HH-MN-SS)'
@@ -101,8 +102,9 @@ class RunGUI:
         self.txt13 = 'GPS antenna Body-Frame Z offset (m)'
         self.txt14 = 'Absolute orbit frame (not in plot)' 
         self.txt15 = 'Relative orbit frame (default Hill)'
-        
+        self.txt16 = 'Relative file path (leave empty for default folder)'    
         # Initialise tkinter variables for the entries corresponding to above.
+        
         self.var01 = tk.StringVar() # 4-letter ID of LEO A
         self.var02 = tk.StringVar() # 4-letter ID of LEO B
         self.var03 = tk.StringVar() # Start epoch datetime
@@ -118,7 +120,7 @@ class RunGUI:
         self.var13 = tk.DoubleVar() # Antenna offset Z
         self.var14 = tk.IntVar()    # Frequency number
         self.var15 = tk.IntVar()    # Frequency number
-        
+        self.var16 = tk.StringVar()
         # Initialise an error flag to stop LEOGPS when there are bugs.
         self.error_flag = False
         
@@ -336,6 +338,15 @@ class RunGUI:
         self.entry15c.grid(row=15, column=3, padx=5, pady=2, sticky='w')
         self.errtx15 = tk.Label(master, text='', fg='red' )
         self.errtx15.grid(row=15, column=4, padx=5, pady=2, sticky='w')
+        
+        # Input relative file path
+        self.label16 = tk.Label(master, text=self.txt16 )
+        self.label16.grid(row=16, column=0, padx=40, pady=2, sticky='w')
+        self.entry16 = tk.Entry(master, width=10, textvariable=self.var16)
+        self.entry16.grid(row=16, column=1, padx=5, pady=2, sticky='w')
+        self.errtx16 = tk.Label(master, text='', fg='red' )
+        self.errtx16.grid(row=16, column=4, padx=5, pady=2, sticky='w')
+        
         
         #####################################################################
         #####################################################################
@@ -789,9 +800,25 @@ class RunGUI:
             self.entry15c.deselect()
             self.errtx15.configure(text='!')
         self.error_msgprint += errmsg
+        #####################################################################
+        #####################################################################
+        
+        
+        # 16. Check relative filepath
+        
+        self.var16.set(inps['filepath'])
+        if len(inps['filepath']) <1 or inps['filepath'] is None:
+            errmsg = 'Filepath cannot be empty'
+            self.errtx16.configure(text='!')
+        else:
+            errmsg = ''
+            self.errtx16.configure(text='')
+        self.error_msgprint += errmsg
+        
         
         #####################################################################
         #####################################################################
+        
         
         # Finally, display an error textbox if there are any error messages.
         
@@ -834,14 +861,15 @@ class RunGUI:
         # Variables to be recorded based on tkinter entries.
         var_arr = [self.var01, self.var02, self.var03, self.var04, self.var05,
                    self.var06, self.var07, self.var08, self.var09, self.var10, 
-                   self.var11, self.var12, self.var13, self.var14, self.var15]
+                   self.var11, self.var12, self.var13, self.var14, self.var15,
+                   self.var16]
         
         # Key values (to be referred).
         
         key_arr = ['name1', 'name2', 'dtstart', 'dtstop', 'timestep', 'freq',
                    'hatchfilter', 'hatchlength', 'cycsliptol', 'cycsliplen',
                    'antoffsetX', 'antoffsetY', 'antoffsetZ',
-                   'frameOrb', 'frameForm']
+                   'frameOrb', 'frameForm', 'filepath']
         
         frame_arr = ['frameOrb', 'frameForm']                   
         
@@ -1243,6 +1271,26 @@ class RunGUI:
         finally:
             self.error_msgprint += errmsg
         
+        #####################################################################
+        #####################################################################
+         # 16. Check for 4-letter ID of LEO-A
+        
+        try:
+            _v16 = self.var16.get() # Exception raised if entry is erroneous
+            if len(_v16) <1:
+                errmsg = 'Cannot be empty'
+                self.errtx01.configure(text='!')
+            else:
+                errmsg = ''
+                self.errtx01.configure(text='')
+        except:
+            _v16 = ''
+            errmsg = 'Error! Expected a string for the filepath! \n'
+            self.errtx16.configure(text='!')
+        finally:
+            self.error_msgprint += errmsg
+            
+            
         #####################################################################
         #####################################################################
         

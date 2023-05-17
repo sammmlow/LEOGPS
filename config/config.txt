@@ -19,6 +19,7 @@
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
+
 ~:
 ~: Input the 4-letter ID of the first spacecraft (i.e. LEOA)
 I: name1 GRCA
@@ -33,7 +34,7 @@ I: dtstart 2010-07-27-06-30-00
 I: dtstop 2010-07-27-18-30-00
 ~: 
 ~: Input the timestep in seconds (i.e. 30)
-I: timestep 10
+I: timestep 1
 ~: 
 ~: Input single or dual frequency processing (i.e. 1 or 2)
 I: freq 2
@@ -60,10 +61,13 @@ I: antoffsetY 0.0
 I: antoffsetZ 0.0
 ~:
 ~: Select the output orbit ephemeris coordinate frame
-I: frameOrb ICRF
+I: frameOrb ITRF
 ~:
 ~: Select the output relative baseline coordinate frame
-I: frameForm Hill
+I: frameForm ITRF
+~:
+~: Input relative file path of your input and output folders ("default" for default file path)
+I: filepath default
 ~:
 ###############################################################################
 ###############################################################################

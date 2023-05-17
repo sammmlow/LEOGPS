@@ -33,13 +33,14 @@ from source import posvel
 from source import ambest
 from source import frames
 from source import pubplt
-
+import os 
 def run():
     '''Basically runs the primary workflow for LEOGPS' relative positioning.
     No input arguments needed, and returns None.
     
     '''
-
+   
+        
     # IMPORTING USER DEFINED PARAMETERS:
     # ==================================
     # -> The routine 'inpxtr.py' extracts out all user-specified parameters.
@@ -50,6 +51,10 @@ def run():
     n1  = inps['name1'] # Name of LEO1
     n2  = inps['name2'] # Name of LEO2
 
+
+    if not os.path.exists(os.getcwd()  + os.sep +  'output' + os.sep + inps['filepath']):
+        os.makedirs(os.getcwd() + os.sep + 'output' +  os.sep + inps['filepath'])
+        
     # FINDING THE RINEX FILE PATHS:
     # =============================
     # -> The routine 'rnpath.py' will output the path of the RINEX file.
@@ -134,41 +139,43 @@ def run():
     for t in time:
         
         # What are the GPS ephemeris and RINEX observables at t?
-        gps = gpsdata[t]
-        rx1 = rinex1[t]
-        rx2 = rinex2[t]
-        
-        # Extract PVT, DOP and clock bias values for LEO 1, at time = t.
-        pos1, vel1, dop1, cb1 = posvel.posvel(t, goodsats, gps, rx1, inps, n1)
-        
-        # Extract PVT, DOP and clock bias values for LEO 2, at time = t.
-        pos2, vel2, dop2, cb2 = posvel.posvel(t, goodsats, gps, rx2, inps, n2)
-        
-        # Perform double-differencing to get baseline vector in ITRF.
-        baseline = ambest.ambest(t, gps, rx1, rx2, pos1, pos2, inps)
-        
-        # By default, since the GPS ephemeris provided by CODE is given in
-        # ITRF, then the resultant frame is ITRF. If the user selects ICRF
-        # then we will perform the coordinate frame computation below.
-        # Note that we should account for the possibility that the velocity
-        # vector is null, due to a possible lack of Doppler observations.
-        if frameOrb == 'ICRF':
-            pos1, vel1 = frames.itrf2icrf( t, pos1, vel1 )
-            pos2, vel2 = frames.itrf2icrf( t, pos2, vel2 )
-        
-        # By default, the coordinate reference frame for the relative baseline
-        # is also in ITRF. LEOGPS allows for the option of ICRF or the local
-        # Euler-Hill frame, taking LEO 1 as the chief satellite.
-        if frameForm == 'ICRF':
-            baseline, null = frames.itrf2icrf( t, baseline ) # Ignore null
-        elif frameForm == 'Hill':
-            baseline, null = frames.itrf2icrf( t, baseline ) # Ignore null
-            baseline       = frames.icrf2hill( baseline, pos1, vel1 )
-        
-        # Log the results into a dictionary.
-        # Result size: 1x3   1x3   1x3  1x1   1x3   1x3   1x3  1x1       1x3
-        results[t] = [pos1, vel1, dop1, cb1, pos2, vel2, dop2, cb2, baseline]
-        
+        try:
+            gps = gpsdata[t]
+            rx1 = rinex1[t]
+            rx2 = rinex2[t]
+            
+            # Extract PVT, DOP and clock bias values for LEO 1, at time = t.
+            pos1, vel1, dop1, cb1 = posvel.posvel(t, goodsats, gps, rx1, inps, n1)
+            
+            # Extract PVT, DOP and clock bias values for LEO 2, at time = t.
+            pos2, vel2, dop2, cb2 = posvel.posvel(t, goodsats, gps, rx2, inps, n2)
+            
+            # Perform double-differencing to get baseline vector in ITRF.
+            baseline = ambest.ambest(t, gps, rx1, rx2, pos1, pos2, inps)
+            
+            # By default, since the GPS ephemeris provided by CODE is given in
+            # ITRF, then the resultant frame is ITRF. If the user selects ICRF
+            # then we will perform the coordinate frame computation below.
+            # Note that we should account for the possibility that the velocity
+            # vector is null, due to a possible lack of Doppler observations.
+            if frameOrb == 'ICRF':
+                pos1, vel1 = frames.itrf2icrf( t, pos1, vel1 )
+                pos2, vel2 = frames.itrf2icrf( t, pos2, vel2 )
+            
+            # By default, the coordinate reference frame for the relative baseline
+            # is also in ITRF. LEOGPS allows for the option of ICRF or the local
+            # Euler-Hill frame, taking LEO 1 as the chief satellite.
+            if frameForm == 'ICRF':
+                baseline, null = frames.itrf2icrf( t, baseline ) # Ignore null
+            elif frameForm == 'Hill':
+                baseline, null = frames.itrf2icrf( t, baseline ) # Ignore null
+                baseline       = frames.icrf2hill( baseline, pos1, vel1 )
+            
+            # Log the results into a dictionary.
+            # Result size: 1x3   1x3   1x3  1x1   1x3   1x3   1x3  1x1       1x3
+            results[t] = [pos1, vel1, dop1, cb1, pos2, vel2, dop2, cb2, baseline]
+        except Exception:
+            continue
     # FINALLY, WE PUBLISH THE RESULTS IN THE OUTPUTS FOLDER.
     # ======================================================
     pubplt.leo_results( results, inps )
