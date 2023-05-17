@@ -605,26 +605,27 @@ def ph2fil(rnxdata, rnxstep, goodsats, hatchlen):
                             k -= 1
                         
                         for n in range(0,k,-1): # Sliding window hatch filter
-                            
-                            # Get current and previous code-carrier values
-                            RF = rnxdata[epoch+((n)*rnxstep)][SV][obs1]
-                            RI = rnxdata[epoch+((n-1)*rnxstep)][SV][obs1]
-                            
-                            # Get L1 phase values now and before
-                            PF1 = rnxdata[epoch+((n)*rnxstep)][SV]['L1']
-                            PI1 = rnxdata[epoch+((n-1)*rnxstep)][SV]['L1']
-                            
-                            # Get L2 phase values now and before
-                            PF2 = rnxdata[epoch+((n)*rnxstep)][SV]['L2']
-                            PI2 = rnxdata[epoch+((n-1)*rnxstep)][SV]['L2']
-                            
-                            # Get length of filter
-                            kM = np.abs(k) + 1
-                            
-                            # Generate the new smoothed code value
-                            RNew = hatch2(RF,RI,PF1,PF2,PI1,PI2,kM)
-                            rnxdata[epoch+((n)*rnxstep)][SV][obs1] = RNew
-                    
+                            try:
+                                # Get current and previous code-carrier values
+                                RF = rnxdata[epoch+((n)*rnxstep)][SV][obs1]
+                                RI = rnxdata[epoch+((n-1)*rnxstep)][SV][obs1]
+                                
+                                # Get L1 phase values now and before
+                                PF1 = rnxdata[epoch+((n)*rnxstep)][SV]['L1']
+                                PI1 = rnxdata[epoch+((n-1)*rnxstep)][SV]['L1']
+                                
+                                # Get L2 phase values now and before
+                                PF2 = rnxdata[epoch+((n)*rnxstep)][SV]['L2']
+                                PI2 = rnxdata[epoch+((n-1)*rnxstep)][SV]['L2']
+                                
+                                # Get length of filter
+                                kM = np.abs(k) + 1
+                                
+                                # Generate the new smoothed code value
+                                RNew = hatch2(RF,RI,PF1,PF2,PI1,PI2,kM)
+                                rnxdata[epoch+((n)*rnxstep)][SV][obs1] = RNew
+                            except Exception:
+                                continue
                     else: # Reset the cycle slip trigger
                         slipcheck = False                    
                                             
