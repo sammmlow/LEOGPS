@@ -48,11 +48,9 @@ def gps_report(gpsdata, goodsats, inps):
     
     cwd = inps['cwd'] # Get current main working directory
     
-    
     full_file_path = cwd + os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'gps_report' 
     if not os.path.exists(full_file_path):
         os.makedirs(full_file_path)
-        
         
     file_path = open(full_file_path + os.sep +'GPS_Report.txt', 'w')
     
@@ -189,7 +187,6 @@ def gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps):
     
     # Tight-spaced plot
     plt.tight_layout()
-    
     parent_folder = cwd + os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'gps_plots' + os.sep
     if not os.path.exists(parent_folder):
         os.makedirs(parent_folder)
