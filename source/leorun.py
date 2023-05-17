@@ -33,13 +33,12 @@ from source import posvel
 from source import ambest
 from source import frames
 from source import pubplt
-import os 
+
 def run():
-    '''Basically runs the primary workflow for LEOGPS' relative positioning.
-    No input arguments needed, and returns None.
-    
     '''
-   
+    Basically runs the primary workflow for LEOGPS' relative positioning.
+    No input arguments needed, and returns None.
+    '''
         
     # IMPORTING USER DEFINED PARAMETERS:
     # ==================================
@@ -50,11 +49,7 @@ def run():
     
     n1  = inps['name1'] # Name of LEO1
     n2  = inps['name2'] # Name of LEO2
-
-
-    if not os.path.exists(os.getcwd()  + os.sep +  'output' + os.sep + inps['filepath']):
-        os.makedirs(os.getcwd() + os.sep + 'output' +  os.sep + inps['filepath'])
-        
+    
     # FINDING THE RINEX FILE PATHS:
     # =============================
     # -> The routine 'rnpath.py' will output the path of the RINEX file.

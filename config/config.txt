@@ -40,7 +40,7 @@ I: timestep 1
 I: freq 2
 ~: 
 ~: Enable code-carrier smoothing via Hatch filter (case sensitive True/False)?
-I: hatchfilter False
+I: hatchfilter True
 ~: 
 ~: What is the length (integer number of epochs) of the hatch filter used?
 I: hatchlength 10
@@ -61,13 +61,11 @@ I: antoffsetY 0.0
 I: antoffsetZ 0.0
 ~:
 ~: Select the output orbit ephemeris coordinate frame
-I: frameOrb ITRF
+I: frameOrb ICRF
 ~:
 ~: Select the output relative baseline coordinate frame
-I: frameForm ITRF
+I: frameForm Hill
 ~:
-~: Input relative file path of your input and output folders ("default" for default file path)
-I: filepath default
-~:
+
 ###############################################################################
 ###############################################################################

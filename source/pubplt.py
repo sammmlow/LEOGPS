@@ -22,10 +22,10 @@
 ###############################################################################
 
 # Import global libraries
-import datetime
+import os
 import matplotlib.pyplot as plt
 from decimal import Decimal
-import os
+
 def gps_report(gpsdata, goodsats, inps):
     '''Generates an ASCII text report of GPS position, velocity, and clock
     bias (ITRF). Report will be saved in the `output/gps_report` folder.
@@ -48,11 +48,10 @@ def gps_report(gpsdata, goodsats, inps):
     
     cwd = inps['cwd'] # Get current main working directory
     
-    full_file_path = cwd + os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'gps_report' 
-    if not os.path.exists(full_file_path):
-        os.makedirs(full_file_path)
-        
-    file_path = open(full_file_path + os.sep +'GPS_Report.txt', 'w')
+    file_pathStr =  cwd + os.sep + 'output'
+    file_pathStr += os.sep + 'gps_report'
+    file_pathStr += os.sep + 'GPS_Report.txt'
+    file_path = open(file_pathStr, 'w')
     
     line = 'G         '
     line += 'Pos_X (km)       '
@@ -187,11 +186,9 @@ def gps_graphs(SV, t_usr_dt, t_usr_ss, gpsdata, inps):
     
     # Tight-spaced plot
     plt.tight_layout()
-    parent_folder = cwd + os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'gps_plots' + os.sep
-    if not os.path.exists(parent_folder):
-        os.makedirs(parent_folder)
-        
-    plt.savefig(parent_folder + str(SV) + '_PVT.png')
+    savefigPath  = cwd + os.sep + 'output' + os.sep
+    savefigPath += 'gps_plots' + os.sep + 'GPS_SV' + str(SV) + '_PVT.png'
+    plt.savefig( savefigPath )
     
     # Close this figure
     plt.close(fig)
@@ -228,7 +225,8 @@ def leo_results(results, inps):
     frameOrb = inps['frameOrb']
     frameForm = inps['frameForm']
     
-    file_path = open(cwd+ os.sep + 'output' + os.sep + inps['filepath'] + os.sep + 'LEOGPS_Results.txt', 'w')
+    file_name = 'LEOGPS_Results.txt'
+    file_path = open(cwd + os.sep + 'output' + os.sep + file_name, 'w')
     
     line  = 'Date       '
     line += 'Time      '
@@ -323,6 +321,6 @@ def leo_results(results, inps):
     file_path.close()
     
     print('Completed processing in LEOGPS! Output file stored:')
-    print(cwd + os.sep + inps['filepath'] + os.sep +  'output'+ os.sep + 'LEOGPS_Results.txt \n')
+    print(cwd + os.sep + 'output'+ os.sep + 'LEOGPS_Results.txt \n')
     
     return None
